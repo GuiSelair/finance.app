@@ -1,0 +1,19 @@
+{
+  "name": "finance-app",
+  "version": "1.0.0",
+  "description": "[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/GuiSelair/finance-app)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuiSelair/Finance-App.git"
+  },
+  "author": "Guilherme Selair",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GuiSelair/Finance-App/issues"
+  },
+  "homepage": "https://github.com/GuiSelair/Finance-App#readme"
+}
