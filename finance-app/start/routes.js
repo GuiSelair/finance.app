@@ -16,6 +16,8 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
+Route.post("/register", "AuthController.register")
+Route.post("/authenticate", "AuthController.authenticate")
+Route.post("/loginNubank", "NubankController.login").middleware("auth")
+Route.get("/historyNubank", "NubankController.history")
+Route.get("/customerNubank", "NubankController.customer")
