@@ -12,3 +12,4 @@ database/*.sqlite
 
 # Yarn
 yarn.lock
+package-lock.json
