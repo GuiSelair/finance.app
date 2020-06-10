@@ -18,6 +18,7 @@ const Route = use('Route')
 
 Route.post("/register", "AuthController.register")
 Route.post("/authenticate", "AuthController.authenticate")
-Route.post("/loginNubank", "NubankController.login").middleware("auth")
+// Route.post("/loginNubank", "NubankController.login").middleware("auth")
+Route.get("/loginNubank", "NubankController.login")
 Route.get("/historyNubank", "NubankController.history")
 Route.get("/customerNubank", "NubankController.customer")

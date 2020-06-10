@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+click = "==7.1.1"
+Flask = "==1.1.2"
+itsdangerous = "==1.1.0"
+pynubank = "==1.2.0"
+qrcode = "==6.1"
+Werkzeug = "==1.0.1"
+requests = "==2.23.0"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
