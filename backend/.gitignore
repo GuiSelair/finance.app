@@ -1,16 +1,2 @@
-# Node modules
-node_modules
-
-# Adonis directory for storing tmp files
-tmp
-
-# Environment variables, never commit this file
-.env
-ENV/
-
-# The development sqlite file
-database/*.sqlite
-
-# Yarn
+node_modules/
 yarn.lock
-package-lock.json
