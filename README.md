@@ -1,5 +1,3 @@
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/GuiSelair/finance-app) 
-
 <h1 align="center">
     Finance App
 </h1>
@@ -27,12 +25,12 @@ Com o Finance App será possivel realizar/observar:
  - Entre outros...
 
 Durante a execução deste projeto vale destacar a manipulação das seguintes tecnologias:
- - Framework AdonisJS
+ - Mini-Framework Express
+ - NodeJS
  - ReactJS
  - React Native
- - Routes
  - Axios
- - KNEX
+ - TypeORM
 
 ## Pré-requisitos
 
