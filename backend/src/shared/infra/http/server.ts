@@ -1,5 +1,9 @@
+import 'reflect-metadata';
 import express from 'express';
+
 import routes from './routes';
+import '../typeorm';
+import '../../Container';
 
 const app = express();
 app.use(routes);
