@@ -9,7 +9,7 @@ interface ITokenPayload {
   exp: number;
   sub: string;
 }
-const ensureAuthenticate = (
+const ensureAuthenticated = (
   request: Request,
   response: Response,
   next: NextFunction,
@@ -19,6 +19,7 @@ const ensureAuthenticate = (
   if (!authHeader)
     throw new AppError('Authentication Token is missing...', 401);
 
+  console.log(authHeader);
   const [, token] = authHeader.split(' ');
 
   try {
@@ -34,4 +35,4 @@ const ensureAuthenticate = (
   }
 };
 
-export default ensureAuthenticate;
+export default ensureAuthenticated;

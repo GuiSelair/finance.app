@@ -10,7 +10,6 @@ class UsersController {
     _: NextFunction,
   ): Promise<Response> {
     const { name, email, password } = request.body;
-    console.log(request.body);
     const createUserService = container.resolve(CreateUserService);
     const user = await createUserService.execute({
       email,
