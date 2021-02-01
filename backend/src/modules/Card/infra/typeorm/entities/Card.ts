@@ -3,12 +3,23 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
+import User from '../../../../User/infra/typeorm/entities/User';
+
 @Entity('cards')
-class Cards {
+class Card {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column()
+  user_id: string;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @Column()
   name: string;
@@ -26,4 +37,4 @@ class Cards {
   updated_at: Date;
 }
 
-export default Cards;
+export default Card;

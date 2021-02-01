@@ -1,0 +1,41 @@
+import { inject, injectable } from 'tsyringe';
+import Card from '../infra/typeorm/entities/Card';
+
+import ICardRepository from '../repositories/ICardRepository';
+import ICreateCard from '../dtos/ICreateCard';
+import AppError from '../../../shared/errors/AppError';
+
+@injectable()
+class CreateCardService {
+  private cardRepository: ICardRepository;
+
+  constructor(
+    @inject('CardRepository')
+    cardRepository: ICardRepository,
+  ) {
+    this.cardRepository = cardRepository;
+  }
+
+  public async execute({
+    name,
+    due_date,
+    flag,
+    user_id,
+  }: ICreateCard): Promise<Card> {
+    const card = await this.cardRepository.findByName(name);
+
+    if (card)
+      throw new AppError('[ERROR]: Impossible create two cards with same name');
+
+    const newCard = await this.cardRepository.create({
+      due_date,
+      flag,
+      name,
+      user_id,
+    });
+
+    return newCard;
+  }
+}
+
+export default CreateCardService;
