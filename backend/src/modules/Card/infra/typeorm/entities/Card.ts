@@ -28,7 +28,7 @@ class Card {
   flag: string;
 
   @Column()
-  due_date: string;
+  due_day: number;
 
   @CreateDateColumn()
   created_at: Date;

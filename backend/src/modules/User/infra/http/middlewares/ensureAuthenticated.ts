@@ -15,11 +15,11 @@ const ensureAuthenticated = (
   next: NextFunction,
 ): void => {
   const authHeader = request.headers.authorization;
+  console.log(authHeader);
 
   if (!authHeader)
     throw new AppError('Authentication Token is missing...', 401);
 
-  console.log(authHeader);
   const [, token] = authHeader.split(' ');
 
   try {

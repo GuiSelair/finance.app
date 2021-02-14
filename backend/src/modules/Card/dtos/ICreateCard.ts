@@ -1,6 +1,6 @@
 export default interface ICreateCard {
   name: string;
   flag: string;
-  due_date: Date;
+  due_day: number;
   user_id: string;
 }

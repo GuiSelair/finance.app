@@ -18,7 +18,7 @@ class CreateCardService {
 
   public async execute({
     name,
-    due_date,
+    due_day,
     flag,
     user_id,
   }: ICreateCard): Promise<Card> {
@@ -28,7 +28,7 @@ class CreateCardService {
       throw new AppError('[ERROR]: Impossible create two cards with same name');
 
     const newCard = await this.cardRepository.create({
-      due_date,
+      due_day,
       flag,
       name,
       user_id,
