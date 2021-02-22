@@ -11,6 +11,7 @@ class ExpensesRepository implements IExpensesRepository {
   }
 
   public async create(data: ICreateExpense): Promise<Expense> {
+    console.log(data);
     const expense = this.repository.create(data);
 
     await this.repository.save(expense);
