@@ -1,5 +1,4 @@
 import { Repository, getRepository } from 'typeorm';
-import ICreateExpense from '../../../dtos/ICreateExpense';
 import ICreateExpenseMonth from '../../../dtos/ICreateExpenseMonth';
 import IExpensesMonthRepository from '../../../repositories/IExpensesMonthRepository';
 import Expense from '../entities/Expense';
@@ -15,8 +14,6 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
   }
 
   public async create(expense: Expense): Promise<ExpenseMonth[]> {
-    console.log(expense);
-
     for (let parcel = 1; parcel <= expense.parcel; parcel++) {
       const value = expense.amount / expense.parcel;
       const month = expense.purchase_date.getMonth() + parcel;
@@ -29,12 +26,21 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
         month,
       });
     }
-    console.log(this.expenseMonthList);
     const expenseMonth = this.repository.create(this.expenseMonthList);
 
     await this.repository.save(expenseMonth);
 
     return expenseMonth;
+  }
+
+  public async findByMonth(month: number): Promise<ExpenseMonth[]> {
+    const expensesInMonth = await this.repository.find({
+      where: {
+        month,
+      },
+    });
+
+    return expensesInMonth;
   }
 }
 

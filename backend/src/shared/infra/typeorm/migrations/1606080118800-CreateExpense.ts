@@ -16,6 +16,7 @@ export default class CreateExpense1606080118800 implements MigrationInterface {
           {
             name: 'description',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'purchase_date',
@@ -33,7 +34,6 @@ export default class CreateExpense1606080118800 implements MigrationInterface {
           {
             name: 'split_expense',
             type: 'boolean',
-            isNullable: true,
           },
           {
             name: 'share_with',
@@ -41,7 +41,7 @@ export default class CreateExpense1606080118800 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'percentage_of_each',
+            name: 'value_of_each',
             type: 'varchar',
             isNullable: true,
           },

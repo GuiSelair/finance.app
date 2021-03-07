@@ -17,7 +17,7 @@ class ExpenseMonth {
   @Column()
   expense_id: string;
 
-  @ManyToOne(() => Expense)
+  @ManyToOne(() => Expense, { cascade: true })
   @JoinColumn({ name: 'expense_id' })
   expense: Expense;
 

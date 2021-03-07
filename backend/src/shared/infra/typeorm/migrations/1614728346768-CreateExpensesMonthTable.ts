@@ -35,6 +35,10 @@ export default class CreateExpensesMonthTable1614728346768
             type: 'float',
           },
           {
+            name: 'isPaid',
+            type: 'boolean',
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',

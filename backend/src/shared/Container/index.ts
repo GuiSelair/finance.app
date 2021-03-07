@@ -11,6 +11,9 @@ import CardRepository from '../../modules/Card/infra/typeorm/repositories/CardsR
 import IExpensesRepository from '../../modules/Expense/repositories/IExpensesRepository';
 import ExpensesRepository from '../../modules/Expense/infra/typeorm/repositories/ExpensesRepository';
 
+import IExpensesMonthRepository from '../../modules/Expense/repositories/IExpensesMonthRepository';
+import ExpensesMonthRepository from '../../modules/Expense/infra/typeorm/repositories/ExpensesMonthRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -21,4 +24,9 @@ container.registerSingleton<ICardRepository>('CardRepository', CardRepository);
 container.registerSingleton<IExpensesRepository>(
   'ExpensesRepository',
   ExpensesRepository,
+);
+
+container.registerSingleton<IExpensesMonthRepository>(
+  'ExpensesMonthRepository',
+  ExpensesMonthRepository,
 );

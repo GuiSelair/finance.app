@@ -6,7 +6,7 @@ export default interface ICreateExpense {
   amount: number;
   split_expense?: boolean;
   share_with?: string;
-  percentage_of_each?: string;
+  value_of_each?: string;
   card_id?: string;
   user_id: string;
   parcel: number;

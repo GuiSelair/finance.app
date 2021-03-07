@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { container } from 'tsyringe';
 
 import CreateExpenseService from '../../../services/CreateExpenseService';
+import ListAllExpensesInMonth from '../../../services/ListAllExpensesInMonth';
 
 class ExpensesController {
   public async create(
@@ -17,7 +18,7 @@ class ExpensesController {
       parcel,
       due_date,
       share_with,
-      percentage_of_each,
+      value_of_each,
       card_id,
     } = request.body;
     const { id } = request.user;
@@ -30,13 +31,25 @@ class ExpensesController {
       parcel,
       user_id: id,
       due_date,
-      percentage_of_each,
+      value_of_each,
       share_with,
       split_expense,
       card_id,
     });
 
     return response.status(201).json(expense);
+  }
+
+  public async show(
+    request: Request,
+    response: Response,
+    _: NextFunction,
+  ): Promise<Response> {
+    // const { id } = request.user;
+    const { month } = request.body;
+    const listAllExpensesInMonth = container.resolve(ListAllExpensesInMonth);
+    const expensesInMonth = await listAllExpensesInMonth.execute(month);
+    return response.status(200).json(expensesInMonth);
   }
 }
 

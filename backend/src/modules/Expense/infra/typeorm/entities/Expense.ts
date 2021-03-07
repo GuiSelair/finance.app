@@ -38,19 +38,19 @@ class Expense {
   share_with?: string;
 
   @Column()
-  percentage_of_each?: string;
+  value_of_each?: string;
 
   @Column()
   card_id: string;
 
-  @ManyToOne(() => Card)
+  @ManyToOne(() => Card, { cascade: true })
   @JoinColumn({ name: 'card_id' })
   card: Card;
 
   @Column()
   user_id: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
 

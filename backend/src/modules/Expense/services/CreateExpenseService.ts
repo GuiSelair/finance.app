@@ -24,12 +24,10 @@ class CreateExpensesService {
     user_id,
     parcel,
     split_expense,
-    percentage_of_each,
+    value_of_each,
     share_with,
   }: ICreateExpenseRequest): Promise<Expense> {
-    const transformPercentageOfEachArrayToString = percentage_of_each?.join(
-      '&',
-    );
+    const transformPercentageOfEachArrayToString = value_of_each?.join('&');
 
     const transformShateWithArrayToString = share_with?.join('&');
 
@@ -42,7 +40,7 @@ class CreateExpensesService {
       card_id,
       user_id,
       parcel,
-      percentage_of_each: transformPercentageOfEachArrayToString,
+      value_of_each: transformPercentageOfEachArrayToString,
       share_with: transformShateWithArrayToString,
       split_expense,
     });
