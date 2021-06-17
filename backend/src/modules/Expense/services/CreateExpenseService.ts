@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import ICreateExpenseRequest from '../dtos/ICreateExpenseRequest';
+import ICreateExpense from '../dtos/ICreateExpense';
 
 import Expense from '../infra/typeorm/entities/Expense';
 import IExpensesRepository from '../repositories/IExpensesRepository';
@@ -26,10 +26,10 @@ class CreateExpensesService {
     split_expense,
     value_of_each,
     share_with,
-  }: ICreateExpenseRequest): Promise<Expense> {
-    const transformPercentageOfEachArrayToString = value_of_each?.join('&');
+  }: Omit<ICreateExpense, 'purchase_date'>): Promise<Expense> {
+    const transformValuesOfEachArrayToString = Array(value_of_each)?.join('&');
 
-    const transformShateWithArrayToString = share_with?.join('&');
+    const transformShareWithArrayToString = Array(share_with)?.join('&');
 
     const newExpense = await this.expensesRepository.create({
       name,
@@ -40,9 +40,9 @@ class CreateExpensesService {
       card_id,
       user_id,
       parcel,
-      value_of_each: transformPercentageOfEachArrayToString,
-      share_with: transformShateWithArrayToString,
       split_expense,
+      value_of_each: transformValuesOfEachArrayToString,
+      share_with: transformShareWithArrayToString,
     });
 
     return newExpense;

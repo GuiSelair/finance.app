@@ -5,8 +5,8 @@ export default interface ICreateExpense {
   due_date?: Date;
   amount: number;
   split_expense?: boolean;
-  share_with?: string;
-  value_of_each?: string;
+  share_with?: string | string[];
+  value_of_each?: string | number[];
   card_id?: string;
   user_id: string;
   parcel: number;

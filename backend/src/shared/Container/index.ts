@@ -11,7 +11,7 @@ import CardRepository from '../../modules/Card/infra/typeorm/repositories/CardsR
 import IExpensesRepository from '../../modules/Expense/repositories/IExpensesRepository';
 import ExpensesRepository from '../../modules/Expense/infra/typeorm/repositories/ExpensesRepository';
 
-import IExpensesMonthRepository from '../../modules/Expense/repositories/IExpensesMonthRepository';
+import IExpensesMonthRepository from '../../modules/Expense/repositories/IExpensesInMonthRepository';
 import ExpensesMonthRepository from '../../modules/Expense/infra/typeorm/repositories/ExpensesMonthRepository';
 
 container.registerSingleton<IUsersRepository>(

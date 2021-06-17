@@ -71,7 +71,7 @@ describe('CreateCard', () => {
       amount: 1200,
       split_expense: true,
       share_with: ['Daniela', 'Pai'],
-      percentage_of_each: ['20%', '21%'],
+      value_of_each: [500, 200],
       parcel: 1,
       user_id: user.id,
       card_id: card.id,
@@ -91,6 +91,34 @@ describe('CreateCard', () => {
       due_date: new Date(2021, 4, 10),
     });
 
+    expect(expense).toHaveProperty('id');
+  });
+
+  it('should be able to create expense that are linked to card', async () => {
+    const expense = await createExpenseService.execute({
+      name: 'Example name',
+      description: 'Example description',
+      amount: 1200,
+      split_expense: false,
+      parcel: 1,
+      user_id: user.id,
+      card_id: card.id,
+    });
+    expect(expense).toHaveProperty('id');
+  });
+
+  it('should be able to create expense that are linked to card and are divided', async () => {
+    const expense = await createExpenseService.execute({
+      name: 'Example name',
+      description: 'Example description',
+      amount: 1200,
+      split_expense: true,
+      share_with: ['user01'],
+      value_of_each: [300],
+      parcel: 1,
+      user_id: user.id,
+      card_id: card.id,
+    });
     expect(expense).toHaveProperty('id');
   });
 });

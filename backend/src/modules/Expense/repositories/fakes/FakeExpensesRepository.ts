@@ -16,7 +16,7 @@ class FakeExpensesRepository implements IExpensesRepository {
     card_id,
     user_id,
     parcel,
-    percentage_of_each,
+    value_of_each,
     share_with,
     split_expense,
   }: ICreateExpense): Promise<Expense> {
@@ -29,7 +29,7 @@ class FakeExpensesRepository implements IExpensesRepository {
       amount,
       purchase_date,
       due_date,
-      percentage_of_each,
+      value_of_each,
       parcel,
       share_with,
       split_expense,

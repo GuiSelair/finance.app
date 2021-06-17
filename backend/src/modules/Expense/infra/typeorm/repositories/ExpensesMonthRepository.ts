@@ -1,8 +1,8 @@
 import { Repository, getRepository } from 'typeorm';
-import ICreateExpenseMonth from '../../../dtos/ICreateExpenseMonth';
-import IExpensesMonthRepository from '../../../repositories/IExpensesMonthRepository';
+import ICreateExpenseMonth from '../../../dtos/ICreateExpenseInMonth';
+import IExpensesMonthRepository from '../../../repositories/IExpensesInMonthRepository';
 import Expense from '../entities/Expense';
-import ExpenseMonth from '../entities/ExpenseMonth';
+import ExpenseMonth from '../entities/ExpenseInMonth';
 
 class ExpensesMonthRepository implements IExpensesMonthRepository {
   private repository: Repository<ExpenseMonth>;
@@ -14,8 +14,9 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
   }
 
   public async create(expense: Expense): Promise<ExpenseMonth[]> {
+    const value = expense.amount / expense.parcel;
+    // eslint-disable-next-line no-plusplus
     for (let parcel = 1; parcel <= expense.parcel; parcel++) {
-      const value = expense.amount / expense.parcel;
       const month = expense.purchase_date.getMonth() + parcel;
 
       this.expenseMonthList.push({
@@ -26,6 +27,7 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
         month,
       });
     }
+
     const expenseMonth = this.repository.create(this.expenseMonthList);
 
     await this.repository.save(expenseMonth);

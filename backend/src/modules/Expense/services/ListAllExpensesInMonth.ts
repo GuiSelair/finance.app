@@ -1,15 +1,15 @@
 import { inject, injectable } from 'tsyringe';
 import AppError from '../../../shared/errors/AppError';
-import ExpenseMonth from '../infra/typeorm/entities/ExpenseMonth';
-import IExpensesMonthRepository from '../repositories/IExpensesMonthRepository';
+import ExpenseMonth from '../infra/typeorm/entities/ExpenseInMonth';
+import IExpensesInMonthRepository from '../repositories/IExpensesInMonthRepository';
 
 @injectable()
 class ListAllExpensesInMonth {
-  private expensesMonthRepository: IExpensesMonthRepository;
+  private expensesMonthRepository: IExpensesInMonthRepository;
 
   constructor(
     @inject('ExpensesMonthRepository')
-    expensesMonthRepository: IExpensesMonthRepository,
+    expensesMonthRepository: IExpensesInMonthRepository,
   ) {
     this.expensesMonthRepository = expensesMonthRepository;
   }
