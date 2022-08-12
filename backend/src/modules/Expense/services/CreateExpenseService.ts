@@ -23,7 +23,7 @@ class CreateExpensesService {
     card_id,
     user_id,
     parcel,
-    split_expense,
+    split_expense = false,
     value_of_each,
     share_with,
   }: Omit<ICreateExpense, 'purchase_date'>): Promise<Expense> {

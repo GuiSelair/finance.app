@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import User from '../infra/typeorm/entities/User';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import AppError from '../../../shared/errors/AppError';
 
 interface IRequestDTO {
   name: string;
@@ -31,7 +32,7 @@ class CreateUserService {
     const userExists = await this.userRepository.findByEmail(email);
 
     if (userExists) {
-      throw new Error('User already exists...');
+      throw new AppError('User already exists');
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password);

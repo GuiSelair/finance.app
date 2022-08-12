@@ -39,7 +39,7 @@ class AuthenticateUserService {
     password,
   }: IAuthenticateRequest): Promise<IAuthenticateResponse> {
     const user = await this.usersRepository.findByEmail(email);
-    if (!user) throw new AppError('Incorrect email/password combination');
+    if (!user) throw new AppError('Incorrect email/password combination', 401);
 
     const comparePasswords = await this.hashProvider.compareHash(
       password,
