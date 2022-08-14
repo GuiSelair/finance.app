@@ -14,7 +14,6 @@ interface IAuthenticateRequest {
 
 interface IAuthenticateResponse {
   token: string;
-  user: User;
 }
 
 @injectable()
@@ -49,14 +48,21 @@ class AuthenticateUserService {
     if (!comparePasswords)
       throw new AppError('Incorrect email/password combination', 401);
 
-    const token = sign({}, authConfig.secret, {
-      expiresIn: authConfig.expiresIn,
-      subject: user.id,
-    });
+    const token = sign(
+      {
+        email: user.email,
+        name: user.name,
+        id: user.id,
+      },
+      authConfig.secret,
+      {
+        expiresIn: authConfig.expiresIn,
+        subject: user.id,
+      },
+    );
 
     return {
       token,
-      user,
     };
   }
 }

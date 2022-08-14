@@ -24,8 +24,7 @@ class CreateCardService {
   }: ICreateCard): Promise<Card> {
     const card = await this.cardRepository.findByName(name);
 
-    if (card)
-      throw new AppError('[ERROR]: Impossible create two cards with same name');
+    if (card) throw new AppError('Impossible create two cards with same name');
 
     const newCard = await this.cardRepository.create({
       due_day,
