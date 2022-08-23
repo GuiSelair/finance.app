@@ -22,11 +22,12 @@ class CreateExpensesService {
     due_date,
     card_id,
     user_id,
-    parcel,
+    parcel = 1,
     split_expense = false,
-    value_of_each,
-    share_with,
-  }: Omit<ICreateExpense, 'purchase_date'>): Promise<Expense> {
+    value_of_each = [],
+    share_with = [],
+    purchase_date = new Date(),
+  }: ICreateExpense): Promise<Expense> {
     const transformValuesOfEachArrayToString = Array(value_of_each)?.join('&');
 
     const transformShareWithArrayToString = Array(share_with)?.join('&');
@@ -35,7 +36,7 @@ class CreateExpensesService {
       name,
       description,
       amount,
-      purchase_date: new Date(),
+      purchase_date,
       due_date,
       card_id,
       user_id,

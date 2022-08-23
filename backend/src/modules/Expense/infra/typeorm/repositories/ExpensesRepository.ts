@@ -4,6 +4,11 @@ import IExpensesRepository from '../../../repositories/IExpensesRepository';
 import Expense from '../entities/Expense';
 import ExpensesMonthRepository from './ExpensesMonthRepository';
 
+interface ICreateExpenseRepository extends ICreateExpense {
+  share_with: string;
+  value_of_each: string;
+}
+
 class ExpensesRepository implements IExpensesRepository {
   private repository: Repository<Expense>;
 
@@ -14,13 +19,10 @@ class ExpensesRepository implements IExpensesRepository {
     this.expensesMonthRepository = new ExpensesMonthRepository();
   }
 
-  public async create(data: ICreateExpense): Promise<Expense> {
+  public async create(data: ICreateExpenseRepository): Promise<Expense> {
     const expense = this.repository.create(data);
-    console.log(expense);
     await this.repository.save(expense);
-
-    const expensesMonth = await this.expensesMonthRepository.create(expense);
-    console.log(expensesMonth);
+    await this.expensesMonthRepository.create(expense);
 
     return expense;
   }

@@ -1,7 +1,7 @@
 export default interface ICreateExpense {
   name: string;
   description: string;
-  purchase_date: Date;
+  purchase_date?: Date;
   due_date?: Date;
   amount: number;
   split_expense?: boolean;
@@ -9,5 +9,5 @@ export default interface ICreateExpense {
   value_of_each?: string | number[];
   card_id?: string;
   user_id: string;
-  parcel: number;
+  parcel?: number;
 }

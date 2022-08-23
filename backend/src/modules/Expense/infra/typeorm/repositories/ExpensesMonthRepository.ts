@@ -15,6 +15,7 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
 
   public async create(expense: Expense): Promise<ExpenseMonth[]> {
     const value = expense.amount / expense.parcel;
+
     // eslint-disable-next-line no-plusplus
     for (let parcel = 1; parcel <= expense.parcel; parcel++) {
       const month = expense.purchase_date.getMonth() + parcel;
@@ -29,7 +30,6 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
     }
 
     const expenseMonth = this.repository.create(this.expenseMonthList);
-
     await this.repository.save(expenseMonth);
 
     return expenseMonth;
