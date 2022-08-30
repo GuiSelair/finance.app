@@ -30,6 +30,9 @@ class Card {
   @Column()
   due_day: number;
 
+  @Column()
+  turning_day: number;
+
   @CreateDateColumn()
   created_at: Date;
 

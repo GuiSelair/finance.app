@@ -20,7 +20,7 @@ class Expense {
   name: string;
 
   @Column()
-  description: string;
+  description?: string;
 
   @CreateDateColumn()
   purchase_date: Date;
@@ -41,7 +41,7 @@ class Expense {
   value_of_each?: string;
 
   @Column()
-  card_id: string;
+  card_id?: string;
 
   @ManyToOne(() => Card, { cascade: true })
   @JoinColumn({ name: 'card_id' })

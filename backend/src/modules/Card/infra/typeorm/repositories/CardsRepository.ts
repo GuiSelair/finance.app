@@ -16,12 +16,14 @@ class CardsRepository implements ICardRepository {
     due_day,
     flag,
     user_id,
+    turning_day,
   }: ICreateCard): Promise<Card> {
     const newCard = this.repository.create({
       name,
       due_day,
       flag,
       user_id,
+      turning_day,
     });
 
     await this.repository.save(newCard);

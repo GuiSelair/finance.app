@@ -9,7 +9,7 @@ class CardsController {
     response: Response,
     _: NextFunction,
   ): Promise<Response> {
-    const { due_day, name, flag } = request.body;
+    const { due_day, name, flag, turning_day } = request.body;
     const { id } = request.user;
     const createCardService = container.resolve(CreateCardService);
     const card = await createCardService.execute({
@@ -17,6 +17,7 @@ class CardsController {
       flag,
       name,
       user_id: id,
+      turning_day,
     });
     return response.status(201).json(card);
   }

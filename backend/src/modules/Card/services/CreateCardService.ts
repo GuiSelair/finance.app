@@ -21,6 +21,7 @@ class CreateCardService {
     due_day,
     flag,
     user_id,
+    turning_day,
   }: ICreateCard): Promise<Card> {
     const card = await this.cardRepository.findByName(name);
 
@@ -31,6 +32,7 @@ class CreateCardService {
       flag,
       name,
       user_id,
+      turning_day,
     });
 
     return newCard;

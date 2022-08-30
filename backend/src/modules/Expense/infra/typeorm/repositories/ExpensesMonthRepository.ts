@@ -7,20 +7,19 @@ import ExpenseMonth from '../entities/ExpenseInMonth';
 class ExpensesMonthRepository implements IExpensesMonthRepository {
   private repository: Repository<ExpenseMonth>;
 
-  private expenseMonthList: ICreateExpenseMonth[] = [];
-
   constructor() {
     this.repository = getRepository(ExpenseMonth);
   }
 
   public async create(expense: Expense): Promise<ExpenseMonth[]> {
+    const expenseMonthList = [] as ICreateExpenseMonth[];
     const value = expense.amount / expense.parcel;
 
     // eslint-disable-next-line no-plusplus
     for (let parcel = 1; parcel <= expense.parcel; parcel++) {
       const month = expense.purchase_date.getMonth() + parcel;
 
-      this.expenseMonthList.push({
+      expenseMonthList.push({
         expense_id: expense.id,
         number_current_of_parcel: parcel,
         number_total_of_parcel: expense.parcel,
@@ -29,7 +28,7 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
       });
     }
 
-    const expenseMonth = this.repository.create(this.expenseMonthList);
+    const expenseMonth = this.repository.create(expenseMonthList);
     await this.repository.save(expenseMonth);
 
     return expenseMonth;

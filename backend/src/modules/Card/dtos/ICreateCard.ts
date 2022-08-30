@@ -3,4 +3,5 @@ export default interface ICreateCard {
   flag: string;
   due_day: number;
   user_id: string;
+  turning_day: number;
 }

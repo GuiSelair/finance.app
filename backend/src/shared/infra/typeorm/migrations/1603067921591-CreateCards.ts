@@ -22,8 +22,12 @@ export default class CreateCards1603067921591 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'due_date',
-            type: 'timestamp',
+            name: 'due_day',
+            type: 'integer',
+          },
+          {
+            name: 'turning_day',
+            type: 'integer',
           },
           {
             name: 'user_id',
