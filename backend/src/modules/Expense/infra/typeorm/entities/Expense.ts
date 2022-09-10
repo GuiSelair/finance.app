@@ -19,28 +19,40 @@ class Expense {
   @Column()
   name: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   description?: string;
 
   @CreateDateColumn()
   purchase_date: Date;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    nullable: true,
+  })
   due_date?: Date;
 
-  @Column()
+  @Column({
+    type: 'float4',
+  })
   amount: number;
 
   @Column()
   split_expense?: boolean;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   share_with?: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   value_of_each?: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   card_id?: string;
 
   @ManyToOne(() => Card, { cascade: true })

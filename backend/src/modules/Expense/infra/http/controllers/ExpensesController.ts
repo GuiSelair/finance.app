@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { container } from 'tsyringe';
 
 import CreateExpenseService from '../../../services/CreateExpenseService';
+import CreateExpenseInMonthService from '../../../services/CreateExpenseInMonthService';
 import ListAllExpensesInMonth from '../../../services/ListAllExpensesInMonth';
 
 class ExpensesController {
@@ -23,6 +24,9 @@ class ExpensesController {
     } = request.body;
     const { id } = request.user;
     const createExpenseService = container.resolve(CreateExpenseService);
+    const createExpensesInMonthService = container.resolve(
+      CreateExpenseInMonthService,
+    );
 
     const expense = await createExpenseService.execute({
       name,
@@ -36,6 +40,8 @@ class ExpensesController {
       split_expense,
       card_id,
     });
+
+    await createExpensesInMonthService.execute(expense);
 
     return response.status(201).json(expense);
   }

@@ -31,10 +31,17 @@ class ExpenseMonth {
   month: number;
 
   @Column()
+  year: number;
+
+  @Column({
+    type: 'float4',
+  })
   value_of_parcel: number;
 
-  // @Column()
-  // isPaid: boolean;
+  @Column({
+    default: false,
+  })
+  isPaid: boolean;
 
   @CreateDateColumn()
   created_at: Date;

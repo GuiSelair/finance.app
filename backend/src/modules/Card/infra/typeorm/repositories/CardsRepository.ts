@@ -40,6 +40,16 @@ class CardsRepository implements ICardRepository {
 
     return cardFound;
   }
+
+  public async findById(id: string): Promise<Card | undefined> {
+    const cardFound = await this.repository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    return cardFound;
+  }
 }
 
 export default CardsRepository;

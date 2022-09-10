@@ -4,4 +4,10 @@ export default interface ICreateExpenseInMonth {
   number_total_of_parcel: number;
   value_of_parcel: number;
   month: number;
+  year: number;
+}
+
+export interface IGetFirstMonthOfExpense {
+  purchaseDate: Date;
+  cardId?: string;
 }

@@ -30,6 +30,7 @@
           "argsIgnorePattern": "_"
       }],
       "prettier/prettier": "error",
+      "no-plusplus": "off",
       "import/extensions": [
           "error",
           "ignorePackages",

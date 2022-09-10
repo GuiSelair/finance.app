@@ -32,11 +32,12 @@ export default class CreateExpensesMonthTable1614728346768
           },
           {
             name: 'value_of_parcel',
-            type: 'float',
+            type: 'float4',
           },
           {
             name: 'isPaid',
             type: 'boolean',
+            default: false,
           },
           {
             name: 'created_at',

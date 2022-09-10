@@ -29,7 +29,7 @@ export default class CreateExpense1606080118800 implements MigrationInterface {
           },
           {
             name: 'amount',
-            type: 'float',
+            type: 'float4',
           },
           {
             name: 'split_expense',
