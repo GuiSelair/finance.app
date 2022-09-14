@@ -5,30 +5,32 @@ import IExpensesInMonthRepository from '../IExpensesInMonthRepository';
 class FakeExpensesRepository implements IExpensesInMonthRepository {
   private repository: ExpenseInMonth[] = [];
 
-  public async create({
-    month,
-    expense_id,
-    number_current_of_parcel,
-    number_total_of_parcel,
-    value_of_parcel,
-  }: ICreateExpenseInMonth): Promise<ExpenseInMonth[]> {
-    const expenseInMonth = new ExpenseInMonth();
+  public async create(
+    expenseMonthList: ICreateExpenseInMonth[],
+  ): Promise<ExpenseInMonth[]> {
+    expenseMonthList.forEach(expense => {
+      const expenseInMonth = new ExpenseInMonth();
+      Object.assign(expenseInMonth, {
+        month: expense.month,
+        expense_id: expense.expense_id,
+        number_current_of_parcel: expense.number_current_of_parcel,
+        number_total_of_parcel: expense.number_total_of_parcel,
+        value_of_parcel: expense.value_of_parcel,
+      });
 
-    Object.assign(expenseInMonth, {
-      month,
-      expense_id,
-      number_current_of_parcel,
-      number_total_of_parcel,
-      value_of_parcel,
+      this.repository.push(expenseInMonth);
     });
 
-    this.repository.push(expenseInMonth);
-
-    return this.repository.filter(expense => expense.id === expense_id);
+    return this.repository;
   }
 
-  public async findByMonth(month: number): Promise<ExpenseInMonth[]> {
-    return this.repository.filter(expense => expense.month === month);
+  public async findByMonthAndYear(
+    month: number,
+    year: number,
+  ): Promise<ExpenseInMonth[]> {
+    return this.repository.filter(
+      expense => expense.month === month && expense.year === year,
+    );
   }
 }
 

@@ -1,5 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 import AppError from '../../../shared/errors/AppError';
+import { IListAllExpensesInMonth } from '../dtos/IListAllExpensesInMonth';
 import ExpenseMonth from '../infra/typeorm/entities/ExpenseInMonth';
 import IExpensesInMonthRepository from '../repositories/IExpensesInMonthRepository';
 
@@ -14,14 +15,21 @@ class ListAllExpensesInMonth {
     this.expensesMonthRepository = expensesMonthRepository;
   }
 
-  public async execute(month: number): Promise<ExpenseMonth[]> {
+  public async execute({
+    month,
+    year,
+  }: IListAllExpensesInMonth): Promise<ExpenseMonth[]> {
     if (month < 0 || month > 12)
       throw new AppError(
         '[ERROR]: Month number invalid, try a number between 1 and 12',
       );
 
-    console.log(month);
-    const expenses = this.expensesMonthRepository.findByMonth(month);
+    if (!year) throw new AppError('[ERROR]: Year not be empty');
+
+    const expenses = await this.expensesMonthRepository.findByMonthAndYear(
+      month,
+      year,
+    );
 
     return expenses;
   }

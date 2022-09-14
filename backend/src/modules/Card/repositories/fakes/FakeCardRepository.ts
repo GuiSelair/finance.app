@@ -34,6 +34,10 @@ class CardsRepository implements ICardRepository {
 
     return cardFound;
   }
+
+  public async findById(id: string): Promise<Card | undefined> {
+    return undefined;
+  }
 }
 
 export default CardsRepository;

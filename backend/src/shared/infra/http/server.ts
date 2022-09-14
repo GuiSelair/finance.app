@@ -20,7 +20,6 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
     });
   }
 
-  console.error(err);
   return response.status(500).json({
     status: 'error',
     message: 'Internal Server Error',
@@ -28,4 +27,4 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
 });
 
 // eslint-disable-next-line no-console
-app.listen(3333, () => console.log('>> Server UP on port 3333'));
+app.listen(3333, () => console.log('🚀 Server ON: http://localhost:3333 🚀'));
