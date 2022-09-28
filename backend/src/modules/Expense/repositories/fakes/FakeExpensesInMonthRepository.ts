@@ -12,6 +12,7 @@ class FakeExpensesRepository implements IExpensesInMonthRepository {
       const expenseInMonth = new ExpenseInMonth();
       Object.assign(expenseInMonth, {
         month: expense.month,
+        year: expense.year,
         expense_id: expense.expense_id,
         number_current_of_parcel: expense.number_current_of_parcel,
         number_total_of_parcel: expense.number_total_of_parcel,

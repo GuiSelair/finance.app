@@ -12,12 +12,14 @@ class CardsRepository implements ICardRepository {
     due_day,
     flag,
     user_id,
+    turning_day,
   }: ICreateCard): Promise<Card> {
     const card = new Card();
     Object.assign(card, {
       id: createUUID(),
       name,
       due_day,
+      turning_day,
       flag,
       user_id,
       created_at: new Date(),
@@ -36,7 +38,9 @@ class CardsRepository implements ICardRepository {
   }
 
   public async findById(id: string): Promise<Card | undefined> {
-    return undefined;
+    const cardFound = this.repository.find(card => card.id === id);
+
+    return cardFound;
   }
 }
 

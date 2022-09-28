@@ -29,7 +29,6 @@ class CreateExpenseInMonthService {
     const expenseMonthList = [] as ICreateExpenseInMonth[];
     const valueOfParcel = Number(expense.amount) / Number(expense.parcel);
     const purchaseDate = new Date(expense.purchase_date);
-
     const firstMonth = await this.getFirstMonthOfExpense({
       purchaseDate,
       cardId: expense.card_id,
@@ -44,7 +43,6 @@ class CreateExpenseInMonthService {
         currentMonth = 1;
         currentYear += 1;
       }
-
       expenseMonthList.push({
         expense_id: expense.id,
         number_current_of_parcel: parcel,
@@ -66,6 +64,7 @@ class CreateExpenseInMonthService {
 
     if (cardId) {
       const cardFound = await this.cardRepository.findById(cardId);
+
       if (!cardFound) throw new AppError('[ERROR] Card not exists');
       turningDay = cardFound.turning_day;
     } else {

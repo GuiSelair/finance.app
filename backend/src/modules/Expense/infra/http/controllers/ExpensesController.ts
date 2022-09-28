@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 
 import CreateExpenseService from '../../../services/CreateExpenseService';
 import CreateExpenseInMonthService from '../../../services/CreateExpenseInMonthService';
-import ListAllExpensesInMonth from '../../../services/ListAllExpensesInMonth';
+import ListAllExpensesInMonth from '../../../services/ListAllExpensesInMonthService';
 
 class ExpensesController {
   public async create(
@@ -51,10 +51,14 @@ class ExpensesController {
     response: Response,
     _: NextFunction,
   ): Promise<Response> {
-    // const { id } = request.user;
-    const { month } = request.body;
+    const { id } = request.user;
+    const { month, year } = request.body;
     const listAllExpensesInMonth = container.resolve(ListAllExpensesInMonth);
-    const expensesInMonth = await listAllExpensesInMonth.execute(month);
+    const expensesInMonth = await listAllExpensesInMonth.execute({
+      month,
+      year,
+      userId: id,
+    });
     return response.status(200).json(expensesInMonth);
   }
 }

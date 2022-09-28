@@ -36,6 +36,7 @@ describe('CreateCard', () => {
     const card = await createCardService.execute({
       due_day: 10,
       flag: 'MASTERCARD',
+      turning_day: 6,
       name: 'Nubank',
       user_id: user.id,
     });

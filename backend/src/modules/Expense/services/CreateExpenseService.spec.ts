@@ -43,6 +43,7 @@ describe('CreateCard', () => {
     });
 
     card = await createCardService.execute({
+      turning_day: 6,
       due_day: 10,
       flag: 'MASTERCARD',
       name: 'Nubank',
