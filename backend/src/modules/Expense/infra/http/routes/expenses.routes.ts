@@ -9,6 +9,6 @@ const expensesController = new ExpensesController();
 expensesRouter.use(ensureAuthenticated);
 
 expensesRouter.post('/', expensesController.create);
-expensesRouter.post('/list', expensesController.show);
+expensesRouter.get('/list', expensesController.show);
 
 export default expensesRouter;
