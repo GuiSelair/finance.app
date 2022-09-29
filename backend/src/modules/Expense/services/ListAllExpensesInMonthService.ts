@@ -26,10 +26,10 @@ class ListAllExpensesInMonthService {
       );
 
     if (!year) throw new AppError('[ERROR]: Year not be empty');
-
     const expenses = await this.expensesMonthRepository.findByMonthAndYear(
       month,
       year,
+      userId,
     );
 
     return expenses;

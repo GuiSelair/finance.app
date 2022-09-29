@@ -23,12 +23,14 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
   public async findByMonthAndYear(
     month: number,
     year: number,
+    userId: string,
   ): Promise<ExpenseMonth[]> {
     const expensesInMonth = await this.repository.find({
       where: {
         month,
         year,
       },
+      relations: ['expense'],
     });
 
     return expensesInMonth;
