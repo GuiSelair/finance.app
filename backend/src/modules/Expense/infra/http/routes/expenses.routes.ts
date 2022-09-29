@@ -10,5 +10,6 @@ expensesRouter.use(ensureAuthenticated);
 
 expensesRouter.post('/', expensesController.create);
 expensesRouter.get('/list', expensesController.show);
+expensesRouter.get('/balance', expensesController.index);
 
 export default expensesRouter;

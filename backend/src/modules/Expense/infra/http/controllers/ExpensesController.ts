@@ -3,7 +3,9 @@ import { container } from 'tsyringe';
 
 import CreateExpenseService from '../../../services/CreateExpenseService';
 import CreateExpenseInMonthService from '../../../services/CreateExpenseInMonthService';
-import ListAllExpensesInMonth from '../../../services/ListAllExpensesInMonthService';
+import ListAllExpensesInMonthService from '../../../services/ListAllExpensesInMonthService';
+import GetBalanceOfMonthService from '../../../services/GetBalanceOfMonthService';
+import { IBalance } from '../../../dtos/IBalance';
 
 class ExpensesController {
   public async create(
@@ -53,13 +55,33 @@ class ExpensesController {
   ): Promise<Response> {
     const { id } = request.user;
     const { month, year } = request.body;
-    const listAllExpensesInMonth = container.resolve(ListAllExpensesInMonth);
+    const listAllExpensesInMonth = container.resolve(
+      ListAllExpensesInMonthService,
+    );
     const expensesInMonth = await listAllExpensesInMonth.execute({
       month,
       year,
       userId: id,
     });
     return response.status(200).json(expensesInMonth);
+  }
+
+  public async index(
+    request: Request,
+    response: Response,
+    _: NextFunction,
+  ): Promise<Response> {
+    const { id } = request.user;
+    const { month, year } = request.query;
+    const getBalanceOfMonth = container.resolve(GetBalanceOfMonthService);
+
+    const balance = await getBalanceOfMonth.execute({
+      month: Number(month),
+      year: Number(year),
+      userId: id,
+    });
+
+    return response.status(200).json(balance);
   }
 }
 

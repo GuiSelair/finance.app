@@ -30,6 +30,7 @@
           "argsIgnorePattern": "_"
       }],
       "prettier/prettier": "error",
+      "no-useless-constructor": "off",
       "no-plusplus": "off",
       "import/extensions": [
           "error",
