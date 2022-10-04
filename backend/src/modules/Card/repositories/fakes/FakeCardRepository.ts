@@ -42,6 +42,10 @@ class CardsRepository implements ICardRepository {
 
     return cardFound;
   }
+
+  public async findByUserId(userId: string): Promise<Card[] | undefined> {
+    return this.repository.filter(card => card.user_id === userId);
+  }
 }
 
 export default CardsRepository;

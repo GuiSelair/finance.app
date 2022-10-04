@@ -10,5 +10,6 @@ cardsRoutes.use(ensureAuthenticated);
 const cardsController = new CardController();
 
 cardsRoutes.post('/', cardsController.create);
+cardsRoutes.get('/totalizers', cardsController.getTotalizers);
 
 export default cardsRoutes;

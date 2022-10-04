@@ -2,6 +2,7 @@ import { Response, Request, NextFunction } from 'express';
 import { container } from 'tsyringe';
 
 import CreateCardService from '../../../services/CreateCardService';
+import CardTotalizerService from '../../../services/CardTotalizerService';
 
 class CardsController {
   public async create(
@@ -20,6 +21,21 @@ class CardsController {
       turning_day,
     });
     return response.status(201).json(card);
+  }
+
+  public async getTotalizers(request: Request, response: Response) {
+    const { month, year } = request.query;
+    const { id } = request.user;
+
+    const cardTotalizerService = container.resolve(CardTotalizerService);
+
+    const totalizers = await cardTotalizerService.execute({
+      month: Number(month),
+      year: Number(year),
+      userId: id,
+    });
+    console.log(totalizers);
+    return response.status(200).json(totalizers);
   }
 }
 
