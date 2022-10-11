@@ -21,6 +21,14 @@ class ExpensesRepository implements IExpensesRepository {
 
     return expense;
   }
+
+  public async findByUserId(userId: string): Promise<Expense[] | undefined> {
+    return this.repository.find({
+      where: {
+        user_id: userId,
+      },
+    });
+  }
 }
 
 export default ExpensesRepository;

@@ -41,6 +41,10 @@ class FakeExpensesRepository implements IExpensesRepository {
 
     return expense;
   }
+
+  public async findByUserId(userId: string): Promise<Expense[] | undefined> {
+    return this.repository.filter(expense => expense.user_id === userId);
+  }
 }
 
 export default FakeExpensesRepository;
