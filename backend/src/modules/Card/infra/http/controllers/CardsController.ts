@@ -34,7 +34,7 @@ class CardsController {
       year: Number(year),
       userId: id,
     });
-    console.log(totalizers);
+
     return response.status(200).json(totalizers);
   }
 }

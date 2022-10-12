@@ -34,6 +34,16 @@ describe('CardTotalizerService - Unit Test', () => {
       split_expense: false,
     });
 
+    const expense1 = await expenseRepository.create({
+      name: 'Fake expense',
+      description: 'Fake description',
+      amount: 1000.52,
+      user_id: 'fake-user-id',
+      card_id: card.id,
+      parcel: 2,
+      split_expense: false,
+    });
+
     const fakeExpensesInMonthToCreate = [
       {
         expense_id: expense.id,
@@ -44,7 +54,7 @@ describe('CardTotalizerService - Unit Test', () => {
         year: 2022,
       },
       {
-        expense_id: expense.id,
+        expense_id: expense1.id,
         number_current_of_parcel: 1,
         number_total_of_parcel: 3,
         value_of_parcel: 37.62,
@@ -70,7 +80,6 @@ describe('CardTotalizerService - Unit Test', () => {
       year: 2022,
       userId: 'fake-user-id',
     });
-    console.log(totalizers);
     expect(totalizers).toBeInstanceOf(Array);
   });
 });
