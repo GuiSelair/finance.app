@@ -3,7 +3,7 @@ import ICreateExpenseInMonth from '../../dtos/ICreateExpenseInMonth';
 import IExpensesInMonthRepository from '../IExpensesInMonthRepository';
 
 class FakeExpensesRepository implements IExpensesInMonthRepository {
-  private repository: ExpenseInMonth[] = [];
+  public repository: ExpenseInMonth[] = [];
 
   public async create(
     expenseMonthList: ICreateExpenseInMonth[],

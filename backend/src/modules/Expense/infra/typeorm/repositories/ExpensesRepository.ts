@@ -29,6 +29,26 @@ class ExpensesRepository implements IExpensesRepository {
       },
     });
   }
+
+  public async findByIdAndUserId(
+    id: string,
+    userId: string,
+  ): Promise<Expense | undefined> {
+    return this.repository.findOne({
+      where: {
+        id,
+        user_id: userId,
+      },
+    });
+  }
+
+  public async remove(id: string): Promise<boolean> {
+    const result = await this.repository.delete({
+      id,
+    });
+
+    return !!result?.affected;
+  }
 }
 
 export default ExpensesRepository;

@@ -5,7 +5,7 @@ import CreateExpenseService from '../../../services/CreateExpenseService';
 import CreateExpenseInMonthService from '../../../services/CreateExpenseInMonthService';
 import ListAllExpensesInMonthService from '../../../services/ListAllExpensesInMonthService';
 import GetBalanceOfMonthService from '../../../services/GetBalanceOfMonthService';
-import { IBalance } from '../../../dtos/IBalance';
+import RemoveExpenseService from '../../../services/RemoveExpenseService';
 
 class ExpensesController {
   public async create(
@@ -82,6 +82,23 @@ class ExpensesController {
     });
 
     return response.status(200).json(balance);
+  }
+
+  public async delete(
+    request: Request,
+    response: Response,
+    _: NextFunction,
+  ): Promise<Response> {
+    const { id } = request.user;
+    const { id: expenseId } = request.params;
+
+    const removeExpenseService = container.resolve(RemoveExpenseService);
+    const result = await removeExpenseService.execute({
+      expenseId,
+      userId: id,
+    });
+
+    return response.status(200).json(result);
   }
 }
 
