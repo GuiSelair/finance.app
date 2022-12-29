@@ -9,13 +9,13 @@ export const GlobalStyles = createGlobalStyle`
 	}
 
 	body {
-    background: ${props => props.theme.green100};
-    color: ${props => props.theme.gray500};
+    background: ${props => props.theme.colors.green100};
+    color: ${props => props.theme.colors.gray500};
     -webkit-font-smoothing: antialiased;
   }
 
   body, input, textarea, button {
     font: ${props =>
-			`400 ${props.theme.regular} 'Work Sans', 'Roboto', sans-serif`}
+			`400 ${props.theme.fontSizes.regular} 'Work Sans', 'Roboto', sans-serif`}
   }
 `;
