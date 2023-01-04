@@ -18,4 +18,8 @@ export const GlobalStyles = createGlobalStyle`
     font: ${props =>
 			`400 ${props.theme.fontSizes.regular} 'Work Sans', 'Roboto', sans-serif`}
   }
+
+	button {
+		cursor: pointer;
+	}
 `;
