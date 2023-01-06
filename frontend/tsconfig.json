@@ -28,6 +28,12 @@
 			],
 			"@/styles/*": [
 				"styles/*"
+			],
+			"@/contexts/*": [
+				"contexts/*"
+			],
+			"@/hooks/*": [
+				"hooks/*"
 			]
 		}
 	},
