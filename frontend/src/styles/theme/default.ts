@@ -17,6 +17,13 @@ export const defaultTheme = {
 		gray500: '#29292E',
 		gray600: '#202024',
 		gray900: '#121214',
+
+		red100: '#fee2e2',
+		red200: '#fecaca',
+		red300: '#fca5a5',
+		red500: '#ef4444',
+		red700: '#b91c1c',
+		red900: '#7f1d1d',
 	},
 
 	fontSizes: {

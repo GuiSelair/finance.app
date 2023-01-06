@@ -17,7 +17,7 @@ export const HighlightImageContainer = styled.div`
 	background-size: cover;
 `;
 
-export const Container = styled.div`
+export const Container = styled.main`
 	flex: 1;
 	height: 100%;
 	display: flex;
@@ -25,7 +25,7 @@ export const Container = styled.div`
 	justify-content: center;
 `;
 
-export const Content = styled.main`
+export const Content = styled.form`
 	max-width: 625px;
 	width: 100%;
 
@@ -40,5 +40,21 @@ export const Content = styled.main`
 		font-size: ${props => props.theme.fontSizes.regular};
 		font-weight: 400;
 		line-height: 16px;
+		margin-bottom: 2.5rem;
+	}
+
+	button[type='submit'] {
+		border: none;
+		border-radius: 8px;
+		width: 100%;
+		background: ${props => props.theme.colors.green800};
+		color: ${props => props.theme.colors.white};
+		padding: 14px;
+		font-size: ${props => props.theme.fontSizes.large};
+		margin-top: 1.5rem;
+
+		&:hover {
+			background: ${props => props.theme.colors.green600}
+		}
 	}
 `;
