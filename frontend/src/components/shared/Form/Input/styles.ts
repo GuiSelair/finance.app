@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
 	display: flex;
@@ -6,6 +6,7 @@ export const Container = styled.div`
 
 	min-width: 6.25rem;
 	width: auto;
+	margin-bottom: 1rem;
 `;
 
 export const LabelContainer = styled.div`
@@ -17,21 +18,32 @@ export const LabelContainer = styled.div`
 
 	> label {
 		color: ${props => props.theme.colors.gray500};
+		font-weight: 400;
 	}
 `;
 
 interface InputContainerProps {
 	hasError: boolean;
+	hasFocus: boolean;
 }
 
-export const InputContainer = styled.div<ErrorProps>`
+export const InputContainer = styled.div<InputContainerProps>`
 	display: flex;
 	align-items: center;
 	width: 100%;
 	background: ${props => props.theme.colors.white};
 	border-radius: 8px;
-	padding: 16px;
+	padding: 14px;
+	border: 1px solid transparent;
 
+	${props => props.hasError && css`
+		border-color: ${props => props.theme.colors.red500};
+	`};
+
+	${props => props.hasFocus && css`
+		border-color: ${props => props.theme.colors.green500};
+	`};
+	
 	> svg {
 		width: 16px;
 		height: 16px;
@@ -72,7 +84,7 @@ export const Description = styled.div`
 export const Error = styled.div`
 	display: flex;
 	align-items: center;
-	color: red;
+	color: ${props => props.theme.colors.red500};
 	margin-top: 4px;
 	font-size: ${props => props.theme.fontSizes.small};
 

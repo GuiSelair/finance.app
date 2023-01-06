@@ -1,5 +1,7 @@
-import { EyeSlash, WarningCircle } from 'phosphor-react';
+import Head from 'next/head';
+import { Eye, EyeSlash, WarningCircle } from 'phosphor-react';
 import { useState } from 'react';
+import { SEO } from '../../SEO';
 
 import {
 	Container,
@@ -25,37 +27,65 @@ export function Input({
 	error,
 	...rest
 }: InputProps) {
-	const [isPasswordType, setIsPasswordType] = useState(
-		() => type === 'password',
-	);
+	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const [isFocused, setIsFocused] = useState(false);
+
+	const customType = isPasswordVisible ? 'text' : 'password' 
+	const isPasswordInput = type === 'password';
+
+	const handleToggleViewPassword = () => {
+		setIsPasswordVisible(old => !old)
+	}
+
+	const handleInputFocus = () => {
+		setIsFocused(true)
+	}
+
+	const handleInputBlur = () => {
+		setIsFocused(false)
+	}
 
 	return (
-		<Container>
-			{!!label && (
-				<LabelContainer>
-					<div>
-						<label htmlFor={id}>{label}</label>
-					</div>
-				</LabelContainer>
-			)}
-
-			<InputContainer hasError={!!error}>
-				{!!Icon && <Icon />}
-				<input type={type} id={id} {...rest} />
-				{isPasswordType && (
-					<button>
-						<EyeSlash />
-					</button>
+		<>
+			<SEO title='Faça seu login' />
+			<Container>
+				{!!label && (
+					<LabelContainer>
+						<div>
+							<label htmlFor={id}>{label}</label>
+						</div>
+					</LabelContainer>
 				)}
-			</InputContainer>
 
-			{!!description && <Description>{description}</Description>}
-			{!!error && (
-				<Error>
-					<WarningCircle />
-					{error}
-				</Error>
-			)}
-		</Container>
+				<InputContainer hasError={!!error} hasFocus={isFocused}>
+					{!!Icon && <Icon />}
+					
+					<input 
+						type={isPasswordInput ? customType : type} 
+						id={id}
+						onFocus={handleInputFocus}
+						onBlur={handleInputBlur}
+						{...rest} 
+					/>
+					
+					{isPasswordInput && (
+						<button 
+							onClick={handleToggleViewPassword} 
+							title={isPasswordVisible ? 'Esconder senha' : 'Exibir senha'}
+						>
+							{isPasswordVisible ? <EyeSlash /> : <Eye />}
+						</button>
+					)}
+				</InputContainer>
+
+				{!!description && <Description>{description}</Description>}
+				{!!error && (
+					<Error>
+						<WarningCircle />
+						{error}
+					</Error>
+				)}
+			</Container>
+		</>
 	);
 }
