@@ -1,7 +1,5 @@
-import Head from 'next/head';
+import { useState, forwardRef, RefObject } from 'react';
 import { Eye, EyeSlash, WarningCircle } from 'phosphor-react';
-import { useState } from 'react';
-import { SEO } from '../../SEO';
 
 import {
 	Container,
@@ -18,36 +16,30 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	error?: string;
 }
 
-export function Input({
-	label,
-	icon: Icon,
-	type,
-	id,
-	description,
-	error,
-	...rest
-}: InputProps) {
-	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-	const [isFocused, setIsFocused] = useState(false);
+export const Input = forwardRef<HTMLInputElement, InputProps>(
+	({ label, icon: Icon, type, id, description, error, ...rest }, ref) => {
+		const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+		const [isFocused, setIsFocused] = useState(false);
 
-	const customType = isPasswordVisible ? 'text' : 'password' 
-	const isPasswordInput = type === 'password';
+		const customType = isPasswordVisible ? 'text' : 'password';
+		const isPasswordInput = type === 'password';
 
-	const handleToggleViewPassword = () => {
-		setIsPasswordVisible(old => !old)
-	}
+		const handleToggleViewPassword = () => {
+			setIsPasswordVisible(old => !old);
+		};
 
-	const handleInputFocus = () => {
-		setIsFocused(true)
-	}
+		const handleInputFocus = () => {
+			console.log('OPA2');
 
-	const handleInputBlur = () => {
-		setIsFocused(false)
-	}
+			setIsFocused(true);
+		};
 
-	return (
-		<>
-			<SEO title='Faça seu login' />
+		const handleInputBlur = () => {
+			console.log('OPA');
+			setIsFocused(false);
+		};
+
+		return (
 			<Container>
 				{!!label && (
 					<LabelContainer>
@@ -59,18 +51,19 @@ export function Input({
 
 				<InputContainer hasError={!!error} hasFocus={isFocused}>
 					{!!Icon && <Icon />}
-					
-					<input 
-						type={isPasswordInput ? customType : type} 
+
+					<input
+						ref={ref}
+						type={isPasswordInput ? customType : type}
 						id={id}
 						onFocus={handleInputFocus}
-						onBlur={handleInputBlur}
-						{...rest} 
+						onBlurCapture={handleInputBlur}
+						{...rest}
 					/>
-					
+
 					{isPasswordInput && (
-						<button 
-							onClick={handleToggleViewPassword} 
+						<button
+							onClick={handleToggleViewPassword}
 							title={isPasswordVisible ? 'Esconder senha' : 'Exibir senha'}
 						>
 							{isPasswordVisible ? <EyeSlash /> : <Eye />}
@@ -86,6 +79,8 @@ export function Input({
 					</Error>
 				)}
 			</Container>
-		</>
-	);
-}
+		);
+	},
+);
+
+Input.displayName = 'Input';
