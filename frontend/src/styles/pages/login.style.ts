@@ -49,12 +49,13 @@ export const Content = styled.form`
 		width: 100%;
 		background: ${props => props.theme.colors.green800};
 		color: ${props => props.theme.colors.white};
+		font-weight: 500;
 		padding: 14px;
-		font-size: ${props => props.theme.fontSizes.large};
+		font-size: ${props => props.theme.fontSizes.medium};
 		margin-top: 1.5rem;
 
 		&:hover {
-			background: ${props => props.theme.colors.green600}
+			background: ${props => props.theme.colors.green600};
 		}
 	}
 `;
