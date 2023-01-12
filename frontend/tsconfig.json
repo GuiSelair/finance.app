@@ -32,8 +32,8 @@
 			"@/contexts/*": [
 				"contexts/*"
 			],
-			"@/hooks/*": [
-				"hooks/*"
+			"@/providers/*": [
+				"providers/*"
 			]
 		}
 	},

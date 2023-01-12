@@ -29,13 +29,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 		};
 
 		const handleInputFocus = () => {
-			console.log('OPA2');
-
 			setIsFocused(true);
 		};
 
 		const handleInputBlur = () => {
-			console.log('OPA');
 			setIsFocused(false);
 		};
 
@@ -63,6 +60,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
 					{isPasswordInput && (
 						<button
+							type="button"
 							onClick={handleToggleViewPassword}
 							title={isPasswordVisible ? 'Esconder senha' : 'Exibir senha'}
 						>

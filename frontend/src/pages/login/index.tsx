@@ -2,6 +2,7 @@ import { useContextSelector } from 'use-context-selector';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import { useRouter } from 'next/router';
 
 import { SEO } from '@/components/shared/SEO';
 import { Input } from '@/components/shared/Form/Input';
@@ -17,7 +18,7 @@ import {
 const loginInputSchema = Yup.object().shape({
 	email: Yup.string().email('Email inválido.').required('Email obrigatório'),
 	password: Yup.string()
-		.min(8, 'A senha deve ter pelo menos 8 caracteres')
+		.min(6, 'A senha deve ter pelo menos 8 caracteres')
 		.required('Senha obrigatória'),
 });
 
@@ -27,6 +28,7 @@ interface LoginInputsProps {
 }
 
 export default function Login(): JSX.Element {
+	const router = useRouter();
 	const onSignIn = useContextSelector(AuthContext, value => value.onSignIn);
 	const {
 		register,
@@ -41,6 +43,8 @@ export default function Login(): JSX.Element {
 			email: data.email,
 			password: data.password,
 		});
+
+		await router.push('/');
 	};
 
 	return (
