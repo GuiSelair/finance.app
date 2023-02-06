@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createContext } from 'use-context-selector';
+import { useRouter } from 'next/router';
 import jwtDecode from 'jwt-decode';
+import { toast } from 'react-toastify';
 
 import { httpClient } from '@/providers/HTTPClient';
 import { cookies } from '@/providers/cookies';
+import { AuthenticateErrors } from 'errors/AuthenticateErrors';
 
 interface SignInProps {
 	email: string;
@@ -27,13 +30,14 @@ interface JWTAuthenticateTokenContentProps {
 	name: string;
 }
 
-interface AuthProviderProp {
+interface AuthProviderProps {
 	children: React.ReactNode;
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
 
-export const AuthProvider = ({ children }: AuthProviderProp) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+	const { push: pushTo } = useRouter();
 	const [userData, setUserData] = useState({} as AuthContextProps['user']);
 	const [token, setToken] = useState(() => {
 		if (typeof window === 'undefined') return '';
@@ -47,17 +51,6 @@ export const AuthProvider = ({ children }: AuthProviderProp) => {
 		);
 	});
 
-	useEffect(() => {
-		if (token) {
-			const tokenDecoded = jwtDecode<JWTAuthenticateTokenContentProps>(token);
-			setUserData({
-				email: tokenDecoded.email,
-				name: tokenDecoded.name,
-				id: tokenDecoded.id,
-			});
-		}
-	}, [token]);
-
 	const onSignIn = useCallback(async ({ email, password }: SignInProps) => {
 		try {
 			const response = await httpClient.post<{ token: string }>('/login', {
@@ -66,7 +59,7 @@ export const AuthProvider = ({ children }: AuthProviderProp) => {
 					password,
 				},
 			});
-
+			console.log(response);
 			setToken(response.data.token);
 			cookies.setCookie(
 				undefined,
@@ -78,6 +71,11 @@ export const AuthProvider = ({ children }: AuthProviderProp) => {
 			);
 		} catch (error) {
 			console.log(error);
+
+			toast.error(AuthenticateErrors.UnexpectedError, {
+				position: 'bottom-left',
+				theme: 'colored',
+			});
 		}
 	}, []);
 
@@ -90,6 +88,22 @@ export const AuthProvider = ({ children }: AuthProviderProp) => {
 		setToken('');
 		setUserData({} as AuthContextProps['user']);
 	}, []);
+
+	useEffect(() => {
+		if (token) {
+			try {
+				const tokenDecoded = jwtDecode<JWTAuthenticateTokenContentProps>(token);
+				setUserData({
+					email: tokenDecoded.email,
+					name: tokenDecoded.name,
+					id: tokenDecoded.id,
+				});
+			} catch (error) {
+				onSignOut();
+				window.location.href = '/login';
+			}
+		}
+	}, [onSignOut, pushTo, token]);
 
 	return (
 		<AuthContext.Provider

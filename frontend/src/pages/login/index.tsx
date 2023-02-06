@@ -14,6 +14,7 @@ import {
 	Content,
 	Container,
 } from '@/styles/pages/login.style';
+import { GetServerSideProps } from 'next';
 
 const loginInputSchema = Yup.object().shape({
 	email: Yup.string().email('Email inválido.').required('Email obrigatório'),
@@ -84,3 +85,23 @@ export default function Login(): JSX.Element {
 		</>
 	);
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+	const hasAuthenticationToken =
+		req.cookies[
+			`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`
+		];
+
+	if (hasAuthenticationToken) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {},
+	};
+};
