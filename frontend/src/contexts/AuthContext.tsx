@@ -50,7 +50,6 @@ export const AuthProvider = ({ children }: AuthProviderProp) => {
 	useEffect(() => {
 		if (token) {
 			const tokenDecoded = jwtDecode<JWTAuthenticateTokenContentProps>(token);
-			console.log(tokenDecoded);
 			setUserData({
 				email: tokenDecoded.email,
 				name: tokenDecoded.name,
@@ -61,9 +60,11 @@ export const AuthProvider = ({ children }: AuthProviderProp) => {
 
 	const onSignIn = useCallback(async ({ email, password }: SignInProps) => {
 		try {
-			const response = await httpClient.post('/login', {
-				email,
-				password,
+			const response = await httpClient.post<{ token: string }>('/login', {
+				body: {
+					email,
+					password,
+				},
 			});
 
 			setToken(response.data.token);
@@ -80,7 +81,15 @@ export const AuthProvider = ({ children }: AuthProviderProp) => {
 		}
 	}, []);
 
-	const onSignOut = useCallback(() => {}, []);
+	const onSignOut = useCallback(() => {
+		cookies.destroyCookie(
+			undefined,
+			`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`,
+		);
+
+		setToken('');
+		setUserData({} as AuthContextProps['user']);
+	}, []);
 
 	return (
 		<AuthContext.Provider
