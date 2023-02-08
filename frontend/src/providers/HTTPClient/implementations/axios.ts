@@ -13,6 +13,10 @@ const api = axios.create({
 class AxiosHTTPClient implements HTTPClientProps {
 	constructor(private readonly api: AxiosInstance) {}
 
+	applyAuthenticationToken(authenticationToken: string) {
+		this.api.defaults.headers.Authorization = `Bearer ${authenticationToken}`;
+	}
+
 	async get<T>(
 		url: string,
 		config: Omit<HTTPConfigProps, 'body'>,

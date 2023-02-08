@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { SEO } from '@/components/shared/SEO';
 import { Input } from '@/components/shared/Form/Input';
@@ -29,6 +30,7 @@ interface LoginInputsProps {
 }
 
 export default function Login(): JSX.Element {
+	const [isPending, setIsPending] = useState(false);
 	const router = useRouter();
 	const onSignIn = useContextSelector(AuthContext, value => value.onSignIn);
 	const {
@@ -40,11 +42,13 @@ export default function Login(): JSX.Element {
 	});
 
 	const handleLoginSubmit = async (data: LoginInputsProps) => {
+		setIsPending(true);
 		await onSignIn({
 			email: data.email,
 			password: data.password,
 		});
 
+		setIsPending(false);
 		await router.push('/');
 	};
 
@@ -77,7 +81,9 @@ export default function Login(): JSX.Element {
 							{...register('password')}
 						/>
 
-						<button type="submit">Entrar</button>
+						<button type="submit" disabled={isPending}>
+							Entrar
+						</button>
 					</Content>
 				</Container>
 				<HighlightImageContainer />

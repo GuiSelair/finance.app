@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
 	const authenticationToken = request.cookies.get(
 		`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`,
 	)?.value;
-	console.log(authenticationToken);
+
 	if (!authenticationToken) {
 		return NextResponse.redirect(new URL('/login', request.url));
 	}

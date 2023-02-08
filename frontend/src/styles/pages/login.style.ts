@@ -57,5 +57,9 @@ export const Content = styled.form`
 		&:hover {
 			background: ${props => props.theme.colors.green600};
 		}
+
+		&:focus {
+			outline: 2px solid ${props => props.theme.colors.green300};
+		}
 	}
 `;

@@ -6,7 +6,8 @@ import { toast } from 'react-toastify';
 
 import { httpClient } from '@/providers/HTTPClient';
 import { cookies } from '@/providers/cookies';
-import { AuthenticateErrors } from 'errors/AuthenticateErrors';
+import { AuthenticateErrors } from '@/errors/AuthenticateErrors';
+import { AxiosError } from 'axios';
 
 interface SignInProps {
 	email: string;
@@ -59,18 +60,32 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 					password,
 				},
 			});
-			console.log(response);
+
 			setToken(response.data.token);
 			cookies.setCookie(
 				undefined,
 				`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`,
 				response.data.token,
 				{
-					maxAge: 30 * 24 * 60 * 60,
+					maxAge: 30 * 24 * 60 * 60, // 30 days
 				},
 			);
+
+			httpClient.applyAuthenticationToken(response.data.token);
 		} catch (error) {
-			console.log(error);
+			if (error instanceof AxiosError) {
+				const errorFromServer = error.response?.data;
+
+				if (
+					errorFromServer.message === 'Incorrect email/password combination'
+				) {
+					toast.error(AuthenticateErrors.EmailOrPasswordIncorrect, {
+						position: 'bottom-left',
+						theme: 'colored',
+					});
+					return;
+				}
+			}
 
 			toast.error(AuthenticateErrors.UnexpectedError, {
 				position: 'bottom-left',

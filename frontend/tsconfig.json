@@ -34,6 +34,9 @@
 			],
 			"@/providers/*": [
 				"providers/*"
+			],
+			"@/errors/*": [
+				"errors/*"
 			]
 		}
 	},

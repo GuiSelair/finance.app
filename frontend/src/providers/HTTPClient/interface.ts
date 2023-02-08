@@ -10,6 +10,7 @@ export interface HTTPClientResponse<R> {
 }
 
 export interface HTTPClientProps {
+	applyAuthenticationToken: (authenticationToken: string) => void;
 	get: <T>(
 		url: string,
 		config: Omit<HTTPConfigProps, 'body'>,
