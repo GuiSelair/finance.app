@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createContext } from 'use-context-selector';
-import { useRouter } from 'next/router';
+import { useRouter, Router } from 'next/router';
 import jwtDecode from 'jwt-decode';
 import { toast } from 'react-toastify';
 
@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		}
 	}, []);
 
-	const onSignOut = useCallback(() => {
+	const onSignOut = useCallback(async () => {
 		cookies.destroyCookie(
 			undefined,
 			`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`,
@@ -102,7 +102,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 		setToken('');
 		setUserData({} as AuthContextProps['user']);
-	}, []);
+		await pushTo('/login');
+	}, [pushTo]);
 
 	useEffect(() => {
 		if (token) {
@@ -115,10 +116,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 				});
 			} catch (error) {
 				onSignOut();
-				window.location.href = '/login';
 			}
 		}
-	}, [onSignOut, pushTo, token]);
+	}, [onSignOut, token]);
 
 	return (
 		<AuthContext.Provider

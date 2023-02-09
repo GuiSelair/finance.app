@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { GetServerSideProps } from 'next';
 
 import { SEO } from '@/components/shared/SEO';
 import { Input } from '@/components/shared/Form/Input';
@@ -15,7 +16,6 @@ import {
 	Content,
 	Container,
 } from '@/styles/pages/login.style';
-import { GetServerSideProps } from 'next';
 
 const loginInputSchema = Yup.object().shape({
 	email: Yup.string().email('Email inválido.').required('Email obrigatório'),
