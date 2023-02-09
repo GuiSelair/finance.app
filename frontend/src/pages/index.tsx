@@ -1,5 +1,5 @@
-import React from 'react';
+import { HomeContainer } from '@/styles/pages/home.style';
 
 export default function Home(): JSX.Element {
-	return <div>Home</div>;
+	return <HomeContainer>dsadsa</HomeContainer>;
 }

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createContext } from 'use-context-selector';
-import { useRouter, Router } from 'next/router';
+import { useRouter } from 'next/router';
 import jwtDecode from 'jwt-decode';
 import { toast } from 'react-toastify';
 
