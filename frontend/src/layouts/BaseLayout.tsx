@@ -1,4 +1,6 @@
-import Header from '@/components/shared/Header';
+import { Header } from '@/components/shared/Header';
+import { SessionLayout } from '@/layouts/SessionLayout';
+
 import {
 	BaseContainer,
 	BaseContent,
@@ -10,15 +12,13 @@ interface BaseLayoutProps {
 }
 
 export const BaseLayout = ({ children }: BaseLayoutProps) => {
+
 	return (
 		<BaseContainer>
 			<BackgroundHero>
 				<BaseContent>
 					<Header />
-					{children}
-					{/* <SessionLayout >
-
-				</SessionLayout> */}
+					<SessionLayout title="Dashboard">{children}</SessionLayout>
 				</BaseContent>
 			</BackgroundHero>
 		</BaseContainer>

@@ -11,7 +11,7 @@ import {
 	SystemOptions,
 } from './styles';
 
-export default function Header(): JSX.Element {
+export function Header(): JSX.Element {
 	const { pathname } = useRouter();
 
 	const primaryPageSelected = pathname.split('/')[0];
