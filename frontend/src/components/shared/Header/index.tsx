@@ -1,20 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { Gear } from 'phosphor-react';
 
-import {
-	HeaderContainer,
-	Logo,
-	LinkToPage,
-	AddExpenseLink,
-	SystemOptions,
-} from './styles';
+import { useNavigation } from '@/hooks/useNavigation';
+import { NavLink } from '@/components/shared/NavLink';
+import { HeaderContainer, Logo, AddExpenseLink, SystemOptions } from './styles';
 
 export function Header(): JSX.Element {
-	const { pathname } = useRouter();
-
-	const primaryPageSelected = pathname.split('/')[0];
+	const { primaryPageSelected } = useNavigation();
 
 	return (
 		<HeaderContainer>
@@ -23,27 +16,27 @@ export function Header(): JSX.Element {
 					<strong>Finance</strong>.app
 				</Logo>
 				<nav>
-					<LinkToPage
+					<NavLink
 						href="/"
 						prefetch={false}
-						active={primaryPageSelected === ''}
+						isActive={primaryPageSelected === 'home'}
 					>
 						Dashboard
-					</LinkToPage>
-					<LinkToPage
+					</NavLink>
+					<NavLink
 						href="/cards"
 						prefetch={false}
-						active={primaryPageSelected === 'cards'}
+						isActive={primaryPageSelected === 'add'}
 					>
 						Cartões
-					</LinkToPage>
-					<LinkToPage
+					</NavLink>
+					<NavLink
 						href="/division"
 						prefetch={false}
-						active={primaryPageSelected === 'division'}
+						isActive={primaryPageSelected === 'division'}
 					>
 						Divisões
-					</LinkToPage>
+					</NavLink>
 				</nav>
 			</div>
 			<div>

@@ -40,6 +40,9 @@
 			],
 			"@/layouts/*": [
 				"layouts/*"
+			],
+			"@/hooks/*": [
+				"hooks/*"
 			]
 		}
 	},

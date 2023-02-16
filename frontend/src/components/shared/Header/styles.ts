@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const HeaderContainer = styled.header`
 	display: flex;
@@ -21,33 +21,6 @@ export const Logo = styled(Link)`
 	> strong {
 		font-size: ${props => props.theme.fontSizes.large};
 		font-weight: 700;
-	}
-`;
-
-interface LinkToPageProps {
-	active: boolean;
-}
-
-export const LinkToPage = styled(Link)<LinkToPageProps>`
-	font-size: ${props => props.theme.fontSizes.regular};
-	font-weight: 400;
-	color: ${props => props.theme.colors.green100};
-	padding: 8px 16px;
-	border-radius: 8px;
-	text-decoration: none;
-
-	& + a {
-		margin-left: 8px;
-	}
-
-	${props =>
-		props.active &&
-		css`
-			background: ${props => props.theme.colors.green500};
-		`}
-
-	&:hover {
-		background: ${props => props.theme.colors.green600};
 	}
 `;
 
