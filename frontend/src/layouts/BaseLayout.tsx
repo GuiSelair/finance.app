@@ -12,7 +12,6 @@ interface BaseLayoutProps {
 }
 
 export const BaseLayout = ({ children }: BaseLayoutProps) => {
-
 	return (
 		<BaseContainer>
 			<BackgroundHero>

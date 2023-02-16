@@ -1,12 +1,14 @@
-import { useRouter } from 'next/router';
 import {
 	SessionContainer,
 	SessionDetails,
 	Welcome,
+	SessionNavigation,
 } from '@/styles/layouts/session.style';
+import { PropsWithChildren } from 'react';
+import { useNavigation } from '@/hooks/useNavigation';
+import { NavLink } from '@/components/shared/NavLink';
 
 interface SessionLayoutProps {
-	children: React.ReactNode;
 	title: string;
 	description?: string;
 	navigation?: Array<{
@@ -22,20 +24,33 @@ export const SessionLayout = ({
 	title,
 	description,
 	navigation,
-}: SessionLayoutProps) => {
-	const { pathname } = useRouter();
+}: PropsWithChildren<SessionLayoutProps>) => {
+	const { primaryPageSelected, sessionNavigationMap } = useNavigation();
 
 	return (
-		<SessionContainer>
-			<SessionDetails>
-				<h1>{title}</h1>
-				{pathname === '/' && (
-					<Welcome>
-						Bom dia, <strong>Guilherme</strong>
-					</Welcome>
-				)}
-			</SessionDetails>
-			<div></div>
-		</SessionContainer>
+		<>
+			<SessionContainer>
+				<SessionDetails>
+					<h1>{sessionNavigationMap.title}</h1>
+					{primaryPageSelected === 'home' && (
+						<Welcome>
+							Bom dia, <strong>Guilherme</strong>
+						</Welcome>
+					)}
+				</SessionDetails>
+				<SessionNavigation>
+					{sessionNavigationMap?.navigation?.map(page => (
+						<NavLink
+							key={page.name}
+							href={page.path}
+							isActive={page.defaultActive ?? false}
+						>
+							{page.name}
+						</NavLink>
+					))}
+				</SessionNavigation>
+			</SessionContainer>
+			{children}
+		</>
 	);
 };

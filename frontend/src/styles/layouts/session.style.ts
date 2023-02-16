@@ -35,3 +35,5 @@ export const Welcome = styled.span`
 		font-weight: 700;
 	}
 `;
+
+export const SessionNavigation = styled.nav``;
