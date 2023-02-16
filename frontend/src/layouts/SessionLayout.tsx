@@ -25,7 +25,8 @@ export const SessionLayout = ({
 	description,
 	navigation,
 }: PropsWithChildren<SessionLayoutProps>) => {
-	const { primaryPageSelected, sessionNavigationMap } = useNavigation();
+	const { primaryPageSelected, sessionNavigationMap, sessionPageSelected } =
+		useNavigation();
 
 	return (
 		<>
@@ -42,8 +43,8 @@ export const SessionLayout = ({
 					{sessionNavigationMap?.navigation?.map(page => (
 						<NavLink
 							key={page.name}
-							href={page.path}
-							isActive={page.defaultActive ?? false}
+							href={`/${primaryPageSelected}/${page.path}`}
+							isActive={sessionPageSelected === page.path}
 						>
 							{page.name}
 						</NavLink>

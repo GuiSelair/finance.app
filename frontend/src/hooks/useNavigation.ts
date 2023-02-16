@@ -16,28 +16,18 @@ type NavigationProps = Record<
 const navigationMap = {
 	home: {
 		title: 'DASHBOARD',
-		navigation: [
-			{
-				defaultActive: true,
-				path: '/add/expenses',
-				name: 'Despesas',
-			},
-			{
-				path: '/add/cards',
-				name: 'Cartões',
-			},
-		],
+		navigation: [],
 	},
 	add: {
 		title: 'CADASTROS',
 		navigation: [
 			{
 				defaultActive: true,
-				path: '/add/expenses',
+				path: 'expenses',
 				name: 'Despesas',
 			},
 			{
-				path: '/add/cards',
+				path: 'cards',
 				name: 'Cartões',
 			},
 		],
@@ -52,10 +42,13 @@ export function useNavigation() {
 	const { pathname } = useRouter();
 
 	const primaryPageSelected =
-		pathname.split('/')[0] === '' ? 'home' : pathname.split('/')[0];
+		pathname.split('/')?.[1] === '' ? 'home' : pathname.split('/')[1];
 
+	const sessionPageSelected = pathname.split('/')?.[2];
+	console.log(sessionPageSelected);
 	return {
 		primaryPageSelected,
+		sessionPageSelected,
 		sessionNavigationMap: navigationMap[primaryPageSelected],
 	};
 }
