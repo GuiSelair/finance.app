@@ -8,23 +8,7 @@ import { PropsWithChildren } from 'react';
 import { useNavigation } from '@/hooks/useNavigation';
 import { NavLink } from '@/components/shared/NavLink';
 
-interface SessionLayoutProps {
-	title: string;
-	description?: string;
-	navigation?: Array<{
-		path: string;
-		active: boolean;
-		name: string;
-		className?: string;
-	}>;
-}
-
-export const SessionLayout = ({
-	children,
-	title,
-	description,
-	navigation,
-}: PropsWithChildren<SessionLayoutProps>) => {
+export const SessionLayout = ({ children }: PropsWithChildren) => {
 	const { primaryPageSelected, sessionNavigationMap, sessionPageSelected } =
 		useNavigation();
 

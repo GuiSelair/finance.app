@@ -7,7 +7,8 @@ import { NavLink } from '@/components/shared/NavLink';
 import { HeaderContainer, Logo, AddExpenseLink, SystemOptions } from './styles';
 
 export function Header(): JSX.Element {
-	const { primaryPageSelected } = useNavigation();
+	const { primaryPageSelected, primaryNavigationMap, makePath } =
+		useNavigation();
 
 	return (
 		<HeaderContainer>
@@ -16,27 +17,22 @@ export function Header(): JSX.Element {
 					<strong>Finance</strong>.app
 				</Logo>
 				<nav>
-					<NavLink
-						href="/"
-						prefetch={false}
-						isActive={primaryPageSelected === 'home'}
-					>
-						Dashboard
-					</NavLink>
-					<NavLink
-						href="/cards"
-						prefetch={false}
-						isActive={primaryPageSelected === 'add'}
-					>
-						Cartões
-					</NavLink>
-					<NavLink
-						href="/division"
-						prefetch={false}
-						isActive={primaryPageSelected === 'division'}
-					>
-						Divisões
-					</NavLink>
+					{Object.entries(primaryNavigationMap).map(
+						([key, value]) =>
+							value.visible && (
+								<NavLink
+									key={key}
+									href={makePath({
+										primaryPageToSelect: key,
+										navigationToSelect: value,
+									})}
+									prefetch={false}
+									isActive={primaryPageSelected === key}
+								>
+									{value.name ?? value.title.toLowerCase()}
+								</NavLink>
+							),
+					)}
 				</nav>
 			</div>
 			<div>
