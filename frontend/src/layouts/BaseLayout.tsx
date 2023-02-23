@@ -17,7 +17,7 @@ export const BaseLayout = ({ children }: BaseLayoutProps) => {
 			<BackgroundHero>
 				<BaseContent>
 					<Header />
-					<SessionLayout title="Dashboard">{children}</SessionLayout>
+					<SessionLayout>{children}</SessionLayout>
 				</BaseContent>
 			</BackgroundHero>
 		</BaseContainer>

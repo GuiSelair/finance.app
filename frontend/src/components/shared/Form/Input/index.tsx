@@ -1,5 +1,5 @@
-import { useState, forwardRef, RefObject } from 'react';
-import { Eye, EyeSlash, WarningCircle } from 'phosphor-react';
+import { useState, forwardRef } from 'react';
+import { Eye, EyeSlash, IconProps, WarningCircle } from 'phosphor-react';
 
 import {
 	Container,
@@ -11,7 +11,7 @@ import {
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
-	icon?: React.ElementType;
+	icon?: React.ComponentType<IconProps>;
 	description?: string;
 	error?: string;
 }

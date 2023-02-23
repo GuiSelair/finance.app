@@ -16,7 +16,7 @@ export const SessionLayout = ({ children }: PropsWithChildren) => {
 		<>
 			<SessionContainer>
 				<SessionDetails>
-					<h1>{sessionNavigationMap.title}</h1>
+					<h1>{sessionNavigationMap?.title}</h1>
 					{primaryPageSelected === 'home' && (
 						<Welcome>
 							Bom dia, <strong>Guilherme</strong>

@@ -5,8 +5,7 @@ export const Container = styled.div`
 	flex-direction: column;
 
 	min-width: 6.25rem;
-	width: auto;
-	margin-bottom: 1rem;
+	width: 100%;
 `;
 
 export const LabelContainer = styled.div`
@@ -33,21 +32,24 @@ export const InputContainer = styled.div<InputContainerProps>`
 	width: 100%;
 	background: ${props => props.theme.colors.white};
 	border-radius: 8px;
-	padding: 14px;
-	border: 1px solid transparent;
+	padding: 0.5rem 1rem;
+	border: 1px solid ${props => props.theme.colors.gray100};
 
-	${props => props.hasError && css`
-		border-color: ${props => props.theme.colors.red500};
-	`};
+	${props =>
+		props.hasError &&
+		css`
+			border-color: ${props => props.theme.colors.red500};
+		`};
 
-	${props => props.hasFocus && css`
-		border-color: ${props => props.theme.colors.green500};
-	`};
-	
+	${props =>
+		props.hasFocus &&
+		css`
+			border-color: ${props => props.theme.colors.green500};
+		`};
+
 	> svg {
-		width: 16px;
-		height: 16px;
 		margin-right: 8px;
+		color: ${props => props.theme.colors.green500};
 	}
 
 	button {
@@ -67,6 +69,7 @@ export const InputContainer = styled.div<InputContainerProps>`
 		flex: 1;
 		background: transparent;
 		border: 0;
+		color: ${props => props.theme.colors.gray400};
 
 		&::placeholder {
 			color: ${props => props.theme.colors.gray300};
@@ -89,8 +92,8 @@ export const Error = styled.div`
 	font-size: ${props => props.theme.fontSizes.small};
 
 	> svg {
-		width: 16px;
-		height: 16px;
+		width: 24px;
+		height: 24px;
 		margin-right: 8px;
 	}
 `;
