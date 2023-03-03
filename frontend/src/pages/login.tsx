@@ -92,6 +92,8 @@ export default function Login(): JSX.Element {
 	);
 }
 
+Login.notUseLayout = true;
+
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 	const hasAuthenticationToken =
 		req.cookies[
