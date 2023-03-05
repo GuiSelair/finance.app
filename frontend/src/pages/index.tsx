@@ -1,22 +1,12 @@
-import {
-	Coins,
-	CoinVertical,
-	Wallet,
-	MagnifyingGlass,
-	Funnel,
-	ArrowCircleDown,
-} from 'phosphor-react';
+import { Coins, CoinVertical, Wallet } from 'phosphor-react';
 
 import SummaryCard from '@/components/pages/home/SummaryCard';
-import Table from '@/components/shared/Table';
-import { Input } from '@/components/shared/Form/Input';
+import ExpensesTable from '@/components/pages/home/ExpensesTable';
 
 import {
 	HomeContainer,
 	ListExpenses,
 	Summary,
-	FilterContainer,
-	FilterButton,
 } from '@/styles/pages/home.style';
 
 export default function Home(): JSX.Element {
@@ -48,18 +38,8 @@ export default function Home(): JSX.Element {
 					</div>
 					<div></div>
 				</header>
-				<FilterContainer>
-					<Input icon={() => <MagnifyingGlass size={24} />} />
-					<FilterButton>
-						<Funnel size={24} />
-						Filtros
-					</FilterButton>
-					<FilterButton>
-						<ArrowCircleDown size={24} />
-						Exportar
-					</FilterButton>
-				</FilterContainer>
-				<Table />
+
+				<ExpensesTable />
 			</ListExpenses>
 		</HomeContainer>
 	);

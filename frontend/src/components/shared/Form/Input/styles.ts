@@ -6,6 +6,10 @@ export const Container = styled.div`
 
 	min-width: 6.25rem;
 	width: 100%;
+
+	& + & {
+		margin-top: 1rem;
+	}
 `;
 
 export const LabelContainer = styled.div`
@@ -32,7 +36,7 @@ export const InputContainer = styled.div<InputContainerProps>`
 	width: 100%;
 	background: ${props => props.theme.colors.white};
 	border-radius: 8px;
-	padding: 0.5rem 1rem;
+	padding: 0.75rem 1rem;
 	border: 1px solid ${props => props.theme.colors.gray100};
 
 	${props =>
