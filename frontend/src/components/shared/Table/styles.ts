@@ -15,6 +15,10 @@ export const TableContainer = styled.table`
 	}
 
 	td {
-		padding: 0.5rem 0;
+		padding: 0.5rem 0.5rem 0.5rem 0;
+		max-width: 150px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 `;

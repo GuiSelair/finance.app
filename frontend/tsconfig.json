@@ -43,6 +43,9 @@
 			],
 			"@/hooks/*": [
 				"hooks/*"
+			],
+			"@/models/*": [
+				"models/*"
 			]
 		}
 	},

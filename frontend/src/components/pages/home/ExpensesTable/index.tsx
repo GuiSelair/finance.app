@@ -1,5 +1,6 @@
 import { MagnifyingGlass, Funnel, ArrowCircleDown } from 'phosphor-react';
 import { useMemo } from 'react';
+import { useQuery } from 'react-query';
 
 import { Input } from '@/components/shared/Form/Input';
 import Table from '@/components/shared/Table';
@@ -9,7 +10,10 @@ import {
 	FilterContainer,
 	ShowExpenseDetailButton,
 } from './styles';
-import useFetch from '@/hooks/useFetch';
+import { httpClient } from '@/providers/HTTPClient';
+import { Expense } from '@/models/expense';
+import { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
 
 interface ExpensesTableDataProps {
 	id: string;
@@ -21,66 +25,82 @@ interface ExpensesTableDataProps {
 	options: string | React.ReactNode;
 }
 
-const data = [
-	{
-		id: '03b18257-d0e4...',
-		description: 'Iphone 13 - Dani',
-		card: 'Nubank',
-		parcel: '01/10',
-		parcel_amount: 'R$569,90',
-		is_shared: 'Sim',
-		peoples: [{ test: 1212 }],
-	},
-	{
-		id: '03b18257-d0e4...',
-		description: 'Iphone 13 - Dani',
-		card: 'Nubank',
-		parcel: '01/10',
-		parcel_amount: 'R$569,90',
-		is_shared: 'Não',
-	},
-	{
-		id: '03b18257-d0e4...',
-		description: 'Iphone 13 - Dani',
-		card: 'Nubank',
-		parcel: '01/10',
-		parcel_amount: 'R$569,90',
-		is_shared: 'Sim',
-	},
-];
+interface ListExpensesFromMonthProps {
+	id: string;
+	expense_id: string;
+	number_current_of_parcel: number;
+	number_total_of_parcel: number;
+	month: number;
+	year: number;
+	value_of_parcel: number;
+	isPaid: boolean;
+	created_at: string;
+	updated_at: string;
+	expense: Expense;
+}
 
 export default function ExpensesTable() {
-	const { data, error } = useFetch('/expenses/list', {
-		body: {
-			month: 12,
-			year: 2022,
-		},
+	const {
+		data: allExpensesInMonth,
+		isLoading,
+		isError,
+		error,
+	} = useQuery(['month-expenses'], async () => {
+		try {
+			const response = await httpClient.get<ListExpensesFromMonthProps[]>(
+				'/expenses/list',
+				{
+					params: {
+						month: 10,
+						year: 2022,
+					},
+				},
+			);
+
+			return response.data;
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				const errorFromServer = error.response?.data;
+
+				toast.error(
+					'Aconteceu um erro inesperado. Por favor, tente novamente...',
+					{
+						position: 'bottom-left',
+						theme: 'colored',
+					},
+				);
+				throw new Error(errorFromServer.error);
+			}
+		}
 	});
 
 	const expenses: ExpensesTableDataProps[] = useMemo(() => {
-		return data.map(expense => ({
-			id: expense.id,
-			description: expense.description,
-			card: expense.card,
-			parcel: expense.parcel,
-			parcel_amount: expense.parcel_amount,
-			is_shared: expense.is_shared,
+		if (!allExpensesInMonth) return [];
+
+		return allExpensesInMonth.map(expenseInMonth => ({
+			id: expenseInMonth.expense_id,
+			description: expenseInMonth.expense.name,
+			card: expenseInMonth.expense.card_id,
+			parcel: `${expenseInMonth.number_current_of_parcel}/${expenseInMonth.number_total_of_parcel}`,
+			parcel_amount: String(expenseInMonth.value_of_parcel),
+			is_shared: expenseInMonth.expense.split_expense ? 'Sim' : 'Não',
 			options: (
 				<ShowExpenseDetailButton
 					type="button"
-					onClick={() => console.log(expense)}
+					onClick={() => console.log(expenseInMonth)}
 				>
 					Ver mais detalhes
 				</ShowExpenseDetailButton>
 			),
 		}));
-	}, []);
+	}, [allExpensesInMonth]);
 
 	const columns = useMemo(
 		() => [
 			{
 				Header: 'Chave ID',
 				accessor: 'id',
+				width: 50,
 			},
 			{
 				Header: 'Descrição',
@@ -91,7 +111,7 @@ export default function ExpensesTable() {
 				accessor: 'card',
 			},
 			{
-				Header: 'Parcelas',
+				Header: 'Parcela',
 				accessor: 'parcel',
 			},
 			{
@@ -109,6 +129,10 @@ export default function ExpensesTable() {
 		],
 		[],
 	);
+
+	if (isLoading) return <p>Carregando...</p>;
+
+	if (isError) return <p>{JSON.stringify(error, null, 2)}</p>;
 
 	return (
 		<>

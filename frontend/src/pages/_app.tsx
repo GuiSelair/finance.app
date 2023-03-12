@@ -1,14 +1,17 @@
+import 'react-toastify/dist/ReactToastify.css';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import { Fragment } from 'react';
-import 'react-toastify/dist/ReactToastify.css';
 import { NextPage } from 'next/types';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { defaultTheme } from '@/styles/theme/default';
 import { GlobalStyles } from '@/styles/global';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { BaseLayout } from '@/layouts/BaseLayout';
+
+const queryClient = new QueryClient();
 
 type CustomComponentProps<P = Record<string, never>> = NextPage<P> & {
 	notUseLayout?: boolean;
@@ -28,9 +31,11 @@ export default function App({
 		<ThemeProvider theme={defaultTheme}>
 			<GlobalStyles />
 			<AuthProvider>
-				<LayoutOrNot>
-					<Component {...pageProps} />
-				</LayoutOrNot>
+				<QueryClientProvider client={queryClient}>
+					<LayoutOrNot>
+						<Component {...pageProps} />
+					</LayoutOrNot>
+				</QueryClientProvider>
 			</AuthProvider>
 			<ToastContainer />
 		</ThemeProvider>
