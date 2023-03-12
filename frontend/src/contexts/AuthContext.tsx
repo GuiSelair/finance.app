@@ -44,12 +44,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		if (typeof window === 'undefined') return '';
 
 		const allCookies = cookies.parseCookies();
-
-		return (
+		const authenticationToken =
 			allCookies[
 				`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`
-			] ?? ''
-		);
+			];
+
+		if (authenticationToken) {
+			httpClient.applyAuthenticationToken(authenticationToken);
+			return authenticationToken;
+		}
+
+		return '';
 	});
 
 	const onSignIn = useCallback(async ({ email, password }: SignInProps) => {
