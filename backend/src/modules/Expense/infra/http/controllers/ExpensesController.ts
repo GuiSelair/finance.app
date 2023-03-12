@@ -54,13 +54,18 @@ class ExpensesController {
     _: NextFunction,
   ): Promise<Response> {
     const { id } = request.user;
-    const { month, year } = request.body;
+    const { month, year } = request.query;
+
+    if (!month || !year) {
+      return response.status(400).json({ error: 'Parameters not found' })
+    }
+
     const listAllExpensesInMonth = container.resolve(
       ListAllExpensesInMonthService,
     );
     const expensesInMonth = await listAllExpensesInMonth.execute({
-      month,
-      year,
+      month: Number(month),
+      year: Number(year),
       userId: id,
     });
     return response.status(200).json(expensesInMonth);
