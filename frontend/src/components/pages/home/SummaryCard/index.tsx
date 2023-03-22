@@ -1,4 +1,4 @@
-import { Coins, DotsThreeVertical, IconProps } from 'phosphor-react';
+import { DotsThreeVertical, IconProps } from 'phosphor-react';
 import {
 	SummaryCardContainer,
 	IconContainer,
