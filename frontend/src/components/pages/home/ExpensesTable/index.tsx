@@ -1,19 +1,20 @@
 import { MagnifyingGlass, Funnel, ArrowCircleDown } from 'phosphor-react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
+import { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
 
 import { Input } from '@/components/shared/Form/Input';
 import Table from '@/components/shared/Table';
+import { httpClient } from '@/providers/HTTPClient';
+import { Expense } from '@/models/expense';
 
 import {
 	FilterButton,
 	FilterContainer,
 	ShowExpenseDetailButton,
 } from './styles';
-import { httpClient } from '@/providers/HTTPClient';
-import { Expense } from '@/models/expense';
-import { AxiosError } from 'axios';
-import { toast } from 'react-toastify';
+import { BaseModal } from '@/components/shared/BaseModal';
 
 interface ExpensesTableDataProps {
 	id: string;
@@ -39,7 +40,40 @@ interface ListExpensesFromMonthProps {
 	expense: Expense;
 }
 
+const columns = [
+	{
+		Header: 'Chave ID',
+		accessor: 'id',
+		width: 50,
+	},
+	{
+		Header: 'Descrição',
+		accessor: 'description',
+	},
+	{
+		Header: 'Vinculado ao',
+		accessor: 'card',
+	},
+	{
+		Header: 'Parcela',
+		accessor: 'parcel',
+	},
+	{
+		Header: 'Valor da parcela',
+		accessor: 'parcel_amount',
+	},
+	{
+		Header: 'Compra dividida?',
+		accessor: 'is_shared',
+	},
+	{
+		Header: 'Opções',
+		accessor: 'options',
+	},
+];
+
 export default function ExpensesTable() {
+	const [isOpenModal, setIsOpenModal] = useState(false);
 	const {
 		data: allExpensesInMonth,
 		isLoading,
@@ -51,8 +85,8 @@ export default function ExpensesTable() {
 				'/expenses/list',
 				{
 					params: {
-						month: 10,
-						year: 2022,
+						month: 4,
+						year: 2023,
 					},
 				},
 			);
@@ -87,48 +121,13 @@ export default function ExpensesTable() {
 			options: (
 				<ShowExpenseDetailButton
 					type="button"
-					onClick={() => console.log(expenseInMonth)}
+					onClick={() => setIsOpenModal(true)}
 				>
 					Ver mais detalhes
 				</ShowExpenseDetailButton>
 			),
 		}));
 	}, [allExpensesInMonth]);
-
-	const columns = useMemo(
-		() => [
-			{
-				Header: 'Chave ID',
-				accessor: 'id',
-				width: 50,
-			},
-			{
-				Header: 'Descrição',
-				accessor: 'description',
-			},
-			{
-				Header: 'Vinculado ao',
-				accessor: 'card',
-			},
-			{
-				Header: 'Parcela',
-				accessor: 'parcel',
-			},
-			{
-				Header: 'Valor da parcela',
-				accessor: 'parcel_amount',
-			},
-			{
-				Header: 'Compra dividida?',
-				accessor: 'is_shared',
-			},
-			{
-				Header: 'Opções',
-				accessor: 'options',
-			},
-		],
-		[],
-	);
 
 	if (isLoading) return <p>Carregando...</p>;
 
@@ -151,6 +150,13 @@ export default function ExpensesTable() {
 				</FilterButton>
 			</FilterContainer>
 			<Table columns={columns} data={expenses} />
+
+			<BaseModal
+				open={isOpenModal}
+				onClose={() => setIsOpenModal(false)}
+				title="MODAL"
+				description="DESCRIPTION"
+			/>
 		</>
 	);
 }
