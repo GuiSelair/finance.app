@@ -7,14 +7,14 @@ import { toast } from 'react-toastify';
 import { Input } from '@/components/shared/Form/Input';
 import Table from '@/components/shared/Table';
 import { httpClient } from '@/providers/HTTPClient';
-import { Expense } from '@/models/expense';
+import { ExpenseInMonth } from '@/models/expenseInMonth';
+import { ExpenseDetailsModal } from '@/components/pages/home/ExpenseDetailsModal';
 
 import {
 	FilterButton,
 	FilterContainer,
 	ShowExpenseDetailButton,
 } from './styles';
-import { BaseModal } from '@/components/shared/BaseModal';
 
 interface ExpensesTableDataProps {
 	id: string;
@@ -24,20 +24,6 @@ interface ExpensesTableDataProps {
 	parcel_amount: string;
 	is_shared: string;
 	options: string | React.ReactNode;
-}
-
-interface ListExpensesFromMonthProps {
-	id: string;
-	expense_id: string;
-	number_current_of_parcel: number;
-	number_total_of_parcel: number;
-	month: number;
-	year: number;
-	value_of_parcel: number;
-	isPaid: boolean;
-	created_at: string;
-	updated_at: string;
-	expense: Expense;
 }
 
 const columns = [
@@ -74,6 +60,9 @@ const columns = [
 
 export default function ExpensesTable() {
 	const [isOpenModal, setIsOpenModal] = useState(false);
+	const [selectedExpense, setSelectedExpense] = useState<ExpenseInMonth>(
+		{} as ExpenseInMonth,
+	);
 	const {
 		data: allExpensesInMonth,
 		isLoading,
@@ -81,7 +70,7 @@ export default function ExpensesTable() {
 		error,
 	} = useQuery(['month-expenses'], async () => {
 		try {
-			const response = await httpClient.get<ListExpensesFromMonthProps[]>(
+			const response = await httpClient.get<ExpenseInMonth[]>(
 				'/expenses/list',
 				{
 					params: {
@@ -111,6 +100,11 @@ export default function ExpensesTable() {
 	const expenses: ExpensesTableDataProps[] = useMemo(() => {
 		if (!allExpensesInMonth) return [];
 
+		const handleSelectExpense = (expenseInMonth: ExpenseInMonth) => {
+			setSelectedExpense(expenseInMonth);
+			setIsOpenModal(true);
+		};
+
 		return allExpensesInMonth.map(expenseInMonth => ({
 			id: expenseInMonth.expense_id,
 			description: expenseInMonth.expense.name,
@@ -121,7 +115,7 @@ export default function ExpensesTable() {
 			options: (
 				<ShowExpenseDetailButton
 					type="button"
-					onClick={() => setIsOpenModal(true)}
+					onClick={() => handleSelectExpense(expenseInMonth)}
 				>
 					Ver mais detalhes
 				</ShowExpenseDetailButton>
@@ -150,12 +144,10 @@ export default function ExpensesTable() {
 				</FilterButton>
 			</FilterContainer>
 			<Table columns={columns} data={expenses} />
-
-			<BaseModal
-				open={isOpenModal}
+			<ExpenseDetailsModal
+				isOpenModal={isOpenModal}
 				onClose={() => setIsOpenModal(false)}
-				title="MODAL"
-				description="DESCRIPTION"
+				expense={selectedExpense}
 			/>
 		</>
 	);
