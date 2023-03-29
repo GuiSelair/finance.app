@@ -1,27 +1,45 @@
 import * as Dialog from '@radix-ui/react-dialog';
+import { PropsWithChildren } from 'react';
+import { X } from 'phosphor-react';
+
+import {
+	ModalCloseButton,
+	ModalContainer,
+	ModalContent,
+	ModalHeader,
+	ModalOverlay,
+} from './styles';
 
 interface BaseModalProps {
 	title: string;
-	description: string;
 	open: boolean;
 	onClose: () => void;
 }
 
 export const BaseModal = ({
-	description,
 	open,
 	title,
 	onClose,
-}: BaseModalProps) => {
+	children,
+}: PropsWithChildren<BaseModalProps>) => {
 	return (
 		<Dialog.Root open={open}>
 			<Dialog.Portal>
-				<Dialog.Overlay />
-				<Dialog.Content>
-					<Dialog.Title>{title}</Dialog.Title>
-					<Dialog.Description>{description}</Dialog.Description>
-					<Dialog.Close onClick={onClose}>Close</Dialog.Close>
-				</Dialog.Content>
+				<ModalOverlay onClick={onClose} />
+				<ModalContainer>
+					<ModalHeader>
+						<div>
+							<Dialog.Title>{title}</Dialog.Title>
+						</div>
+						<Dialog.Close asChild>
+							<ModalCloseButton onClick={onClose}>
+								<X weight="bold" />
+							</ModalCloseButton>
+						</Dialog.Close>
+					</ModalHeader>
+
+					<ModalContent>{children}</ModalContent>
+				</ModalContainer>
 			</Dialog.Portal>
 		</Dialog.Root>
 	);
