@@ -26,7 +26,7 @@ export const BaseModal = ({
 		<Dialog.Root open={open}>
 			<Dialog.Portal>
 				<ModalOverlay onClick={onClose} />
-				<ModalContainer>
+				<ModalContainer onEscapeKeyDown={onClose}>
 					<ModalHeader>
 						<div>
 							<Dialog.Title>{title}</Dialog.Title>
