@@ -41,6 +41,10 @@ export const FilterButton = styled.button`
 	&:hover {
 		filter: opacity(0.8);
 	}
+
+	&:focus {
+		outline: 1px solid ${props => props.theme.colors.green500};
+	}
 `;
 
 /**
@@ -52,8 +56,29 @@ export const ShowExpenseDetailButton = styled.button`
 	cursor: pointer;
 	padding: 0.5rem 1rem;
 	background: transparent;
-	border: 1px solid ${props => props.theme.colors.green800};
-	color: ${props => props.theme.colors.green800};
-	border-radius: 4px;
-	font-weight: 600;
+	border: 1px solid ${props => props.theme.colors.gray100};
+	color: ${props => props.theme.colors.green500};
+	border-radius: 8px;
+	font-weight: 500;
+	transition: all 0.2s;
+
+	display: flex;
+	align-items: center;
+
+	svg {
+		color: ${props => props.theme.colors.green500};
+		margin-right: 0.5rem;
+		width: 16px;
+		height: 16px;
+	}
+
+	&:hover,
+	&:focus {
+		background: ${props => props.theme.colors.green400};
+		color: ${props => props.theme.colors.white};
+
+		svg {
+			color: ${props => props.theme.colors.white};
+		}
+	}
 `;

@@ -1,4 +1,10 @@
-import { MagnifyingGlass, Funnel, ArrowCircleDown } from 'phosphor-react';
+import {
+	MagnifyingGlass,
+	Funnel,
+	ArrowCircleDown,
+	CheckSquare,
+	DotsThreeOutlineVertical,
+} from 'phosphor-react';
 import { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import { AxiosError } from 'axios';
@@ -9,6 +15,7 @@ import Table from '@/components/shared/Table';
 import { httpClient } from '@/providers/HTTPClient';
 import { ExpenseInMonth } from '@/models/expenseInMonth';
 import { ExpenseDetailsModal } from '@/components/pages/home/ExpenseDetailsModal';
+import { formatCurrency } from 'helpers/formatCurrency';
 
 import {
 	FilterButton,
@@ -17,21 +24,15 @@ import {
 } from './styles';
 
 interface ExpensesTableDataProps {
-	id: string;
 	description: string;
 	card: string;
 	parcel: string;
 	parcel_amount: string;
-	is_shared: string;
+	is_shared: React.ReactNode;
 	options: string | React.ReactNode;
 }
 
 const columns = [
-	{
-		Header: 'Chave ID',
-		accessor: 'id',
-		width: 50,
-	},
 	{
 		Header: 'Descrição',
 		accessor: 'description',
@@ -39,6 +40,7 @@ const columns = [
 	{
 		Header: 'Vinculado ao',
 		accessor: 'card',
+		width: 50,
 	},
 	{
 		Header: 'Parcela',
@@ -106,18 +108,23 @@ export default function ExpensesTable() {
 		};
 
 		return allExpensesInMonth.map(expenseInMonth => ({
-			id: expenseInMonth.expense_id,
 			description: expenseInMonth.expense.name,
 			card: expenseInMonth.expense.card_id,
-			parcel: `${expenseInMonth.number_current_of_parcel}/${expenseInMonth.number_total_of_parcel}`,
-			parcel_amount: String(expenseInMonth.value_of_parcel),
-			is_shared: expenseInMonth.expense.split_expense ? 'Sim' : 'Não',
+			parcel: `${String(expenseInMonth.number_current_of_parcel).padStart(
+				2,
+				'0',
+			)} / ${String(expenseInMonth.number_total_of_parcel).padStart(2, '0')}`,
+			parcel_amount: formatCurrency(expenseInMonth.value_of_parcel),
+			is_shared: expenseInMonth.expense.split_expense ? (
+				<CheckSquare weight="fill" size={24} color="#248277" />
+			) : undefined,
 			options: (
 				<ShowExpenseDetailButton
 					type="button"
 					onClick={() => handleSelectExpense(expenseInMonth)}
 				>
-					Ver mais detalhes
+					<DotsThreeOutlineVertical weight="fill" />
+					Detalhes
 				</ShowExpenseDetailButton>
 			),
 		}));
