@@ -5,7 +5,7 @@ export const ModalContainer = styled(Dialog.Content)`
 	width: 50rem;
 	background: ${({ theme }) => theme.colors.white};
 	border-radius: 0.5rem;
-	padding: 1rem;
+	padding: 2rem 1.5rem;
 
 	position: fixed;
 	top: 50%;
@@ -31,9 +31,9 @@ export const ModalHeader = styled.header`
 		flex-direction: column;
 	}
 
-	header {
+	h2 {
 		font-weight: 600;
-		font-size: 1.25rem;
+		font-size: 1.5rem;
 		line-height: 2rem;
 		color: ${({ theme }) => theme.colors.gray600};
 	}

@@ -29,7 +29,9 @@ export const BaseModal = ({
 				<ModalContainer onEscapeKeyDown={onClose}>
 					<ModalHeader>
 						<div>
-							<Dialog.Title>{title}</Dialog.Title>
+							<Dialog.Title asChild>
+								<h2>{title}</h2>
+							</Dialog.Title>
 						</div>
 						<Dialog.Close asChild>
 							<ModalCloseButton onClick={onClose}>
