@@ -17,7 +17,7 @@ export const ModalOverlay = styled(Dialog.Overlay)`
 	position: fixed;
 	width: 100vw;
 	height: 1000vh;
-	background: rgba(0, 0, 0, 0.75);
+	background: rgba(0, 0, 0, 0.5);
 	inset: 0;
 `;
 

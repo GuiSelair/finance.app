@@ -1,10 +1,12 @@
+import { useEffect } from 'react';
 import { Coins, CoinVertical, Wallet } from 'phosphor-react';
 import { useQuery } from 'react-query';
-import { httpClient } from '@/providers/HTTPClient';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 
 import SummaryCard from '@/components/pages/home/SummaryCard';
+import { httpClient } from '@/providers/HTTPClient';
+
 import { Container } from './styles';
 
 interface MonthBalanceProps {
@@ -13,15 +15,20 @@ interface MonthBalanceProps {
 	totalPayable: number;
 }
 
-export const Summary = () => {
-	const { data, isFetching } = useQuery(['summary'], async () => {
+interface SummaryProps {
+	month: number;
+	year: number;
+}
+
+export const Summary = ({ month, year }: SummaryProps) => {
+	const { data, refetch } = useQuery(['summary'], async () => {
 		try {
 			const response = await httpClient.get<MonthBalanceProps>(
 				'/expenses/balance',
 				{
 					params: {
-						month: 10,
-						year: 2022,
+						month,
+						year,
 					},
 				},
 			);
@@ -43,9 +50,9 @@ export const Summary = () => {
 		}
 	});
 
-	if (isFetching) {
-		return <p>Carregando...</p>;
-	}
+	useEffect(() => {
+		refetch();
+	}, [month, refetch, year]);
 
 	return (
 		<Container>

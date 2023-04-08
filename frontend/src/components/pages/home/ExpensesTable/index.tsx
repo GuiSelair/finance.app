@@ -5,7 +5,7 @@ import {
 	CheckSquare,
 	DotsThreeOutlineVertical,
 } from 'phosphor-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
@@ -30,6 +30,11 @@ interface ExpensesTableDataProps {
 	parcel_amount: string;
 	is_shared: React.ReactNode;
 	options: string | React.ReactNode;
+}
+
+interface ExpensesTableProps {
+	month: number;
+	year: number;
 }
 
 const columns = [
@@ -60,44 +65,42 @@ const columns = [
 	},
 ];
 
-export default function ExpensesTable() {
+export default function ExpensesTable({ month, year }: ExpensesTableProps) {
 	const [isOpenModal, setIsOpenModal] = useState(false);
 	const [selectedExpense, setSelectedExpense] = useState<ExpenseInMonth>(
 		{} as ExpenseInMonth,
 	);
-	const {
-		data: allExpensesInMonth,
-		isLoading,
-		isError,
-		error,
-	} = useQuery(['month-expenses'], async () => {
-		try {
-			const response = await httpClient.get<ExpenseInMonth[]>(
-				'/expenses/list',
-				{
-					params: {
-						month: 4,
-						year: 2023,
-					},
-				},
-			);
-
-			return response.data;
-		} catch (error) {
-			if (error instanceof AxiosError) {
-				const errorFromServer = error.response?.data;
-
-				toast.error(
-					'Aconteceu um erro inesperado. Por favor, tente novamente...',
+	const { data: allExpensesInMonth, refetch } = useQuery(
+		['month-expenses'],
+		async () => {
+			try {
+				const response = await httpClient.get<ExpenseInMonth[]>(
+					'/expenses/list',
 					{
-						position: 'bottom-left',
-						theme: 'colored',
+						params: {
+							month,
+							year,
+						},
 					},
 				);
-				throw new Error(errorFromServer.error);
+
+				return response.data;
+			} catch (error) {
+				if (error instanceof AxiosError) {
+					const errorFromServer = error.response?.data;
+
+					toast.error(
+						'Aconteceu um erro inesperado. Por favor, tente novamente...',
+						{
+							position: 'bottom-left',
+							theme: 'colored',
+						},
+					);
+					throw new Error(errorFromServer.error);
+				}
 			}
-		}
-	});
+		},
+	);
 
 	const expenses: ExpensesTableDataProps[] = useMemo(() => {
 		if (!allExpensesInMonth) return [];
@@ -130,9 +133,9 @@ export default function ExpensesTable() {
 		}));
 	}, [allExpensesInMonth]);
 
-	if (isLoading) return <p>Carregando...</p>;
-
-	if (isError) return <p>{JSON.stringify(error, null, 2)}</p>;
+	useEffect(() => {
+		refetch();
+	}, [month, refetch, year]);
 
 	return (
 		<>
