@@ -19,6 +19,7 @@ export interface AuthContextProps {
 		email: string;
 		name: string;
 		id: string;
+		createdAt: Date;
 	};
 	token: string;
 	onSignIn: ({ email, password }: SignInProps) => Promise<void>;
@@ -27,8 +28,10 @@ export interface AuthContextProps {
 
 interface JWTAuthenticateTokenContentProps {
 	email: string;
-	id: string;
 	name: string;
+	createdAt: string;
+	sut: string;
+	exp: number;
 }
 
 interface AuthProviderProps {
@@ -72,7 +75,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 				`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`,
 				response.data.token,
 				{
-					maxAge: 30 * 24 * 60 * 60, // 30 days
+					maxAge: 7 * 24 * 60 * 60, // 7 days
 				},
 			);
 
@@ -114,12 +117,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		if (token) {
 			try {
 				const tokenDecoded = jwtDecode<JWTAuthenticateTokenContentProps>(token);
+				const isTokenExpired = tokenDecoded.exp * 1000 < Date.now();
+
+				if (isTokenExpired) throw new Error();
+
 				setUserData({
 					email: tokenDecoded.email,
 					name: tokenDecoded.name,
-					id: tokenDecoded.id,
+					id: tokenDecoded.sut,
+					createdAt: new Date(tokenDecoded.createdAt) || null,
 				});
-			} catch (error) {
+			} catch {
 				onSignOut();
 			}
 		}

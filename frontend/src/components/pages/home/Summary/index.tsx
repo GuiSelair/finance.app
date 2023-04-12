@@ -21,7 +21,7 @@ interface SummaryProps {
 }
 
 export const Summary = ({ month, year }: SummaryProps) => {
-	const { data, refetch } = useQuery(['summary'], async () => {
+	const { data, refetch } = useQuery(['summary', month, year], async () => {
 		try {
 			const response = await httpClient.get<MonthBalanceProps>(
 				'/expenses/balance',

@@ -71,7 +71,7 @@ export default function ExpensesTable({ month, year }: ExpensesTableProps) {
 		{} as ExpenseInMonth,
 	);
 	const { data: allExpensesInMonth, refetch } = useQuery(
-		['month-expenses'],
+		['month-expenses', month, year],
 		async () => {
 			try {
 				const response = await httpClient.get<ExpenseInMonth[]>(
