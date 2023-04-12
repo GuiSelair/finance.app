@@ -52,7 +52,7 @@ class AuthenticateUserService {
       {
         email: user.email,
         name: user.name,
-        id: user.id,
+        createdAt: user.created_at,
       },
       authConfig.secret,
       {
