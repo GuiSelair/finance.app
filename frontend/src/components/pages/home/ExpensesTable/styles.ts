@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-// export const ExpensesTableContainer = styled.div``;
-
 /**
  * FILTRO
  */

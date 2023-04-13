@@ -52,7 +52,7 @@ export const Summary = ({ month, year }: SummaryProps) => {
 
 	useEffect(() => {
 		refetch();
-	}, [month, refetch, year]);
+	}, [month, year]); // eslint-disable-line
 
 	return (
 		<Container>

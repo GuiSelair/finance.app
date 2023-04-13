@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
+import { createColumnHelper } from '@tanstack/react-table';
 
 import { Input } from '@/components/shared/Form/Input';
 import Table from '@/components/shared/Table';
@@ -24,12 +25,12 @@ import {
 } from './styles';
 
 interface ExpensesTableDataProps {
-	description: string;
+	name: string;
 	card: string;
 	parcel: string;
 	parcel_amount: string;
-	is_shared: React.ReactNode;
-	options: string | React.ReactNode;
+	is_shared?: JSX.Element;
+	options: JSX.Element | string;
 }
 
 interface ExpensesTableProps {
@@ -37,32 +38,38 @@ interface ExpensesTableProps {
 	year: number;
 }
 
+const columnBuilder = createColumnHelper<ExpensesTableDataProps>();
+
 const columns = [
-	{
-		Header: 'Descrição',
-		accessor: 'description',
-	},
-	{
-		Header: 'Vinculado ao',
-		accessor: 'card',
-		width: 50,
-	},
-	{
-		Header: 'Parcela',
-		accessor: 'parcel',
-	},
-	{
-		Header: 'Valor da parcela',
-		accessor: 'parcel_amount',
-	},
-	{
-		Header: 'Compra dividida?',
-		accessor: 'is_shared',
-	},
-	{
-		Header: 'Opções',
-		accessor: 'options',
-	},
+	columnBuilder.accessor('name', {
+		id: 'expense-name',
+		header: 'Nome',
+		size: 300,
+	}),
+	columnBuilder.accessor('card', {
+		id: 'expense-card',
+		header: 'Vinculado ao',
+		size: 100,
+	}),
+	columnBuilder.accessor('parcel', {
+		id: 'expense-parcel',
+		header: 'Parcela',
+	}),
+	columnBuilder.accessor('parcel_amount', {
+		id: 'expense-parcel-amount',
+		header: 'Valor da parcela',
+	}),
+	columnBuilder.display({
+		id: 'is_shared',
+		header: 'Compra dividida?',
+		cell: ({ row }) => row.original.is_shared,
+		size: 150,
+	}),
+	columnBuilder.display({
+		id: 'options',
+		header: 'Opções',
+		cell: ({ row }) => row.original.options,
+	}),
 ];
 
 export default function ExpensesTable({ month, year }: ExpensesTableProps) {
@@ -111,7 +118,7 @@ export default function ExpensesTable({ month, year }: ExpensesTableProps) {
 		};
 
 		return allExpensesInMonth.map(expenseInMonth => ({
-			description: expenseInMonth.expense.name,
+			name: expenseInMonth.expense.name,
 			card: expenseInMonth.expense.card_id,
 			parcel: `${String(expenseInMonth.number_current_of_parcel).padStart(
 				2,
@@ -135,7 +142,7 @@ export default function ExpensesTable({ month, year }: ExpensesTableProps) {
 
 	useEffect(() => {
 		refetch();
-	}, [month, refetch, year]);
+	}, [month, year]); // eslint-disable-line
 
 	return (
 		<>

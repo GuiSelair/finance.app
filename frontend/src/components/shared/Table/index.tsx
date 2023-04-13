@@ -1,43 +1,58 @@
-/* eslint-disable react/jsx-key */
-import { useTable } from 'react-table';
+import {
+	ColumnDef,
+	flexRender,
+	getCoreRowModel,
+	useReactTable,
+} from '@tanstack/react-table';
 
+import React from 'react';
 import { TableContainer } from './styles';
 
 interface TableProps {
-	columns: Array<{
-		Header: string;
-		accessor: string;
-	}>;
-	data: object[];
+	columns: Array<ColumnDef<unknown, object>>;
+	data: unknown[];
 }
 
 export default function Table({ columns, data }: TableProps) {
-	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-		useTable({ columns, data });
+	const table = useReactTable({
+		columns,
+		data,
+		getCoreRowModel: getCoreRowModel(),
+	});
 
 	return (
-		<TableContainer {...getTableProps()}>
+		<TableContainer>
 			<thead>
-				{headerGroups.map(headerGroup => (
-					<tr {...headerGroup.getHeaderGroupProps()}>
-						{headerGroup.headers.map(column => (
-							<th {...column.getHeaderProps()}>{column.render('Header')}</th>
+				{table.getHeaderGroups().map(headerGroup => (
+					<tr key={headerGroup.id}>
+						{headerGroup.headers.map(header => (
+							<th
+								key={header.id}
+								style={{
+									width: header.getSize(),
+								}}
+							>
+								{header.isPlaceholder
+									? null
+									: flexRender(
+											header.column.columnDef.header,
+											header.getContext(),
+									  )}
+							</th>
 						))}
 					</tr>
 				))}
 			</thead>
-
-			<tbody {...getTableBodyProps()}>
-				{rows.map(row => {
-					prepareRow(row);
-					return (
-						<tr {...row.getRowProps()}>
-							{row.cells.map(cell => {
-								return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
-							})}
-						</tr>
-					);
-				})}
+			<tbody>
+				{table.getRowModel().rows.map(row => (
+					<tr key={row.id}>
+						{row.getVisibleCells().map(cell => (
+							<td key={cell.id} style={{ width: cell.column.getSize() }}>
+								{flexRender(cell.column.columnDef.cell, cell.getContext())}
+							</td>
+						))}
+					</tr>
+				))}
 			</tbody>
 		</TableContainer>
 	);
