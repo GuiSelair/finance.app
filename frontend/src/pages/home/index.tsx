@@ -10,6 +10,7 @@ import {
 	ListExpensesContainer,
 	ListExpensesHeader,
 } from '@/styles/pages/home.style';
+import { SEO } from '@/components/shared/SEO';
 
 export default function Home(): JSX.Element {
 	const currentMonthAndYear = {
@@ -81,36 +82,42 @@ export default function Home(): JSX.Element {
 	}, []);
 
 	return (
-		<HomeContainer>
-			<Summary
-				month={selectedMonthAndYear.month}
-				year={selectedMonthAndYear.year}
+		<>
+			<SEO
+				title="Despesas do mês"
+				description="Consolidado mensal de despesas"
 			/>
-			<ListExpensesContainer>
-				<ListExpensesHeader>
-					<div>
-						<h2>Despesas</h2>
-					</div>
-					<div>
-						<GoToCurrentMonthAndYearButton
-							type="button"
-							onClick={handleGoToCurrentMonth}
-						>
-							Mês atual
-						</GoToCurrentMonthAndYearButton>
-						<SelectMonthAndYear
-							month={selectedMonthAndYear.month}
-							year={selectedMonthAndYear.year}
-							onSelectMonthAndYear={handleSelectMonthAndYear}
-						/>
-					</div>
-				</ListExpensesHeader>
-
-				<ExpensesTable
+			<HomeContainer>
+				<Summary
 					month={selectedMonthAndYear.month}
 					year={selectedMonthAndYear.year}
 				/>
-			</ListExpensesContainer>
-		</HomeContainer>
+				<ListExpensesContainer>
+					<ListExpensesHeader>
+						<div>
+							<h2>Despesas</h2>
+						</div>
+						<div>
+							<GoToCurrentMonthAndYearButton
+								type="button"
+								onClick={handleGoToCurrentMonth}
+							>
+								Mês atual
+							</GoToCurrentMonthAndYearButton>
+							<SelectMonthAndYear
+								month={selectedMonthAndYear.month}
+								year={selectedMonthAndYear.year}
+								onSelectMonthAndYear={handleSelectMonthAndYear}
+							/>
+						</div>
+					</ListExpensesHeader>
+
+					<ExpensesTable
+						month={selectedMonthAndYear.month}
+						year={selectedMonthAndYear.year}
+					/>
+				</ListExpensesContainer>
+			</HomeContainer>
+		</>
 	);
 }
