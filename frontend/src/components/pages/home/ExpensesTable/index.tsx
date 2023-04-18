@@ -29,7 +29,7 @@ interface ExpensesTableDataProps {
 	card: string;
 	parcel: string;
 	parcel_amount: string;
-	is_shared?: JSX.Element;
+	is_shared: boolean;
 	options: JSX.Element | string;
 }
 
@@ -44,7 +44,7 @@ const columns = [
 	columnBuilder.accessor('name', {
 		id: 'expense-name',
 		header: 'Nome',
-		size: 300,
+		size: 200,
 	}),
 	columnBuilder.accessor('card', {
 		id: 'expense-card',
@@ -54,21 +54,29 @@ const columns = [
 	columnBuilder.accessor('parcel', {
 		id: 'expense-parcel',
 		header: 'Parcela',
+		size: 50,
 	}),
 	columnBuilder.accessor('parcel_amount', {
 		id: 'expense-parcel-amount',
 		header: 'Valor da parcela',
+		size: 100,
 	}),
 	columnBuilder.display({
 		id: 'is_shared',
 		header: 'Compra dividida?',
-		cell: ({ row }) => row.original.is_shared,
-		size: 150,
+		cell: ({ row }) =>
+			row.original.is_shared ? (
+				<CheckSquare weight="fill" size={24} color="#248277" />
+			) : (
+				<CheckSquare weight="fill" size={24} color="#cccccc" />
+			),
+		size: 100,
 	}),
 	columnBuilder.display({
 		id: 'options',
 		header: 'Opções',
 		cell: ({ row }) => row.original.options,
+		size: 100,
 	}),
 ];
 
@@ -119,15 +127,13 @@ export default function ExpensesTable({ month, year }: ExpensesTableProps) {
 
 		return allExpensesInMonth.map(expenseInMonth => ({
 			name: expenseInMonth.expense.name,
-			card: expenseInMonth.expense.card_id,
+			card: expenseInMonth.expense.card.name,
 			parcel: `${String(expenseInMonth.number_current_of_parcel).padStart(
 				2,
 				'0',
 			)} / ${String(expenseInMonth.number_total_of_parcel).padStart(2, '0')}`,
 			parcel_amount: formatCurrency(expenseInMonth.value_of_parcel),
-			is_shared: expenseInMonth.expense.split_expense ? (
-				<CheckSquare weight="fill" size={24} color="#248277" />
-			) : undefined,
+			is_shared: expenseInMonth.expense.split_expense,
 			options: (
 				<ShowExpenseDetailButton
 					type="button"

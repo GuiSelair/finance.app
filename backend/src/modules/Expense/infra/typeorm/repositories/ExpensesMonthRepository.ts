@@ -29,8 +29,11 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
       where: {
         month,
         year,
+        expense: {
+          user_id: userId,
+        }
       },
-      relations: ['expense'],
+      relations: ['expense', 'expense.card'],
     });
 
     return expensesInMonth;

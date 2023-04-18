@@ -1,3 +1,5 @@
+import { Card } from './card';
+
 export interface Expense {
 	id: string;
 	name: string;
@@ -9,6 +11,7 @@ export interface Expense {
 	share_with: string;
 	value_of_each: string;
 	card_id: string;
+	card: Card;
 	user_id: string;
 	parcel: number;
 	created_at: string;
