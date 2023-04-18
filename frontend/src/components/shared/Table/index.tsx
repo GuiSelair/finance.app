@@ -1,16 +1,14 @@
 import {
-	ColumnDef,
 	flexRender,
 	getCoreRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
 
-import React from 'react';
 import { TableContainer } from './styles';
 
 interface TableProps {
-	columns: Array<ColumnDef<unknown, object>>;
-	data: unknown[];
+	columns: any[];
+	data: any[];
 }
 
 export default function Table({ columns, data }: TableProps) {

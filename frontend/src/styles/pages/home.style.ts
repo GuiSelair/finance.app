@@ -5,13 +5,6 @@ export const HomeContainer = styled.div`
 	height: 800px;
 `;
 
-export const ListExpensesContainer = styled.main`
-	background: ${props => props.theme.colors.white};
-	padding: 1.5rem;
-	border-radius: 8px;
-	min-height: 500px;
-`;
-
 export const ListExpensesHeader = styled.header`
 	display: flex;
 	align-items: center;

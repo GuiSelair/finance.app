@@ -3,14 +3,14 @@ import { useCallback, useEffect, useState } from 'react';
 import ExpensesTable from '@/components/pages/home/ExpensesTable';
 import { SelectMonthAndYear } from '@/components/pages/home/SelectMonthAndYear';
 import { Summary } from '@/components/pages/home/Summary';
+import { SEO } from '@/components/shared/SEO';
+import { LayoutBox } from '@/components/shared/LayoutBox';
 
 import {
 	GoToCurrentMonthAndYearButton,
 	HomeContainer,
-	ListExpensesContainer,
 	ListExpensesHeader,
 } from '@/styles/pages/home.style';
-import { SEO } from '@/components/shared/SEO';
 
 export default function Home(): JSX.Element {
 	const currentMonthAndYear = {
@@ -92,7 +92,7 @@ export default function Home(): JSX.Element {
 					month={selectedMonthAndYear.month}
 					year={selectedMonthAndYear.year}
 				/>
-				<ListExpensesContainer>
+				<LayoutBox>
 					<ListExpensesHeader>
 						<div>
 							<h2>Despesas</h2>
@@ -116,7 +116,7 @@ export default function Home(): JSX.Element {
 						month={selectedMonthAndYear.month}
 						year={selectedMonthAndYear.year}
 					/>
-				</ListExpensesContainer>
+				</LayoutBox>
 			</HomeContainer>
 		</>
 	);
