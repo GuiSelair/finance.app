@@ -37,6 +37,7 @@ export function Select({ width, ...rest }: SelectProps) {
 					};
 				},
 			}}
+			noOptionsMessage={() => 'Nenhuma opção encontrada'}
 			{...rest}
 		/>
 	);
