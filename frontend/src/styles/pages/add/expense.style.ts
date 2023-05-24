@@ -77,3 +77,32 @@ export const FieldDescription = styled.span`
 		}
 	}
 `;
+
+export const CardDetails = styled(Column)`
+	margin-left: 1.5rem;
+	align-self: flex-start;
+	gap: 1rem;
+
+	span {
+		font-weight: 400;
+		color: ${({ theme }) => theme.colors.gray600};
+	}
+
+	p {
+		color: ${({ theme }) => theme.colors.green800};
+		font-weight: 400;
+	}
+
+	strong {
+		color: ${({ theme }) => theme.colors.green800};
+		font-weight: 600;
+	}
+`;
+
+export const Divider = styled.hr`
+	display: block;
+	border: 0;
+	border-top: 1px solid ${props => props.theme.colors.gray100};
+	margin: 1rem 0;
+	padding: 0;
+`;
