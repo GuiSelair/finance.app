@@ -3,7 +3,7 @@ import { ArrowSquareOut } from 'phosphor-react';
 import Link from 'next/link';
 
 import { LayoutBox } from '@/components/shared/LayoutBox';
-import { Input, Select } from '@/components/shared/Form';
+import { TextInput, Select, InputLabel } from '@/components/shared/Form';
 
 import {
 	RegisterExpenseTitle,
@@ -11,9 +11,9 @@ import {
 	Row,
 	Column,
 	FieldDescription,
-	FieldLabel,
 	Divider,
 	CardDetails,
+	ValueInput,
 } from '@/styles/pages/add/expense.style';
 
 export default function CreateExpenses() {
@@ -23,29 +23,31 @@ export default function CreateExpenses() {
 
 			<RegisterExpenseForm>
 				<Row>
-					<Input
-						label="Nome:"
-						placeholder="Insira o nome de sua despesa aqui"
-					/>
+					<InputLabel>
+						Nome:
+						<TextInput placeholder="Insira o nome de sua despesa aqui" />
+					</InputLabel>
 				</Row>
 				<Row margin="0.5rem 0 0 0">
 					<Column width="418px">
-						<FieldLabel>
-							<span>Meio de pagamento:</span>
-							<Select
-								placeholder="Selecione o meio de pagamento"
-								options={[]}
-							/>
-						</FieldLabel>
-						<FieldDescription>
-							Não encontrou o meio de pagamento?
-							<strong>
-								<Link href={'/add/cards'} prefetch={false}>
-									Crie um aqui!
-									<ArrowSquareOut />
-								</Link>
-							</strong>
-						</FieldDescription>
+						<InputLabel>
+							Meio de pagamento:
+							<div>
+								<Select
+									placeholder="Selecione o meio de pagamento"
+									options={[]}
+								/>
+								<FieldDescription>
+									Não encontrou o meio de pagamento?
+									<strong>
+										<Link href={'/add/cards'} prefetch={false}>
+											Crie um aqui!
+											<ArrowSquareOut />
+										</Link>
+									</strong>
+								</FieldDescription>
+							</div>
+						</InputLabel>
 					</Column>
 					<CardDetails>
 						<span>Detalhes sobre meio de pagamento:</span>
@@ -58,18 +60,27 @@ export default function CreateExpenses() {
 					</CardDetails>
 				</Row>
 				<Row margin="1rem 0 0 0">
-					<Input
-						label="Categoria:"
-						placeholder="Insira a categoria de sua despesa aqui..."
-					/>
+					<InputLabel>
+						Categoria:
+						<TextInput placeholder="Insira a categoria de sua despesa aqui..." />
+					</InputLabel>
 				</Row>
 				<Divider />
-				<Row>
+				<Row margin="0 0 100px 0">
 					<Column width="480px">
 						<Row>
-							<Input label="Valor total:" placeholder="R$" />
-							<Input label="Parcelas:" placeholder="R$" />
-							<Input label="Valor por parcela:" placeholder="R$" disabled />
+							<InputLabel>
+								Valor total:
+								<ValueInput prefix="R$" />
+							</InputLabel>
+							<InputLabel>
+								Parcelas:
+								<ValueInput />
+							</InputLabel>
+							<InputLabel>
+								Valor por parcela:
+								<ValueInput prefix="R$" disabled />
+							</InputLabel>
 						</Row>
 					</Column>
 				</Row>

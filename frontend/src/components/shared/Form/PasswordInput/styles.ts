@@ -4,52 +4,45 @@ export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 
-	min-width: 6.25rem;
+	min-width: 6.25rem; // ~100px
 	width: 100%;
-
-	& + & {
-		margin-top: 1rem;
-	}
 `;
 
-export const LabelContainer = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+// export const LabelContainer = styled.div`
+// 	display: flex;
+// 	align-items: center;
+// 	justify-content: space-between;
 
-	margin-bottom: 0.5rem;
+// 	margin-bottom: 0.5rem;
 
-	> label {
-		color: ${props => props.theme.colors.gray500};
-		font-weight: 400;
-	}
-`;
+// 	> label {
+// 		color: ${props => props.theme.colors.gray500};
+// 		font-weight: 400;
+// 	}
+// `;
 
-interface InputContainerProps {
+interface BaseInputStyleContainerProps {
 	hasError: boolean;
-	hasFocus: boolean;
 }
 
-export const InputContainer = styled.div<InputContainerProps>`
+export const BaseInputStyleContainer = styled.div<BaseInputStyleContainerProps>`
 	display: flex;
 	align-items: center;
 	width: 100%;
 	background: ${props => props.theme.colors.white};
-	border-radius: 8px;
+	border-radius: 4px;
 	padding: 0.75rem 1rem;
-	border: 1px solid ${props => props.theme.colors.gray100};
 
 	${props =>
 		props.hasError &&
 		css`
-			border-color: ${props => props.theme.colors.red500};
+			box-shadow: 0 0 0 2px ${props => props.theme.colors.red500};
 		`};
 
-	${props =>
-		props.hasFocus &&
-		css`
-			border-color: ${props => props.theme.colors.green500};
-		`};
+	&:focus-within,
+	&:focus {
+		box-shadow: 0 0 0 2px ${props => props.theme.colors.green500};
+	}
 
 	> svg {
 		margin-right: 8px;

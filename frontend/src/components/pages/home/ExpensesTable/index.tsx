@@ -11,7 +11,7 @@ import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { createColumnHelper } from '@tanstack/react-table';
 
-import { Input } from '@/components/shared/Form/Input';
+import { TextInput } from '@/components/shared/Form/TextInput';
 import Table from '@/components/shared/Table';
 import { httpClient } from '@/providers/HTTPClient';
 import { ExpenseInMonth } from '@/models/expenseInMonth';
@@ -153,7 +153,7 @@ export default function ExpensesTable({ month, year }: ExpensesTableProps) {
 	return (
 		<>
 			<FilterContainer>
-				<Input
+				<TextInput
 					icon={() => <MagnifyingGlass size={24} />}
 					placeholder="Pesquise pelo nome da despesa"
 				/>

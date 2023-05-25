@@ -10,16 +10,14 @@ import {
 } from './styles';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-	label?: string;
 	icon?: React.ComponentType<IconProps>;
-	description?: string;
 	error?: string;
+	prefix?: string;
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
-	({ label, icon: Icon, type, id, description, error, ...rest }, ref) => {
+export const TextInput = forwardRef<HTMLInputElement, InputProps>(
+	({ icon: Icon, type, id, error, ...rest }, ref) => {
 		const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-		const [isFocused, setIsFocused] = useState(false);
 
 		const customType = isPasswordVisible ? 'text' : 'password';
 		const isPasswordInput = type === 'password';
@@ -28,33 +26,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 			setIsPasswordVisible(old => !old);
 		};
 
-		const handleInputFocus = () => {
-			setIsFocused(true);
-		};
-
-		const handleInputBlur = () => {
-			setIsFocused(false);
-		};
-
 		return (
 			<Container>
-				{!!label && (
-					<LabelContainer>
-						<div>
-							<label htmlFor={id}>{label}</label>
-						</div>
-					</LabelContainer>
-				)}
-
-				<InputContainer hasError={!!error} hasFocus={isFocused}>
+				<InputContainer hasError={!!error}>
 					{!!Icon && <Icon />}
 
+					{prefix && <span>{prefix}</span>}
 					<input
 						ref={ref}
 						type={isPasswordInput ? customType : type}
 						id={id}
-						onFocus={handleInputFocus}
-						onBlurCapture={handleInputBlur}
 						{...rest}
 					/>
 
@@ -69,7 +50,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 					)}
 				</InputContainer>
 
-				{!!description && <Description>{description}</Description>}
 				{!!error && (
 					<Error>
 						<WarningCircle />
@@ -81,4 +61,4 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 	},
 );
 
-Input.displayName = 'Input';
+TextInput.displayName = 'Input';

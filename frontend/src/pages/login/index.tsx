@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { GetServerSideProps } from 'next';
 
 import { SEO } from '@/components/shared/SEO';
-import { Input } from '@/components/shared/Form/Input';
+import { TextInput } from '@/components/shared/Form/TextInput';
 import { AuthContext } from '@/contexts/AuthContext';
 
 import {
@@ -16,6 +16,7 @@ import {
 	Content,
 	Container,
 } from '@/styles/pages/login.style';
+import { InputLabel } from '@/components/shared/Form';
 
 const loginInputSchema = Yup.object().shape({
 	email: Yup.string().email('Email inválido.').required('Email obrigatório'),
@@ -63,23 +64,26 @@ export default function Login(): JSX.Element {
 							Faça sua autenticação para começarmos a gerenciar suas despesas
 						</h2>
 
-						<Input
-							type="email"
-							id="email"
-							label="Email"
-							error={errors?.email?.message}
-							placeholder="Insira sua email"
-							{...register('email')}
-						/>
+						<InputLabel>
+							Email:
+							<TextInput
+								type="email"
+								error={errors?.email?.message}
+								placeholder="Insira sua email"
+								{...register('email')}
+							/>
+						</InputLabel>
 
-						<Input
-							type="password"
-							id="password"
-							label="Senha"
-							error={errors?.password?.message}
-							placeholder="Insira sua senha"
-							{...register('password')}
-						/>
+						<InputLabel>
+							Senha:
+							<TextInput
+								type="password"
+								id="password"
+								error={errors?.password?.message}
+								placeholder="Insira sua senha"
+								{...register('password')}
+							/>
+						</InputLabel>
 
 						<button type="submit" disabled={isPending}>
 							Entrar

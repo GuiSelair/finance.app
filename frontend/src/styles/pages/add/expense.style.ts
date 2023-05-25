@@ -1,3 +1,4 @@
+import { TextInput } from '@/components/shared/Form';
 import styled from 'styled-components';
 
 export const RegisterExpenseTitle = styled.h2`
@@ -21,6 +22,7 @@ interface BaseDisplayFormProps {
 	padding?: string;
 	alignItems?: 'center' | 'flex-start' | 'flex-end';
 	width?: string;
+	gap?: string;
 }
 
 export const BaseDisplayForm = styled.div<BaseDisplayFormProps>`
@@ -29,11 +31,13 @@ export const BaseDisplayForm = styled.div<BaseDisplayFormProps>`
 	display: flex;
 	align-items: ${({ alignItems }) => alignItems};
 	width: ${({ width }) => width};
+	gap: ${({ gap }) => gap};
 `;
 
 export const Row = styled(BaseDisplayForm)`
 	display: flex;
 	align-items: center;
+	justify-content: flex-start;
 `;
 
 export const Column = styled(BaseDisplayForm)`
@@ -41,17 +45,8 @@ export const Column = styled(BaseDisplayForm)`
 	flex-direction: column;
 `;
 
-export const FieldLabel = styled.label`
-	font-weight: 400;
-	color: ${({ theme }) => theme.colors.gray600};
-
-	span {
-		display: block;
-		margin-bottom: 0.5rem;
-	}
-`;
-
 export const FieldDescription = styled.span`
+	display: block;
 	font-size: 0.875rem;
 	font-weight: 300;
 	line-height: 16px;
@@ -68,6 +63,10 @@ export const FieldDescription = styled.span`
 		a {
 			display: inline-flex;
 			align-items: center;
+
+			&:focus {
+				text-decoration: underline;
+			}
 		}
 
 		svg {
@@ -105,4 +104,8 @@ export const Divider = styled.hr`
 	border-top: 1px solid ${props => props.theme.colors.gray100};
 	margin: 1rem 0;
 	padding: 0;
+`;
+
+export const ValueInput = styled(TextInput)`
+	width: 136px;
 `;
