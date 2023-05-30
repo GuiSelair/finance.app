@@ -1,22 +1,16 @@
 import { useState, forwardRef } from 'react';
 import { Eye, EyeSlash, IconProps, WarningCircle } from 'phosphor-react';
 
-import {
-	Container,
-	LabelContainer,
-	InputContainer,
-	Description,
-	Error,
-} from './styles';
+import { BaseInputStyleContainer, Error, Container } from '../TextInput/styles';
+import { HiddenButton } from './styles';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	icon?: React.ComponentType<IconProps>;
 	error?: string;
-	prefix?: string;
 }
 
-export const TextInput = forwardRef<HTMLInputElement, InputProps>(
-	({ icon: Icon, type, id, error, ...rest }, ref) => {
+export const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
+	function PasswordInput({ icon: Icon, type, id, error, ...rest }, ref) {
 		const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
 		const customType = isPasswordVisible ? 'text' : 'password';
@@ -28,10 +22,9 @@ export const TextInput = forwardRef<HTMLInputElement, InputProps>(
 
 		return (
 			<Container>
-				<InputContainer hasError={!!error}>
+				<BaseInputStyleContainer hasError={!!error}>
 					{!!Icon && <Icon />}
 
-					{prefix && <span>{prefix}</span>}
 					<input
 						ref={ref}
 						type={isPasswordInput ? customType : type}
@@ -40,15 +33,15 @@ export const TextInput = forwardRef<HTMLInputElement, InputProps>(
 					/>
 
 					{isPasswordInput && (
-						<button
+						<HiddenButton
 							type="button"
 							onClick={handleToggleViewPassword}
 							title={isPasswordVisible ? 'Esconder senha' : 'Exibir senha'}
 						>
 							{isPasswordVisible ? <EyeSlash /> : <Eye />}
-						</button>
+						</HiddenButton>
 					)}
-				</InputContainer>
+				</BaseInputStyleContainer>
 
 				{!!error && (
 					<Error>
@@ -60,5 +53,3 @@ export const TextInput = forwardRef<HTMLInputElement, InputProps>(
 		);
 	},
 );
-
-TextInput.displayName = 'Input';
