@@ -11,5 +11,6 @@ const cardsController = new CardController();
 
 cardsRoutes.post('/', cardsController.create);
 cardsRoutes.get('/totalizers', cardsController.getTotalizers);
+cardsRoutes.get('/list', cardsController.show);
 
 export default cardsRoutes;

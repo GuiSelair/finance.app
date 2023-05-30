@@ -6,4 +6,5 @@ export default interface ICardRepository {
   findByName(name: string): Promise<Card | undefined>;
   findById(id: string): Promise<Card | undefined>;
   findByUserId(userId: string): Promise<Card[] | undefined>;
+  fetch(userId: string): Promise<Card[] | undefined>;
 }
