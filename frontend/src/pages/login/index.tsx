@@ -7,8 +7,8 @@ import { useState } from 'react';
 import { GetServerSideProps } from 'next';
 
 import { SEO } from '@/components/shared/SEO';
-import { TextInput } from '@/components/shared/Form/TextInput';
 import { AuthContext } from '@/contexts/AuthContext';
+import { InputLabel, PasswordInput, TextInput } from '@/components/shared/Form';
 
 import {
 	BackgroundContainer,
@@ -16,7 +16,6 @@ import {
 	Content,
 	Container,
 } from '@/styles/pages/login.style';
-import { InputLabel } from '@/components/shared/Form';
 
 const loginInputSchema = Yup.object().shape({
 	email: Yup.string().email('Email inválido.').required('Email obrigatório'),
@@ -76,7 +75,7 @@ export default function Login(): JSX.Element {
 
 						<InputLabel>
 							Senha:
-							<TextInput
+							<PasswordInput
 								type="password"
 								id="password"
 								error={errors?.password?.message}
