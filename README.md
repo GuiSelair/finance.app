@@ -32,28 +32,6 @@ Durante a execução deste projeto vale destacar a manipulação das seguintes t
  - Axios
  - TypeORM
 
-## Pré-requisitos
-
-Para a execução da aplicação será necessario ter instalado em sua máquina:
- - Node.js
- - NPM (Gerenciador de dependências do Node) ou YARN
-
-
-## Execução
-
-Para a execução da aplicação basta realizar o seguinte comando em seu terminal:
-
-Caso esteja utilizando NPM:
-
-```sh
-npm start
-```
-Caso esteja utilizando YARN:
-
-```sh
-yarn start
-```
-
 
 ## Status do projeto
 
