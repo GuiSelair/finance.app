@@ -1,9 +1,9 @@
 {
   "type": "postgres",
-  "host": "localhost",
+  "host": "datasource",
   "port": 5432,
-  "username": "postgres",
-  "password": "docker",
+  "username": "finance",
+  "password": "app",
   "database": "finance-app",
   "synchronize": true,
   "logging": false,
