@@ -1,7 +1,7 @@
 FROM node:18-alpine AS dev
 WORKDIR /usr/api
 COPY ./package*.json ./
-RUN npm install
+RUN npm ci
 COPY ./ ./
 
 FROM dev AS dev-api
