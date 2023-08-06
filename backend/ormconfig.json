@@ -1,12 +1,12 @@
 {
   "type": "postgres",
-  "host": "localhost",
+  "host": "datasource",
   "port": 5432,
-  "username": "postgres",
-  "password": "docker",
+  "username": "finance",
+  "password": "app",
   "database": "finance-app",
   "synchronize": true,
-  "logging": false,
+  "logging": true,
   "entities": [
     "./src/modules/**/infra/typeorm/entities/*.ts"
   ],
