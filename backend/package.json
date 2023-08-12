@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev:server": "ts-node-dev --inspect --transpile-only --ignore node_modules src/shared/infra/http/server.ts",
-    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
+    "dev": "ts-node-dev --inspect --transpile-only --ignore node_modules src/shared/infra/http/server.ts",
+    "migration:show": "ts-node-dev ./node_modules/typeorm/cli.js migration:show -d ./src/shared/infra/typeorm/bootstrap.ts",
+    "migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run -d ./src/shared/infra/typeorm/bootstrap.ts",
+    "migration:create": "ts-node-dev ./node_modules/typeorm/cli.js migration:create -d ./src/shared/infra/typeorm/bootstrap.ts",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js -d ./src/shared/infra/typeorm/bootstrap.ts",
     "commit": "cz",
     "test": "jest"
   },

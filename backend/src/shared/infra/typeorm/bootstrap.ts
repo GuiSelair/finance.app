@@ -1,4 +1,6 @@
-{
+import { DataSource } from "typeorm"
+
+export const ConnectionSource = new DataSource({
   "type": "postgres",
   "host": "datasource",
   "port": 5432,
@@ -13,7 +15,4 @@
   "migrations": [
     "./src/shared/infra/typeorm/migrations/*.ts"
   ],
-  "cli": {
-      "migrationsDir": "./src/shared/infra/typeorm/migrations"
-  }
-}
+})
