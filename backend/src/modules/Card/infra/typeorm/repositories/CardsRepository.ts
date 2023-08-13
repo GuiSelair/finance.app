@@ -1,4 +1,5 @@
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { ConnectionSource } from '../../../../../shared/infra/typeorm/bootstrap'
 
 import ICreateCard from '../../../dtos/ICreateCard';
 import ICardRepository from '../../../repositories/ICardRepository';
@@ -8,7 +9,7 @@ class CardsRepository implements ICardRepository {
   private repository: Repository<Card>;
 
   constructor() {
-    this.repository = getRepository(Card);
+    this.repository = ConnectionSource.getRepository(Card);
   }
 
   public async create({
@@ -31,7 +32,7 @@ class CardsRepository implements ICardRepository {
     return newCard;
   }
 
-  public async findByName(name: string): Promise<Card | undefined> {
+  public async findByName(name: string): Promise<Card | null> {
     const cardFound = await this.repository.findOne({
       where: {
         name,
@@ -41,7 +42,7 @@ class CardsRepository implements ICardRepository {
     return cardFound;
   }
 
-  public async findById(id: string): Promise<Card | undefined> {
+  public async findById(id: string): Promise<Card | null> {
     const cardFound = await this.repository.findOne({
       where: {
         id,
@@ -51,7 +52,7 @@ class CardsRepository implements ICardRepository {
     return cardFound;
   }
 
-  public async findByUserId(userId: string): Promise<Card[] | undefined> {
+  public async findByUserId(userId: string): Promise<Card[] | null> {
     return this.repository.find({
       where: {
         user_id: userId,

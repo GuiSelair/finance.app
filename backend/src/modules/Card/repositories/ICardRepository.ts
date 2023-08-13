@@ -3,7 +3,7 @@ import Card from '../infra/typeorm/entities/Card';
 
 export default interface ICardRepository {
   create(data: ICreateCard): Promise<Card>;
-  findByName(name: string): Promise<Card | undefined>;
-  findById(id: string): Promise<Card | undefined>;
-  findByUserId(userId: string): Promise<Card[] | undefined>;
+  findByName(name: string): Promise<Card | null>;
+  findById(id: string): Promise<Card | null>;
+  findByUserId(userId: string): Promise<Card[] | null>;
 }
