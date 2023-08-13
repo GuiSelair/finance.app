@@ -1,3 +1,10 @@
-import { createConnection } from 'typeorm';
+import { ConnectionSource } from './bootstrap'
 
-createConnection();
+ConnectionSource.initialize()
+  .then(() => {
+    console.log('🏦 Datasource: ON')
+  })
+  .catch((error) => {
+    console.log('⚠️ Datasource: DOWN ⚠️')
+    console.error(error)
+  })

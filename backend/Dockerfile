@@ -7,7 +7,7 @@ COPY ./ ./
 FROM dev AS dev-api
 RUN apk add --no-cache bash
 EXPOSE 3333
-CMD ["npm", "run", "dev:server"]
+CMD ["npm", "run", "dev"]
 
 FROM dev AS dev-migration
-CMD ["npm", "run", "typeorm", "migration:run"]
+CMD ["npm", "run", "migration:run"]

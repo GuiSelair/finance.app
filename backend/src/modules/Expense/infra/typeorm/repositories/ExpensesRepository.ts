@@ -1,4 +1,6 @@
-import { Repository, getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
+
+import { ConnectionSource } from '../../../../../shared/infra/typeorm/bootstrap'
 import ICreateExpense from '../../../dtos/ICreateExpense';
 import IExpensesRepository from '../../../repositories/IExpensesRepository';
 import Expense from '../entities/Expense';
@@ -12,7 +14,7 @@ class ExpensesRepository implements IExpensesRepository {
   private repository: Repository<Expense>;
 
   constructor() {
-    this.repository = getRepository(Expense);
+    this.repository = ConnectionSource.getRepository(Expense);
   }
 
   public async create(data: ICreateExpenseRepository): Promise<Expense> {
@@ -22,7 +24,7 @@ class ExpensesRepository implements IExpensesRepository {
     return expense;
   }
 
-  public async findByUserId(userId: string): Promise<Expense[] | undefined> {
+  public async findByUserId(userId: string): Promise<Expense[] | null> {
     return this.repository.find({
       where: {
         user_id: userId,
@@ -33,7 +35,7 @@ class ExpensesRepository implements IExpensesRepository {
   public async findByIdAndUserId(
     id: string,
     userId: string,
-  ): Promise<Expense | undefined> {
+  ): Promise<Expense | null> {
     return this.repository.findOne({
       where: {
         id,

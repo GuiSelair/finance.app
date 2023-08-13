@@ -1,6 +1,7 @@
-import { Repository, getRepository } from 'typeorm';
-import ICreateExpenseInMonth from '../../../dtos/ICreateExpenseInMonth';
+import { Repository } from 'typeorm';
 
+import { ConnectionSource } from '../../../../../shared/infra/typeorm/bootstrap'
+import ICreateExpenseInMonth from '../../../dtos/ICreateExpenseInMonth';
 import IExpensesMonthRepository from '../../../repositories/IExpensesInMonthRepository';
 import ExpenseMonth from '../entities/ExpenseInMonth';
 
@@ -8,7 +9,7 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
   private repository: Repository<ExpenseMonth>;
 
   constructor() {
-    this.repository = getRepository(ExpenseMonth);
+    this.repository = ConnectionSource.getRepository(ExpenseMonth);
   }
 
   public async create(
