@@ -59,6 +59,14 @@ class CardsRepository implements ICardRepository {
       },
     });
   }
+
+  public async fetch(userId: string): Promise<Card[] | undefined> {
+    return this.repository.find({
+      where: {
+        user_id: userId,
+      },
+    });
+  }
 }
 
 export default CardsRepository;

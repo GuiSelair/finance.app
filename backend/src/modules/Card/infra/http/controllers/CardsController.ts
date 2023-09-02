@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import CreateCardService from '../../../services/CreateCardService';
 import CardTotalizerService from '../../../services/CardTotalizerService';
+import FetchCardsService from '../../../services/FetchCardsService';
 
 class CardsController {
   public async create(
@@ -36,6 +37,18 @@ class CardsController {
     });
 
     return response.status(200).json(totalizers);
+  }
+
+  public async show(request: Request, response: Response) {
+    const { id } = request.user;
+
+    const fetchCardsService = container.resolve(FetchCardsService);
+
+    const cardsList = await fetchCardsService.execute({
+      userId: id,
+    });
+
+    return response.status(200).json(cardsList);
   }
 }
 
