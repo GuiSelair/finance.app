@@ -4,8 +4,8 @@ import ReactSelect, { OptionsOrGroups } from 'react-select';
 import { defaultTheme } from '@/styles/theme/default';
 
 export interface SelectOptionProps {
-	label: string | number;
-	value: string | number;
+	label: string;
+	value: string;
 }
 
 export interface SelectGroupOptionsProps {

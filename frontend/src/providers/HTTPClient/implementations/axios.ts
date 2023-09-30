@@ -19,7 +19,7 @@ class AxiosHTTPClient implements HTTPClientProps {
 
 	async get<T>(
 		url: string,
-		config: Omit<HTTPConfigProps, 'body'>,
+		config: Omit<HTTPConfigProps, 'body'> = {},
 	): Promise<HTTPClientResponse<T>> {
 		const response = await this.api.get<T>(url, {
 			params: config.params,
