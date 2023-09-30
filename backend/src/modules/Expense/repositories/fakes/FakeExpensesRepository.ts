@@ -43,17 +43,17 @@ class FakeExpensesRepository implements IExpensesRepository {
     return expense;
   }
 
-  public async findByUserId(userId: string): Promise<Expense[] | undefined> {
+  public async findByUserId(userId: string): Promise<Expense[] | null> {
     return this.repository.filter(expense => expense.user_id === userId);
   }
 
   public async findByIdAndUserId(
     id: string,
     userId: string,
-  ): Promise<Expense | undefined> {
+  ): Promise<Expense | null> {
     return this.repository.find(
       expense => expense.id === id && expense.user_id === userId,
-    );
+    ) || null;
   }
 
   public async remove(id: string): Promise<boolean> {

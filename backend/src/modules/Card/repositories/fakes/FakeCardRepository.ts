@@ -31,20 +31,20 @@ class CardsRepository implements ICardRepository {
     return card;
   }
 
-  public async findByName(name: string): Promise<Card | undefined> {
+  public async findByName(name: string): Promise<Card | null> {
     const cardFound = this.repository.find(card => card.name === name);
 
-    return cardFound;
+    return cardFound || null;
   }
 
-  public async findById(id: string): Promise<Card | undefined> {
+  public async findById(id: string): Promise<Card | null> {
     const cardFound = this.repository.find(card => card.id === id);
 
-    return cardFound;
+    return cardFound || null;
   }
 
-  public async findByUserId(userId: string): Promise<Card[] | undefined> {
-    return this.repository.filter(card => card.user_id === userId);
+  public async findByUserId(userId: string): Promise<Card[] | null> {
+    return this.repository.filter(card => card.user_id === userId) || null;
   }
 }
 
