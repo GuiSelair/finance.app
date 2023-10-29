@@ -73,7 +73,7 @@ class CreateExpenseInMonthService {
 
     const dayOfPurchase = getDate(purchaseDate);
 
-    if (dayOfPurchase < turningDay) {
+    if (turningDay < dayOfPurchase) {
       return getMonth(purchaseDate);
     }
 

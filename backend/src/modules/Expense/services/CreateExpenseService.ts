@@ -29,8 +29,11 @@ class CreateExpensesService {
     purchase_date = new Date(),
   }: ICreateExpense): Promise<Expense> {
     const transformValuesOfEachArrayToString = Array(value_of_each)?.join('&');
-
     const transformShareWithArrayToString = Array(share_with)?.join('&');
+
+    if (!card_id) {
+      throw new Error('Card not found');
+    }
 
     const newExpense = await this.expensesRepository.create({
       name,

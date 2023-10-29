@@ -50,10 +50,8 @@ class Expense {
   })
   value_of_each?: string;
 
-  @Column({
-    nullable: true,
-  })
-  card_id?: string;
+  @Column()
+  card_id: string;
 
   @ManyToOne(() => Card, { cascade: true })
   @JoinColumn({ name: 'card_id' })
