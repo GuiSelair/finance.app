@@ -35,8 +35,7 @@ export function PaymentMethodSelectionSection() {
 
 		const { turning_day } = userPaymentMethodSelected;
 		const currentDay = new Date().getDate();
-
-		if (currentDay < turning_day) {
+		if (turning_day < currentDay) {
 			return `deste mês (${new Date().getMonth() + 1}/${new Date().getFullYear()})`;
 		}
 

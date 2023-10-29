@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import { Fragment } from 'react';
 import { NextPage } from 'next/types';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 import { defaultTheme } from '@/styles/theme/default';
 import { GlobalStyles } from '@/styles/global';
@@ -32,6 +33,7 @@ export default function App({
 			<GlobalStyles />
 			<AuthProvider>
 				<QueryClientProvider client={queryClient}>
+					<ReactQueryDevtools initialIsOpen={false} />
 					<LayoutOrNot>
 						<Component {...pageProps} />
 					</LayoutOrNot>

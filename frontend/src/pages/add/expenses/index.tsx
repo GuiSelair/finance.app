@@ -1,10 +1,11 @@
 import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import { LayoutBox } from '@/components/shared/LayoutBox';
-import { TextInput, InputLabel } from '@/components/shared/Form';
+import { TextInput, InputLabel, ActionButtons } from '@/components/shared/Form';
 import { SEO } from '@/components/shared/SEO';
 import { PaymentMethodSelectionSection } from '@/components/pages/add/expenses/PaymentMethodSelection';
-
+import { ICreateExpenseFields, useCreateExpenses } from '@/hooks/pages/useCreateExpenses';
 import {
 	RegisterExpenseTitle,
 	RegisterExpenseForm,
@@ -12,10 +13,8 @@ import {
 	Column,
 	Divider,
 	ValueInput,
+	FooterForm,
 } from '@/styles/pages/add/expense.style';
-import { FormProvider, useForm } from 'react-hook-form';
-import { Card } from '@/models/card';
-import { ICreateExpenseFields, useCreateExpenses } from '@/hooks/pages/useCreateExpenses';
 
 export default function CreateExpenses() {
 	const formConfig = useForm<ICreateExpenseFields>({
@@ -25,11 +24,10 @@ export default function CreateExpenses() {
 	});
 
 	const { watch, handleSubmit } = formConfig
-	const { calculateParcelValue, createExpenseSubmit } = useCreateExpenses();
+	const { calculateParcelValue, createExpenseSubmit, goBack } = useCreateExpenses();
 	
 	const parcelValue = calculateParcelValue(watch('totalValue'), watch('parcelQuantity')) ?? 0;
 
-	const handleCreateExpenseSubmit = handleSubmit(async (data: ICreateExpenseFields) => await createExpenseSubmit(data));
 
 	return (
 		<FormProvider {...formConfig}>
@@ -37,7 +35,7 @@ export default function CreateExpenses() {
 			<LayoutBox>
 				<RegisterExpenseTitle>Nova despesa</RegisterExpenseTitle>
 
-				<RegisterExpenseForm onSubmit={handleCreateExpenseSubmit}>
+				<RegisterExpenseForm onSubmit={handleSubmit(createExpenseSubmit)}>
 					<Row>
 						<InputLabel>
 							Nome:
@@ -72,12 +70,12 @@ export default function CreateExpenses() {
 							</Row>
 						</Column>
 					</Row>
-					<Row>
-						<Column></Column>
-						<Column>
-							<button type='submit'>Criar despesa</button>
-						</Column>
-					</Row>
+					<FooterForm>
+						<ActionButtons
+							handleCancel={goBack}
+							submitButtonText='Criar despesa'
+						/>
+					</FooterForm>
 				</RegisterExpenseForm>
 			</LayoutBox>
 		</FormProvider>
