@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { ArrowSquareOut } from 'phosphor-react';
+import { useFormContext, Controller } from 'react-hook-form';
 
 import { InputLabel, Select, SelectOptionProps } from '@/components/shared/Form';
 import { Card } from '@/models/card';
@@ -17,6 +18,7 @@ export function PaymentMethodSelectionSection() {
 		const { data } = await httpClient.get<{ cards: Card[] }>('/cards/list');
 		return data.cards;
 	});
+	const { control } = useFormContext()
 
 	const paymentMethodsOptions = useMemo(() => {
 		if (!userAllPaymentMethods?.length) return;
@@ -33,8 +35,7 @@ export function PaymentMethodSelectionSection() {
 
 		const { turning_day } = userPaymentMethodSelected;
 		const currentDay = new Date().getDate();
-
-		if (currentDay < turning_day) {
+		if (turning_day < currentDay) {
 			return `deste mês (${new Date().getMonth() + 1}/${new Date().getFullYear()})`;
 		}
 
@@ -52,13 +53,30 @@ export function PaymentMethodSelectionSection() {
 				<InputLabel>
 					Meio de pagamento:
 					<div>
-						<Select
+						{/* TODO: Refatorar */}
+						<Controller
+							name="paymentMethod"
+							control={control}
+							render={({ field }) => (
+								<Select
+									isLoading={!paymentMethodsOptions}
+									placeholder="Selecione o meio de pagamento"
+									options={paymentMethodsOptions ?? []}
+									value={paymentMethodOptionSelected}
+									onChange={(value) => {
+										setPaymentMethodOptionSelected(value as SelectOptionProps)
+										field.onChange(value)
+									}}
+								/>
+							)}
+						/>
+						{/* <Select
 							isLoading={!paymentMethodsOptions}
 							placeholder="Selecione o meio de pagamento"
 							options={paymentMethodsOptions ?? []}
 							value={paymentMethodOptionSelected}
 							onChange={(value) => setPaymentMethodOptionSelected(value as SelectOptionProps)}
-						/>
+						/> */}
 						<FieldDescription>
 							Não encontrou o meio de pagamento?
 							<strong>

@@ -20,7 +20,7 @@ export const RegisterExpenseForm = styled.form`
 interface BaseDisplayFormProps {
 	margin?: string;
 	padding?: string;
-	alignItems?: 'center' | 'flex-start' | 'flex-end';
+	alignItems?: 'center' | 'flex-start' | 'flex-end' | 'baseline' | 'stretch';
 	width?: string;
 	gap?: string;
 }
@@ -56,4 +56,10 @@ export const Divider = styled.hr`
 
 export const ValueInput = styled(TextInput)`
 	width: 136px;
+`;
+
+export const FooterForm = styled.footer`
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
 `;
