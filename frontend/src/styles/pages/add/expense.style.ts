@@ -20,7 +20,7 @@ export const RegisterExpenseForm = styled.form`
 interface BaseDisplayFormProps {
 	margin?: string;
 	padding?: string;
-	alignItems?: 'center' | 'flex-start' | 'flex-end';
+	alignItems?: 'center' | 'flex-start' | 'flex-end' | 'baseline' | 'stretch';
 	width?: string;
 	gap?: string;
 }

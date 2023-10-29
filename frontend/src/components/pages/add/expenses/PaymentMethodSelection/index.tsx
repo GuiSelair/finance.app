@@ -55,7 +55,7 @@ export function PaymentMethodSelectionSection() {
 					<div>
 						{/* TODO: Refatorar */}
 						<Controller
-							name="paymentMethodId"
+							name="paymentMethod"
 							control={control}
 							render={({ field }) => (
 								<Select

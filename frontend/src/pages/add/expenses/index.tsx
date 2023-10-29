@@ -1,5 +1,7 @@
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { LayoutBox } from '@/components/shared/LayoutBox';
 import { TextInput, InputLabel, ActionButtons } from '@/components/shared/Form';
@@ -16,18 +18,26 @@ import {
 	FooterForm,
 } from '@/styles/pages/add/expense.style';
 
+const createExpenseFormSchema = yup.object().shape({
+	name: yup.string().required('Campo obrigatório'),
+	category: yup.string(),
+	totalValue: yup.string().required('Campo obrigatório'),
+	parcelQuantity: yup.number().required('Campo obrigatório'),
+	paymentMethod: yup.object().required('Campo obrigatório'),
+}); 
+
 export default function CreateExpenses() {
 	const formConfig = useForm<ICreateExpenseFields>({
+		resolver: yupResolver(createExpenseFormSchema),
 		defaultValues: {
 			parcelQuantity: 1,
 		}
 	});
 
-	const { watch, handleSubmit } = formConfig
+	const { watch, handleSubmit, formState: { errors } } = formConfig
 	const { calculateParcelValue, createExpenseSubmit, goBack } = useCreateExpenses();
 	
 	const parcelValue = calculateParcelValue(watch('totalValue'), watch('parcelQuantity')) ?? 0;
-
 
 	return (
 		<FormProvider {...formConfig}>
@@ -39,7 +49,11 @@ export default function CreateExpenses() {
 					<Row>
 						<InputLabel>
 							Nome:
-							<TextInput placeholder="Insira o nome de sua despesa aqui" {...formConfig.register('name')} />
+							<TextInput
+								placeholder="Insira o nome de sua despesa aqui" 
+								error={errors.name?.message} 
+								{...formConfig.register('name')}
+							/>
 						</InputLabel>
 					</Row>
 					
@@ -48,20 +62,31 @@ export default function CreateExpenses() {
 					<Row margin="1rem 0 0 0">
 						<InputLabel>
 							Categoria:
-							<TextInput placeholder="Insira a categoria de sua despesa aqui..." {...formConfig.register('category')}  />
+							<TextInput 
+								placeholder="Insira a categoria de sua despesa aqui..." 
+								error={errors.category?.message}
+								{...formConfig.register('category')}
+							/>
 						</InputLabel>
 					</Row>
 					<Divider />
 					<Row margin="0 0 100px 0">
-						<Column width="480px">
+						<Column width="480px" >
 							<Row>
 								<InputLabel>
 									Valor total:
-									<ValueInput prefix="R$" {...formConfig.register('totalValue', { valueAsNumber: true })}  />
+									<ValueInput 
+										prefix="R$" 
+										error={errors.totalValue?.message}
+										{...formConfig.register('totalValue')} 
+									/>
 								</InputLabel>
 								<InputLabel>
 									Parcelas:
-									<ValueInput {...formConfig.register('parcelQuantity', { valueAsNumber: true })} />
+									<ValueInput 
+										error={errors.parcelQuantity?.message}
+										{...formConfig.register('parcelQuantity', { valueAsNumber: true })} 
+									/>
 								</InputLabel>
 								<InputLabel>
 									Valor por parcela:

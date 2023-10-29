@@ -9,7 +9,7 @@ export type ICreateExpenseFields = {
 	category: string;
 	totalValue: number;
 	parcelQuantity: number;
-	paymentMethodId: {
+	paymentMethod: {
 		label: string;
 		value: string;
 	};
@@ -49,14 +49,10 @@ export function useCreateExpenses() {
 	}
 
 	async function createExpenseSubmit(data: ICreateExpenseFields): Promise<void>{
-		console.log('createExpenseSubmit')
-		console.log(data)
-
-
 		await createExpenseFetcher.mutateAsync({
 			name: data.name,
 			amount: data.totalValue,
-			card_id: data.paymentMethodId.value,
+			card_id: data.paymentMethod.value,
 			parcel: data.parcelQuantity,
 		})
 		toast.success('Despesa criada com sucesso!');
