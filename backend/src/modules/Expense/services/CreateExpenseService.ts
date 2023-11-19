@@ -1,11 +1,11 @@
 import { inject, injectable } from 'tsyringe';
-import ICreateExpense from '../dtos/ICreateExpense';
 
+import ICreateExpense from '../dtos/ICreateExpense';
 import Expense from '../infra/typeorm/entities/Expense';
 import IExpensesRepository from '../repositories/IExpensesRepository';
 import ICardRepository from '../../Card/repositories/ICardRepository';
-import AppError from '../../../shared/errors/AppError';
 import IUsersRepository from '../../User/repositories/IUsersRepository';
+import AppError from '../../../shared/errors/AppError';
 
 @injectable()
 class CreateExpensesService {
@@ -38,7 +38,7 @@ class CreateExpensesService {
     value_of_each = [],
     share_with = [],
     purchase_date = new Date(),
-    isRecurringExpense = false,
+    is_recurring = false,
   }: ICreateExpense): Promise<Expense> {
     const transformValuesOfEachArrayToString = Array(value_of_each)?.join('&');
     const transformShareWithArrayToString = Array(share_with)?.join('&');
@@ -65,6 +65,7 @@ class CreateExpensesService {
       split_expense,
       value_of_each: transformValuesOfEachArrayToString,
       share_with: transformShareWithArrayToString,
+      is_recurring,
     });
 
     return newExpense;

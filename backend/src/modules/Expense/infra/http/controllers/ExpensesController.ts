@@ -19,7 +19,7 @@ class ExpensesController {
       amount, // Required
       parcel, // Required
       card_id, // Required
-      isRecurringExpense,
+      is_recurring,
       description,
       split_expense,
       due_date,
@@ -43,7 +43,7 @@ class ExpensesController {
       share_with,
       split_expense,
       card_id,
-      isRecurringExpense,
+      is_recurring,
     });
 
     await createExpensesInMonthService.execute(expense);

@@ -10,5 +10,5 @@ export default interface ICreateExpense {
   split_expense?: boolean;
   share_with?: string | string[];
   value_of_each?: string | number[];
-  isRecurringExpense?: boolean;
+  is_recurring?: boolean;
 }
