@@ -12,7 +12,6 @@ import ICreateExpenseInMonth, {
 @injectable()
 class CreateExpenseInMonthService {
   private expenseMonthRepository: IExpensesInMonthRepository;
-
   private cardRepository: ICardRepository;
 
   constructor(
@@ -64,8 +63,8 @@ class CreateExpenseInMonthService {
 
     if (cardId) {
       const cardFound = await this.cardRepository.findById(cardId);
-
       if (!cardFound) throw new AppError('[ERROR] Card not exists');
+
       turningDay = cardFound.turning_day;
     } else {
       turningDay = getDate(purchaseDate);
@@ -74,10 +73,10 @@ class CreateExpenseInMonthService {
     const dayOfPurchase = getDate(purchaseDate);
 
     if (turningDay < dayOfPurchase) {
-      return getMonth(purchaseDate);
+      return getMonth(purchaseDate) + 1;
     }
 
-    return getMonth(purchaseDate) + 1;
+    return getMonth(purchaseDate);
   }
 }
 
