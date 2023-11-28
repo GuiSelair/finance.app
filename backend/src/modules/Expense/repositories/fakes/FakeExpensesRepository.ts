@@ -73,6 +73,10 @@ class FakeExpensesRepository implements IExpensesRepository {
 
     return true;
   }
+
+  public async fetchAllRecurringExpenses(userId: string): Promise<Expense[] | null> {
+    throw new Error('Method not implemented.');
+  }
 }
 
 export default FakeExpensesRepository;
