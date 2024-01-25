@@ -32,8 +32,8 @@ export class InsertRecurringExpensesInNextMonthsService {
      */
     const currentMonth = getMonth(new Date());
     const currentYear = getYear(new Date());
-    const nextMonth = getMonth(addMonths(currentMonth, 1));
-    const nextYear = getYear(addYears(currentYear, 1));
+    const nextMonth = getMonth(addMonths(new Date(), 1));
+    const nextYear = getYear(addMonths(new Date(), 1));
 
     const recurringExpenses = await this.expensesRepository.fetchAllRecurringExpenses(userId)
     if (!recurringExpenses?.length) return;
@@ -41,6 +41,7 @@ export class InsertRecurringExpensesInNextMonthsService {
     const expensesInMonth = await this.expensesInMonthRepository.findByMonthAndYear(currentMonth, currentYear, userId)
     const expensesInMonthIds = expensesInMonth?.map(expense => expense.expense_id) ?? [];
     const recurringExpensesToInsertAgain = recurringExpenses.filter(expense => !expensesInMonthIds.includes(expense.id));
+    if (!recurringExpensesToInsertAgain.length) return;
 
     const expensesInMonthToInsert = recurringExpensesToInsertAgain.map((expense): ICreateExpenseInMonth => {
       return {
