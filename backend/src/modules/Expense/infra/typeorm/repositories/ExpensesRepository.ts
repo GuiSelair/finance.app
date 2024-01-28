@@ -24,7 +24,7 @@ class ExpensesRepository implements IExpensesRepository {
     return expense;
   }
 
-  public async findByUserId(userId: string): Promise<Expense[] | null> {
+  public async fetchAllExpenses(userId: string): Promise<Expense[] | null> {
     return this.repository.find({
       where: {
         user_id: userId,
@@ -50,6 +50,15 @@ class ExpensesRepository implements IExpensesRepository {
     });
 
     return !!result?.affected;
+  }
+
+  public async fetchAllRecurringExpenses(userId?: string): Promise<Expense[] | undefined> {
+    return this.repository.find({
+      where: {
+        is_recurring: true,
+        ...(!!userId && { user_id: userId }),
+      },
+    });
   }
 }
 

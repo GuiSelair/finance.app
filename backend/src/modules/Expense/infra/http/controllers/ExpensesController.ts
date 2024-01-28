@@ -13,16 +13,18 @@ class ExpensesController {
     response: Response,
     _: NextFunction,
   ): Promise<Response> {
+    // TODO: Adicionar validação do body
     const {
-      name,
+      name, // Required
+      amount, // Required
+      parcel, // Required
+      card_id, // Required
+      is_recurring,
       description,
-      amount,
       split_expense,
-      parcel,
       due_date,
       share_with,
       value_of_each,
-      card_id,
     } = request.body;
     const { id } = request.user;
     const createExpenseService = container.resolve(CreateExpenseService);
@@ -41,6 +43,7 @@ class ExpensesController {
       share_with,
       split_expense,
       card_id,
+      is_recurring,
     });
 
     await createExpensesInMonthService.execute(expense);

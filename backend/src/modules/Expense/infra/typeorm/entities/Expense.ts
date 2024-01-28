@@ -51,6 +51,9 @@ class Expense {
   value_of_each?: string;
 
   @Column()
+  is_recurring: boolean;
+
+  @Column()
   card_id: string;
 
   @ManyToOne(() => Card, { cascade: true })

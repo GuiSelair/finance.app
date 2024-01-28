@@ -15,10 +15,10 @@ class FetchCardsService{
   }
 
   public async execute({ userId }: IFetchCardsRequest): Promise<IFetchCardsResponse> {
-    const cards = await this.cardRepository.fetch(userId);
+    const cards = await this.cardRepository.fetchAll(userId);
 
     return {
-      cards
+      cards: cards ?? []
     }
   }
 }

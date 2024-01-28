@@ -43,7 +43,7 @@ class FakeExpensesRepository implements IExpensesRepository {
     return expense;
   }
 
-  public async findByUserId(userId: string): Promise<Expense[] | null> {
+  public async fetchAllExpenses(userId: string): Promise<Expense[] | null> {
     return this.repository.filter(expense => expense.user_id === userId);
   }
 
@@ -72,6 +72,10 @@ class FakeExpensesRepository implements IExpensesRepository {
       );
 
     return true;
+  }
+
+  public async fetchAllRecurringExpenses(userId?: string): Promise<Expense[] | undefined> {
+    throw new Error('Method not implemented.');
   }
 }
 

@@ -38,7 +38,7 @@ export default class CardTotalizerService {
       throw new AppError('Month and year must be valid numbers');
     }
 
-    const allExpensesOfUser = await this.expensesRepository.findByUserId(
+    const allExpensesOfUser = await this.expensesRepository.fetchAllExpenses(
       userId,
     );
 

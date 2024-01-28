@@ -43,7 +43,7 @@ class CardsRepository implements ICardRepository {
     return cardFound || null;
   }
 
-  public async findByUserId(userId: string): Promise<Card[] | null> {
+  public async fetchAll(userId: string): Promise<Card[] | null> {
     return this.repository.filter(card => card.user_id === userId) || null;
   }
 }

@@ -23,6 +23,12 @@ class FakeUsersRepository implements IUsersRepository {
       registeredUser => registeredUser.email === email,
     ) || null;
   }
+
+  public async findById(id: string): Promise<User | null> {
+    return this.users.find(
+      registeredUser => registeredUser.id === id,
+    ) || null;
+  }
 }
 
 export default FakeUsersRepository;
