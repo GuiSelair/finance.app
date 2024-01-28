@@ -14,7 +14,7 @@ import {
 
 export default function Home(): JSX.Element {
 	const currentMonthAndYear = {
-		month: new Date().getMonth() + 1,
+		month: new Date().getMonth(),
 		year: new Date().getFullYear(),
 	};
 

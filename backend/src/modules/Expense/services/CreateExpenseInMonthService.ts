@@ -36,7 +36,9 @@ class CreateExpenseInMonthService {
     let currentYear = getYear(purchaseDate);
     let currentMonth = firstMonth;
     for (let parcel = 1; parcel <= expense.parcel; parcel++) {
-      currentMonth += 1;
+      if (parcel !== 1) {
+        currentMonth += 1;
+      }
 
       if (currentMonth > 12) {
         currentMonth = 1;
