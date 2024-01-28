@@ -5,10 +5,6 @@ import IExpensesRepository from '../repositories/IExpensesRepository';
 import IExpensesInMonthRepository from '../repositories/IExpensesInMonthRepository';
 import ICreateExpenseInMonth from '../dtos/ICreateExpenseInMonth';
 
-interface IInsertRecurringExpensesInNextMonthsServiceProps {
-  userId: string;
-}
-
 @injectable()
 export class InsertRecurringExpensesInNextMonthsService {
   private expensesRepository: IExpensesRepository;
@@ -24,22 +20,16 @@ export class InsertRecurringExpensesInNextMonthsService {
     this.expensesInMonthRepository = expensesInMonthRepository;
   }
 
-  public async execute({ userId }: IInsertRecurringExpensesInNextMonthsServiceProps): Promise<void> {
-    /**
-     * 1. Pegar todas as despesas fixas
-     * 2. Pegar as despesas do próximo mês
-     * 3. Verificar se a despesa fixa já existe no próximo mês, se não existir, inserir
-     */
-    const currentMonth = getMonth(new Date());
-    const currentYear = getYear(new Date());
+  public async execute(): Promise<void> {
     const nextMonth = getMonth(addMonths(new Date(), 1));
     const nextYear = getYear(addMonths(new Date(), 1));
 
-    const recurringExpenses = await this.expensesRepository.fetchAllRecurringExpenses(userId)
+    const recurringExpenses = await this.expensesRepository.fetchAllRecurringExpenses()
     if (!recurringExpenses?.length) return;
 
-    const expensesInMonth = await this.expensesInMonthRepository.findByMonthAndYear(currentMonth, currentYear, userId)
+    const expensesInMonth = await this.expensesInMonthRepository.findByMonthAndYear(nextMonth, nextYear)
     const expensesInMonthIds = expensesInMonth?.map(expense => expense.expense_id) ?? [];
+
     const recurringExpensesToInsertAgain = recurringExpenses.filter(expense => !expensesInMonthIds.includes(expense.id));
     if (!recurringExpensesToInsertAgain.length) return;
 

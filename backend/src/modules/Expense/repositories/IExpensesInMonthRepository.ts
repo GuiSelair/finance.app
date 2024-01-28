@@ -6,6 +6,6 @@ export default interface IExpensesInMonthRepository {
   findByMonthAndYear(
     month: number,
     year: number,
-    userId: string,
+    userId?: string,
   ): Promise<ExpenseInMonth[]>;
 }

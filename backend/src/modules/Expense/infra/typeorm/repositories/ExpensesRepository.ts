@@ -51,6 +51,15 @@ class ExpensesRepository implements IExpensesRepository {
 
     return !!result?.affected;
   }
+
+  public async fetchAllRecurringExpenses(userId?: string): Promise<Expense[] | undefined> {
+    return this.repository.find({
+      where: {
+        is_recurring: true,
+        ...(!!userId && { user_id: userId }),
+      },
+    });
+  }
 }
 
 export default ExpensesRepository;

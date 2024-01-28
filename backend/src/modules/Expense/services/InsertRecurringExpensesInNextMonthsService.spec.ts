@@ -38,7 +38,7 @@ describe('InsertRecurringExpensesInNextMonthsService - Unit Test', () => {
       expensesRepositoryMock as unknown as IExpensesRepository,
       expensesInMonthRepository as unknown as IExpensesInMonthRepository,
     );
-    await sut.execute({ userId: 'fake-user-id' });
+    await sut.execute();
 
     expect(expensesInMonthRepository.create).toHaveBeenCalled();
     expect(expensesInMonthRepository.create).toHaveBeenCalledWith([
@@ -74,7 +74,7 @@ describe('InsertRecurringExpensesInNextMonthsService - Unit Test', () => {
       expensesRepositoryMock as unknown as IExpensesRepository,
       expensesInMonthRepository as unknown as IExpensesInMonthRepository,
     );
-    await sut.execute({ userId: 'fake-user-id' });
+    await sut.execute();
 
     expect(expensesInMonthRepository.create).not.toHaveBeenCalled();
   })
@@ -97,7 +97,7 @@ describe('InsertRecurringExpensesInNextMonthsService - Unit Test', () => {
       expensesRepositoryMock as unknown as IExpensesRepository,
       expensesInMonthRepository as unknown as IExpensesInMonthRepository,
     );
-    await sut.execute({ userId: 'fake-user-id' });
+    await sut.execute();
 
     expect(expensesInMonthRepository.create).not.toHaveBeenCalled();
   })
