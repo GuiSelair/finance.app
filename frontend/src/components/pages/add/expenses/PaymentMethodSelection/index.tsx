@@ -36,10 +36,10 @@ export function PaymentMethodSelectionSection() {
 		const { turning_day } = userPaymentMethodSelected;
 		const currentDay = new Date().getDate();
 		if (turning_day < currentDay) {
-			return `deste mês (${new Date().getMonth() + 1}/${new Date().getFullYear()})`;
+			return `deste mês (${String(new Date().getMonth() + 2).padStart(2, '0')}/${new Date().getFullYear()})`;
 		}
 
-		return `do próximo mês (${new Date().getMonth() + 2}/${new Date().getFullYear()})`;
+		return `do próximo mês (${String(new Date().getMonth() + 3).padStart(2, '0')}/${new Date().getFullYear()})`;
 	}
 
 	if (isError) {

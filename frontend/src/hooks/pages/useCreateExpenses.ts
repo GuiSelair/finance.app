@@ -9,6 +9,7 @@ export type ICreateExpenseFields = {
 	category: string;
 	totalValue: number;
 	parcelQuantity: number;
+	isRecurring: boolean;
 	paymentMethod: {
 		label: string;
 		value: string;
@@ -20,6 +21,7 @@ type ICreateExpenseAPIResquest = {
 	amount: number;
 	card_id: string;
 	parcel: number;
+	is_recurring?: boolean;
 }
 
 export function useCreateExpenses() {
@@ -54,6 +56,7 @@ export function useCreateExpenses() {
 			amount: data.totalValue,
 			card_id: data.paymentMethod.value,
 			parcel: data.parcelQuantity,
+			is_recurring: data.isRecurring
 		})
 		toast.success('Despesa criada com sucesso!');
 		router.push('/')

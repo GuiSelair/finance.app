@@ -24,6 +24,7 @@ const createExpenseFormSchema = yup.object().shape({
 	totalValue: yup.string().required('Campo obrigatório'),
 	parcelQuantity: yup.number().required('Campo obrigatório'),
 	paymentMethod: yup.object().required('Campo obrigatório'),
+	isRecurring: yup.boolean(),
 }); 
 
 export default function CreateExpenses() {
@@ -71,7 +72,7 @@ export default function CreateExpenses() {
 					</Row>
 					<Divider />
 					<Row margin="0 0 100px 0">
-						<Column width="480px" >
+						<Column width="600px" >
 							<Row>
 								<InputLabel>
 									Valor total:
@@ -91,6 +92,13 @@ export default function CreateExpenses() {
 								<InputLabel>
 									Valor por parcela:
 									<ValueInput prefix="R$" disabled value={parcelValue} />
+								</InputLabel>
+								<InputLabel>
+									Despesa fixa:
+									<TextInput 
+										type='checkbox'
+										{...formConfig.register('isRecurring')}
+									/>
 								</InputLabel>
 							</Row>
 						</Column>
