@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, ElementRef, forwardRef } from 'react';
 import ReactSelect, { OptionsOrGroups } from 'react-select';
 
 import { defaultTheme } from '@/styles/theme/default';
@@ -23,38 +23,41 @@ interface SelectProps extends ComponentProps<typeof ReactSelect> {
 	options: SelectOptions;
 }
 
-export function Select({ width, ...rest }: SelectProps) {
-	return (
-		<ReactSelect
-			styles={{
-				container(base, props) {
-					return {
-						...base,
-						width,
-					};
-				},
-				indicatorSeparator(base, props) {
-					return {
-						display: 'none',
-					};
-				},
-				control: (baseStyles, state) => ({
-					...baseStyles,
-					boxShadow: state.isFocused
-						? `0 0 0 1px ${defaultTheme.colors.green500}`
-						: 'none',
-					borderColor: state.isFocused
-						? defaultTheme.colors.green500
-						: 'lightgray',
-					'&:hover': {
+export const Select = forwardRef<ElementRef<typeof ReactSelect>, SelectProps>(
+	function Select({ width, ...rest }: SelectProps, ref) {
+		return (
+			<ReactSelect
+				ref={ref}
+				styles={{
+					container(base, props) {
+						return {
+							...base,
+							width,
+						};
+					},
+					indicatorSeparator(base, props) {
+						return {
+							display: 'none',
+						};
+					},
+					control: (baseStyles, state) => ({
+						...baseStyles,
+						boxShadow: state.isFocused
+							? `0 0 0 1px ${defaultTheme.colors.green500}`
+							: 'none',
 						borderColor: state.isFocused
 							? defaultTheme.colors.green500
 							: 'lightgray',
-					},
-				}),
-			}}
-			noOptionsMessage={() => 'Nenhuma opção encontrada'}
-			{...rest}
-		/>
-	);
-}
+						'&:hover': {
+							borderColor: state.isFocused
+								? defaultTheme.colors.green500
+								: 'lightgray',
+						},
+					}),
+				}}
+				noOptionsMessage={() => 'Nenhuma opção encontrada'}
+				{...rest}
+			/>
+		);
+	},
+) 
