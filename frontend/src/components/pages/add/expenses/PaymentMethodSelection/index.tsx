@@ -6,10 +6,9 @@ import { toast } from 'react-toastify';
 import { ArrowSquareOut } from 'phosphor-react';
 import { useFormContext, Controller } from 'react-hook-form';
 
-import { InputLabel, Select, SelectOptionProps } from '@/components/shared/Form';
+import { InputLabel, Select, SelectOptionProps, Row, Column } from '@/components/shared/Form';
 import { Card } from '@/models/card';
 import { httpClient } from '@/providers/HTTPClient';
-import { Row, Column } from '@/styles/pages/add/expense.style';
 import { CardDetails, FieldDescription } from './styles';
 
 export function PaymentMethodSelectionSection() {

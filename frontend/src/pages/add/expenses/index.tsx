@@ -4,15 +4,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { LayoutBox } from '@/components/shared/LayoutBox';
-import { TextInput, InputLabel, ActionButtons } from '@/components/shared/Form';
+import { TextInput, InputLabel, ActionButtons, Row, Column } from '@/components/shared/Form';
 import { SEO } from '@/components/shared/SEO';
 import { PaymentMethodSelectionSection } from '@/components/pages/add/expenses/PaymentMethodSelection';
 import { ICreateExpenseFields, useCreateExpenses } from '@/hooks/pages/useCreateExpenses';
 import {
-	RegisterExpenseTitle,
 	RegisterExpenseForm,
-	Row,
-	Column,
 	Divider,
 	ValueInput,
 	FooterForm,
@@ -43,9 +40,7 @@ export default function CreateExpenses() {
 	return (
 		<FormProvider {...formConfig}>
 			<SEO title="Adicionar despesa"/>
-			<LayoutBox>
-				<RegisterExpenseTitle>Nova despesa</RegisterExpenseTitle>
-
+			<LayoutBox title='Nova despesa'>
 				<RegisterExpenseForm onSubmit={handleSubmit(createExpenseSubmit)}>
 					<Row>
 						<InputLabel>
@@ -103,12 +98,10 @@ export default function CreateExpenses() {
 							</Row>
 						</Column>
 					</Row>
-					<FooterForm>
-						<ActionButtons
-							handleCancel={goBack}
-							submitButtonText='Criar despesa'
-						/>
-					</FooterForm>
+					<ActionButtons>
+						<ActionButtons.Cancel onClick={goBack} />
+						<ActionButtons.Submit>Criar despesa</ActionButtons.Submit>
+					</ActionButtons>
 				</RegisterExpenseForm>
 			</LayoutBox>
 		</FormProvider>

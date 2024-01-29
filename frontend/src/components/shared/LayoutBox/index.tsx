@@ -1,8 +1,17 @@
-import styled from 'styled-components';
+import { LayoutBoxContainer, LayoutBoxTitle } from "./styles";
 
-export const LayoutBox = styled.main`
-	background: ${props => props.theme.colors.white};
-	padding: 1.5rem;
-	border-radius: 8px;
-	min-height: 500px;
-`;
+type LayoutBoxProps = {
+	title?: string;
+	children: React.ReactNode;
+}
+
+export function LayoutBox({ children, title }: LayoutBoxProps) {
+	const hasTitle = !!title;
+
+	return (
+		<LayoutBoxContainer>
+			{hasTitle && <LayoutBoxTitle>{title}</LayoutBoxTitle>}
+			{children}
+		</LayoutBoxContainer>
+	)
+}

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Column } from "@/styles/pages/add/expense.style";
+import { Column } from "@/components/shared/Form";
 
 export const FieldDescription = styled.span`
 	display: block;
