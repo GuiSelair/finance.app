@@ -1,6 +1,6 @@
 import { useContextSelector } from 'use-context-selector';
 
-import { Select } from '@/components/shared/Form/Select';
+import { Select } from '@/components/Form/Select';
 import { getMonths, getMonth } from '@/helpers/getMonths';
 import { getYears } from '@/helpers/getYears';
 import { AuthContext } from '@/contexts/AuthContext';

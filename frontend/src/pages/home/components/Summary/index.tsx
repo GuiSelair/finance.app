@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 
-import SummaryCard from '@/components/pages/home/SummaryCard';
+import SummaryCard from '../SummaryCard';
 import { httpClient } from '@/providers/HTTPClient';
 
 import { Container } from './styles';

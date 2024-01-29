@@ -3,17 +3,17 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { LayoutBox } from '@/components/shared/LayoutBox';
-import { TextInput, InputLabel, ActionButtons, Row, Column } from '@/components/shared/Form';
-import { SEO } from '@/components/shared/SEO';
-import { PaymentMethodSelectionSection } from '@/components/pages/add/expenses/PaymentMethodSelection';
-import { ICreateExpenseFields, useCreateExpenses } from '@/hooks/pages/useCreateExpenses';
+import { LayoutBox } from '@/components/LayoutBox';
+import { TextInput, InputLabel, ActionButtons, Row, Column } from '@/components/Form';
+import { SEO } from '@/components/SEO';
+import { PaymentMethodSelectionSection } from './components/PaymentMethodSelection';
+import { ICreateExpenseFields, useCreateExpenses } from './hooks/useCreateExpenses';
+
 import {
 	RegisterExpenseForm,
 	Divider,
 	ValueInput,
-	FooterForm,
-} from '@/styles/pages/add/expense.style';
+} from './styles';
 
 const createExpenseFormSchema = yup.object().shape({
 	name: yup.string().required('Campo obrigatório'),
@@ -68,7 +68,7 @@ export default function CreateExpenses() {
 					<Divider />
 					<Row margin="0 0 100px 0">
 						<Column width="600px" >
-							<Row>
+							<Row gap='0.5rem'>
 								<InputLabel>
 									Valor total:
 									<ValueInput 

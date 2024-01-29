@@ -11,11 +11,11 @@ import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { createColumnHelper } from '@tanstack/react-table';
 
-import { TextInput } from '@/components/shared/Form/TextInput';
-import Table from '@/components/shared/Table';
+import { TextInput } from '@/components/Form/TextInput';
+import Table from '@/components/Table';
 import { httpClient } from '@/providers/HTTPClient';
 import { ExpenseInMonth } from '@/models/expenseInMonth';
-import { ExpenseDetailsModal } from '@/components/pages/home/ExpenseDetailsModal';
+import { ExpenseDetailsModal } from '../ExpenseDetailsModal';
 import { formatCurrency } from 'helpers/formatCurrency';
 
 import {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { CheckCircle, Link } from 'phosphor-react';
 
-import { BaseModal } from '@/components/shared/BaseModal';
+import { BaseModal } from '@/components/BaseModal';
 import { ExpenseInMonth } from '@/models/expenseInMonth';
 import { defaultTheme } from '@/styles/theme/default';
 import { formatCurrency } from 'helpers/formatCurrency';

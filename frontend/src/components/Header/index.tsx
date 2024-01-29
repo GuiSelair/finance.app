@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Gear } from 'phosphor-react';
 
 import { useNavigation } from '@/hooks/useNavigation';
-import { NavLink } from '@/components/shared/NavLink';
+import { NavLink } from '@/components/NavLink';
 import { HeaderContainer, Logo, AddExpenseLink, SystemOptions } from './styles';
 
 export function Header(): JSX.Element {

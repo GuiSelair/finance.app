@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import ExpensesTable from '@/components/pages/home/ExpensesTable';
-import { SelectMonthAndYear } from '@/components/pages/home/SelectMonthAndYear';
-import { Summary } from '@/components/pages/home/Summary';
-import { SEO } from '@/components/shared/SEO';
-import { LayoutBox } from '@/components/shared/LayoutBox';
+import ExpensesTable from '@/pages/home/components/ExpensesTable';
+import { SelectMonthAndYear } from '@/pages/home/components/SelectMonthAndYear';
+import { Summary } from './components/Summary';
+import { SEO } from '@/components/SEO';
+import { LayoutBox } from '@/components/LayoutBox';
 
 import {
 	GoToCurrentMonthAndYearButton,
 	HomeContainer,
 	ListExpensesHeader,
-} from '@/styles/pages/home.style';
+} from './styles';
 
-export default function Home(): JSX.Element {
+export function HomePage(): JSX.Element {
 	const currentMonthAndYear = {
 		month: new Date().getMonth(),
 		year: new Date().getFullYear(),

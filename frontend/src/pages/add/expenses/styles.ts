@@ -1,5 +1,6 @@
-import { TextInput } from '@/components/shared/Form';
 import styled from 'styled-components';
+
+import { TextInput } from '@/components/Form';
 
 export const RegisterExpenseForm = styled.form`
 	width: 100%;

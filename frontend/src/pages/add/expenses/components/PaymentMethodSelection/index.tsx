@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { ArrowSquareOut } from 'phosphor-react';
 import { useFormContext, Controller } from 'react-hook-form';
 
-import { InputLabel, Select, SelectOptionProps, Row, Column } from '@/components/shared/Form';
+import { InputLabel, Select, SelectOptionProps, Row, Column } from '@/components/Form';
 import { Card } from '@/models/card';
 import { httpClient } from '@/providers/HTTPClient';
 import { CardDetails, FieldDescription } from './styles';

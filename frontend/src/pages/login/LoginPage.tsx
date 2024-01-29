@@ -6,16 +6,16 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { GetServerSideProps } from 'next';
 
-import { SEO } from '@/components/shared/SEO';
+import { SEO } from '@/components/SEO';
 import { AuthContext } from '@/contexts/AuthContext';
-import { InputLabel, PasswordInput, TextInput } from '@/components/shared/Form';
+import { InputLabel, PasswordInput, TextInput } from '@/components/Form';
 
 import {
 	BackgroundContainer,
 	HighlightImageContainer,
 	Content,
 	Container,
-} from '@/styles/pages/login.style';
+} from './styles';
 
 const loginInputSchema = Yup.object().shape({
 	email: Yup.string().email('Email inválido.').required('Email obrigatório'),
@@ -29,7 +29,7 @@ interface LoginInputsProps {
 	password: string;
 }
 
-export default function Login(): JSX.Element {
+export default function LoginPage(): JSX.Element {
 	const [isPending, setIsPending] = useState(false);
 	const router = useRouter();
 	const onSignIn = useContextSelector(AuthContext, value => value.onSignIn);
@@ -95,7 +95,7 @@ export default function Login(): JSX.Element {
 	);
 }
 
-Login.notUseLayout = true;
+LoginPage.notUseLayout = true;
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 	const hasAuthenticationToken =

@@ -6,7 +6,7 @@ import {
 } from '@/styles/layouts/session.style';
 import { PropsWithChildren } from 'react';
 import { useNavigation } from '@/hooks/useNavigation';
-import { NavLink } from '@/components/shared/NavLink';
+import { NavLink } from '@/components/NavLink';
 
 export const SessionLayout = ({ children }: PropsWithChildren) => {
 	const { primaryPageSelected, sessionNavigationMap, sessionPageSelected } =

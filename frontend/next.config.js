@@ -4,7 +4,8 @@ const nextConfig = {
   swcMinify: true,
 	images: {
 		domains: ['www.github.com']
-	}
+	},
+	pageExtensions: ['page.tsx', 'page.ts'],
 }
 
 module.exports = nextConfig
