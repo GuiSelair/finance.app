@@ -1,96 +1,79 @@
-import { injectable, inject } from 'tsyringe';
+import { injectable, inject, container } from 'tsyringe';
+
 import AppError from '../../../shared/errors/AppError';
 import IExpensesInMonthRepository from '../../Expense/repositories/IExpensesInMonthRepository';
-import IExpensesRepository from '../../Expense/repositories/IExpensesRepository';
-import { ICardTotalizer, IGetCardTotalizer } from '../dtos/ICardTotalizer';
-import ICardRepository from '../repositories/ICardRepository';
+import FetchCardsService from './FetchCardsService';
+import Card from '../infra/typeorm/entities/Card';
+import ExpenseInMonth from '../../Expense/infra/typeorm/entities/ExpenseInMonth';
 
-type IExpensesGroupByCard = {
-  [propName: string]: string[];
-};
+export interface ICardTotalizerReturn {
+  id: string;
+  name: string;
+  turningDay: number;
+  total: number;
+}
+
+export interface ICardTotalizerParams {
+  month: number;
+  year: number;
+  userId: string;
+}
+
 @injectable()
 export default class CardTotalizerService {
-  private cardRepository: ICardRepository;
-
   private expenseMonthRepository: IExpensesInMonthRepository;
 
-  private expensesRepository: IExpensesRepository;
-
   constructor(
-    @inject('CardRepository')
-    cardRepository: ICardRepository,
     @inject('ExpensesMonthRepository')
     expenseMonthRepository: IExpensesInMonthRepository,
-    @inject('ExpensesRepository')
-    expensesRepository: IExpensesRepository,
   ) {
     this.expenseMonthRepository = expenseMonthRepository;
-    this.cardRepository = cardRepository;
-    this.expensesRepository = expensesRepository;
   }
 
   public async execute({
     month,
     userId,
     year,
-  }: IGetCardTotalizer): Promise<ICardTotalizer[]> {
-    if (!month || !year) {
+  }: ICardTotalizerParams): Promise<ICardTotalizerReturn[]> {
+    if (isNaN(month) || isNaN(year)) {
       throw new AppError('Month and year must be valid numbers');
     }
 
-    const allExpensesOfUser = await this.expensesRepository.fetchAllExpenses(
-      userId,
-    );
+    const fetchCardsService = container.resolve(FetchCardsService);
+    const { cards: allCards } = await fetchCardsService.execute({ userId });
 
-    if (!allExpensesOfUser) {
-      return [];
-    }
+    if (!allCards.length) { return []; }
 
-    const expensesInSearchMonth =
-      await this.expenseMonthRepository.findByMonthAndYear(month, year, userId);
+    const expensesInSpecificMonth = await this.expenseMonthRepository.findByMonthAndYear(month, year, userId);
+    const expensesInMonthGroupByCard = this.getExpensesTotalGroupByCard(expensesInSpecificMonth, allCards);
 
-    const expensesGroupByCard = allExpensesOfUser.reduce(
-      (accumulator, expense) => {
-        if (!expense?.card_id) return accumulator;
+    return expensesInMonthGroupByCard;
+  }
 
-        if (!Object.keys(accumulator).includes(expense.card_id)) {
-          accumulator[expense.card_id] = [expense.id];
-        } else {
-          accumulator[expense.card_id].push(expense.id);
-        }
+  /**
+   * Calculates the total expenses grouped by card.
+   *
+   * @param expensesInMonth - The expenses in the month.
+   * @param cards - The list of cards.
+   * @returns An array of objects containing the card ID, name, turning day, and total expenses.
+   */
+  private getExpensesTotalGroupByCard(expensesInMonth: ExpenseInMonth[], cards: Card[]): ICardTotalizerReturn[] {
+    return cards.reduce<ICardTotalizerReturn[]>((accumulator, card) => {
+      const expensesInCard = expensesInMonth.filter(
+        expenseInMonth => expenseInMonth.expense.card_id === card.id,
+      );
+      const total = expensesInCard.reduce((accumulator, expenseInCard) => {
+        return accumulator + expenseInCard.value_of_parcel;
+      }, 0)
 
-        return accumulator;
-      },
-      {} as IExpensesGroupByCard,
-    );
+      accumulator.push({
+        id: card.id,
+        name: card.name,
+        turningDay: card.turning_day,
+        total: Number(total.toFixed(2)),
+      });
 
-    const allCardsDetails = await Promise.all(
-      Object.keys(expensesGroupByCard).map(cardId =>
-        this.cardRepository.findById(cardId),
-      ),
-    );
-
-    return Object.entries(expensesGroupByCard).map(
-      ([cardId, expensesId]): ICardTotalizer => {
-        const sumOfCardExpenses = expensesId.reduce(
-          (accumulator, expenseId) => {
-            const expenseFoundDetails = expensesInSearchMonth.find(
-              expenseInMonth => expenseInMonth.expense_id === expenseId,
-            );
-
-            if (!expenseFoundDetails) return accumulator;
-            return accumulator + expenseFoundDetails?.value_of_parcel;
-          },
-          0,
-        );
-
-        return {
-          cardId,
-          cardName:
-            allCardsDetails.find(card => card?.id === cardId)?.name || '',
-          total: Number(sumOfCardExpenses.toFixed(2)),
-        };
-      },
-    );
+      return accumulator;
+    }, []);
   }
 }
