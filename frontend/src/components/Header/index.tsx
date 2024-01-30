@@ -37,7 +37,7 @@ export function Header(): JSX.Element {
 			</div>
 			<div>
 				<AddExpenseLink href="/add/expenses" prefetch={false}>
-					Criar despesa
+					Adicionar despesa
 				</AddExpenseLink>
 				<SystemOptions>
 					<Link href="/config">

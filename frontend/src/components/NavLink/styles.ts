@@ -14,17 +14,17 @@ export const LinkToPage = styled(Link)<LinkToPageProps>`
 	text-decoration: none;
 	background-color: transparent;
 
+	&:hover {
+		background-color: ${props => props.theme.colors.green500};
+	}
+
 	& + a {
 		margin-left: 8px;
 	}
 
 	${props =>
-		props.active &&
+		!!props.active &&
 		css`
 			background-color: ${props => props.theme.colors.green500};
-		`}
-
-	&:hover {
-		background-color: ${props => props.theme.colors.green500};
-	}
+		`}	
 `;

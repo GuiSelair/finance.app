@@ -9,7 +9,6 @@ import { LayoutBox } from '@/components/LayoutBox';
 import {
 	GoToCurrentMonthAndYearButton,
 	HomeContainer,
-	ListExpensesHeader,
 } from './styles';
 
 export function HomePage(): JSX.Element {
@@ -93,29 +92,28 @@ export function HomePage(): JSX.Element {
 					year={selectedMonthAndYear.year}
 				/>
 				<LayoutBox>
-					<ListExpensesHeader>
-						<div>
-							<h2>Despesas</h2>
-						</div>
-						<div>
+					<LayoutBox.Header>
+						<LayoutBox.HeaderTitle>Despesas</LayoutBox.HeaderTitle>
+						<LayoutBox.HeaderButtonsContainer>
 							<GoToCurrentMonthAndYearButton
-								type="button"
-								onClick={handleGoToCurrentMonth}
-							>
-								Mês atual
-							</GoToCurrentMonthAndYearButton>
-							<SelectMonthAndYear
-								month={selectedMonthAndYear.month}
-								year={selectedMonthAndYear.year}
-								onSelectMonthAndYear={handleSelectMonthAndYear}
-							/>
-						</div>
-					</ListExpensesHeader>
-
-					<ExpensesTable
-						month={selectedMonthAndYear.month}
-						year={selectedMonthAndYear.year}
-					/>
+									type="button"
+									onClick={handleGoToCurrentMonth}
+								>
+									Mês atual
+								</GoToCurrentMonthAndYearButton>
+								<SelectMonthAndYear
+									month={selectedMonthAndYear.month}
+									year={selectedMonthAndYear.year}
+									onSelectMonthAndYear={handleSelectMonthAndYear}
+								/>
+						</LayoutBox.HeaderButtonsContainer>
+					</LayoutBox.Header>
+					<LayoutBox.Content>
+						<ExpensesTable
+							month={selectedMonthAndYear.month}
+							year={selectedMonthAndYear.year}
+						/>
+					</LayoutBox.Content>
 				</LayoutBox>
 			</HomeContainer>
 		</>
