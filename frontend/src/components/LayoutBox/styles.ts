@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { BaseExtendableProps } from '../ExtendableProps';
+import { Box } from '../Box';
 
 export const LayoutBoxContainer = styled.main`
 	background: ${props => props.theme.colors.white};
@@ -32,25 +32,25 @@ export const LayoutBoxHeaderButtonsContainer = styled.div`
 	gap: 0.5rem;
 `;
 
-export const LayoutBoxContent = styled(BaseExtendableProps)`
+export const LayoutBoxContent = styled(Box)`
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 `;
 
-export const LayoutBoxFooter = styled(BaseExtendableProps).attrs({ as: 'footer' })`
+export const LayoutBoxFooter = styled(Box).attrs({ as: 'footer' })`
 	height: 60px;
 	width: 100%;
 	display: flex;
 	align-items: center;
 `;
 
-export const LayoutBoxFooterLeftSide = styled(BaseExtendableProps)`
+export const LayoutBoxFooterLeftSide = styled(Box)`
 	justify-content: flex-start;
 	width: inherit;
 `;
 
-export const LayoutBoxFooterRightSide = styled(BaseExtendableProps)`
+export const LayoutBoxFooterRightSide = styled(Box)`
 	justify-content: flex-end;
 	width: inherit;
 `;

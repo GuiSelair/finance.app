@@ -1,13 +1,13 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { BaseExtendableProps } from "@/components/ExtendableProps";
+import { Box } from '@/components/Box';
 
-export const Row = styled(BaseExtendableProps)`
+export const Row = styled(Box)`
 	display: flex;
 	align-items: center;
 `;
 
-export const Column = styled(BaseExtendableProps)`
+export const Column = styled(Box)`
 	display: flex;
 	flex-direction: column;
 `;

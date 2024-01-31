@@ -23,4 +23,10 @@ export const TableContainer = styled.table`
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+
+	tr {
+		&:nth-child(even) {
+			background-color: #f0f3f4;
+		}
+	}
 `;
