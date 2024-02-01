@@ -3,42 +3,62 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { LayoutBox } from '@/components/LayoutBox';
-import { ActionButtons, Column, InputLabel, Row, Select, TextInput } from '@/components/Form';
+import {
+	ActionButtons,
+	Column,
+	InputLabel,
+	Row,
+	Select,
+	TextInput,
+} from '@/components/Form';
 import { SEO } from '@/components/SEO';
 
 import { useCreateCards } from './hooks/useCreateCards';
-import { createCardFormSchema, ICreateCardFields } from './constants/formSchema';
+import {
+	createCardFormSchema,
+	ICreateCardFields,
+} from './constants/formSchema';
 import { RegisterCardsForm, CreditCardIcon } from './styles';
 
 export default function CreateCardsPage() {
-	const { register, handleSubmit, control, formState: { isValid, errors } } = useForm<ICreateCardFields>({
+	const {
+		register,
+		handleSubmit,
+		control,
+		formState: { isValid, errors },
+	} = useForm<ICreateCardFields>({
 		defaultValues: {
-			creditLimit: 0
+			creditLimit: 0,
 		},
 		resolver: yupResolver(createCardFormSchema),
-	})
-	const { availableCardsOptions, handleCancel, handleCreateCard, isCreatingCard } = useCreateCards();
+	});
+	const {
+		availableCardsOptions,
+		handleCancel,
+		handleCreateCard,
+		isCreatingCard,
+	} = useCreateCards();
 
 	return (
 		<>
-			<SEO title="Adicionar cartão"/>
+			<SEO title="Adicionar cartão" />
 			<LayoutBox>
 				<LayoutBox.Header>
 					<LayoutBox.HeaderTitle>Novo cartão</LayoutBox.HeaderTitle>
 				</LayoutBox.Header>
 				<LayoutBox.Content>
-					<RegisterCardsForm onSubmit={handleSubmit(handleCreateCard)}>
+					<RegisterCardsForm>
 						<Row>
 							<InputLabel>
 								Apelido:
-								<TextInput 
-									placeholder='Insira o apelido do seu cartão aqui...'
+								<TextInput
+									placeholder="Insira o apelido do seu cartão aqui..."
 									error={errors.name?.message}
 									{...register('name')}
 								/>
 							</InputLabel>
 						</Row>
-						<Row flex={4} gap='1.5rem' padding='0 65px 0 0'>
+						<Row flex={4} gap="1.5rem" padding="0 65px 0 0">
 							<Column flex={2}>
 								<Row>
 									<InputLabel>
@@ -48,7 +68,7 @@ export default function CreateCardsPage() {
 											control={control}
 											render={({ field }) => (
 												<Select
-													placeholder='Selecione a bandeira do cartão...'
+													placeholder="Selecione a bandeira do cartão..."
 													options={availableCardsOptions}
 													{...field}
 												/>
@@ -61,22 +81,22 @@ export default function CreateCardsPage() {
 							<Column flex={1}>
 								<InputLabel>
 									Dia de melhor compra:
-									<TextInput 
-										placeholder='Dia que seu cartão vira' 
+									<TextInput
+										placeholder="Dia que seu cartão vira"
 										type="number"
-										error={errors.dueDay?.message}
-										{...register('dueDay', { valueAsNumber: true })}
+										error={errors.turningDay?.message}
+										{...register('turningDay', { valueAsNumber: true })}
 									/>
 								</InputLabel>
 							</Column>
 							<Column flex={1}>
 								<InputLabel>
 									Dia de vencimento:
-									<TextInput 
-										placeholder='Dia que você paga seu cartão' 
+									<TextInput
+										placeholder="Dia que você paga seu cartão"
 										type="number"
-										error={errors.turningDay?.message}
-										{...register('turningDay', { valueAsNumber: true })}
+										error={errors.dueDay?.message}
+										{...register('dueDay', { valueAsNumber: true })}
 									/>
 								</InputLabel>
 							</Column>
@@ -85,10 +105,10 @@ export default function CreateCardsPage() {
 							<Column>
 								<InputLabel>
 									Limite do cartão:
-									<TextInput 
-										prefix='R$' 
-										type="number" 
-										placeholder='1000'
+									<TextInput
+										prefix="R$"
+										type="number"
+										placeholder="1000"
 										error={errors.creditLimit?.message}
 										{...register('creditLimit', { valueAsNumber: true })}
 									/>
@@ -100,8 +120,13 @@ export default function CreateCardsPage() {
 				<LayoutBox.Footer>
 					<LayoutBox.FooterRightSide>
 						<ActionButtons>
-							<ActionButtons.Cancel onClick={handleCancel}/>
-							<ActionButtons.Submit disabled={!isValid || isCreatingCard}>Criar cartão</ActionButtons.Submit>
+							<ActionButtons.Cancel onClick={handleCancel} />
+							<ActionButtons.Submit
+								disabled={!isValid || isCreatingCard}
+								onClick={handleSubmit(handleCreateCard)}
+							>
+								Criar cartão
+							</ActionButtons.Submit>
 						</ActionButtons>
 					</LayoutBox.FooterRightSide>
 				</LayoutBox.Footer>

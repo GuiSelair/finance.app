@@ -64,7 +64,7 @@ class AxiosHTTPClient implements HTTPClientProps {
 
 	async delete<T>(
 		url: string,
-		config: HTTPConfigProps,
+		config: Omit<HTTPConfigProps, 'body'> = {},
 	): Promise<HTTPClientResponse<T>> {
 		const response = await this.api.delete(url, {
 			params: config.params,

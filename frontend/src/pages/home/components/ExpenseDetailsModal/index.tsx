@@ -1,5 +1,6 @@
 import React from 'react';
-import { CheckCircle, Link } from 'phosphor-react';
+import { CheckCircle, Link as LinkIcon, Trash } from 'phosphor-react';
+import Link from 'next/link';
 
 import { BaseModal } from '@/components/BaseModal';
 import { ExpenseInMonth } from '@/models/expenseInMonth';
@@ -16,19 +17,30 @@ import {
 	ExpenseDescription,
 	ExpenseDescriptionAndCardDetails,
 	ExpenseSplitDetails,
+	RemoveExpenseButton,
 } from './styles';
+import { useDeleteExpenseApi } from '../../hooks/useDeleteExpenseApi';
 
 interface ExpenseDetailsModalProps {
 	isOpenModal: boolean;
 	onClose: () => void;
 	expense: ExpenseInMonth;
+	month: number;
+	year: number;
 }
 
 export function ExpenseDetailsModal({
 	expense,
 	isOpenModal,
 	onClose,
+	month,
+	year,
 }: ExpenseDetailsModalProps) {
+	const { mutateAsync, isLoading: isDeleting } = useDeleteExpenseApi(
+		expense.expense_id,
+		month,
+		year,
+	);
 	if (!expense) return null;
 
 	const expenseTotalAmountFormatted = formatCurrency(expense?.expense?.amount);
@@ -41,6 +53,11 @@ export function ExpenseDetailsModal({
 		new Date(expense.created_at),
 		'dd/MM/yyyy',
 	);
+
+	function handleDeleteExpense() {
+		mutateAsync({});
+		onClose();
+	}
 
 	return (
 		<BaseModal
@@ -70,6 +87,16 @@ export function ExpenseDetailsModal({
 						/>
 					</p>
 				</div>
+				<div>
+					<span>Remover?</span>
+					<RemoveExpenseButton
+						size="xs"
+						onClick={handleDeleteExpense}
+						isLoading={isDeleting}
+					>
+						<Trash weight="fill" color={defaultTheme.colors.red500} />
+					</RemoveExpenseButton>
+				</div>
 			</ExpenseBaseDetails>
 			<ExpenseAmountDetails>
 				<ExpenseAmountDetailsItem>
@@ -80,10 +107,17 @@ export function ExpenseDetailsModal({
 					<span>Valor da parcela</span>
 					<strong>{expenseParcelAmountFormatted}</strong>
 				</ExpenseAmountDetailsItem>
-				<ExpenseAmountDetailsItem>
-					<span>Parcela</span>
-					<strong>{parcels}</strong>
-				</ExpenseAmountDetailsItem>
+				{expense?.expense?.is_recurring ? (
+					<ExpenseAmountDetailsItem>
+						<span>Despesa</span>
+						<strong>FIXA</strong>
+					</ExpenseAmountDetailsItem>
+				) : (
+					<ExpenseAmountDetailsItem>
+						<span>Parcela</span>
+						<strong>{parcels}</strong>
+					</ExpenseAmountDetailsItem>
+				)}
 				<ExpenseAmountDetailsItem>
 					<span>Criada em</span>
 					<p>{expenseCreatedAtFormatted}</p>
@@ -98,10 +132,12 @@ export function ExpenseDetailsModal({
 				<ExpenseCard>
 					<span>Vinculado ao</span>
 					<div>
-						<p>Nubank</p>
-						<button type="button">
-							<Link weight="bold" />
-						</button>
+						<p>{expense?.expense?.card?.name}</p>
+						<Link href="/cards/totalizers">
+							<button type="button">
+								<LinkIcon weight="bold" />
+							</button>
+						</Link>
 					</div>
 				</ExpenseCard>
 			</ExpenseDescriptionAndCardDetails>

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { ArrowSquareOut } from 'phosphor-react';
 import { useFormContext, Controller } from 'react-hook-form';
+import { isBefore, toDate } from 'date-fns';
 
 import {
 	InputLabel,
@@ -44,15 +45,20 @@ export function PaymentMethodSelectionSection() {
 		if (!userPaymentMethodSelected) return;
 
 		const { turning_day } = userPaymentMethodSelected;
-		const currentDay = new Date().getDate();
-		if (turning_day < currentDay) {
-			return `deste mês (${String(new Date().getMonth() + 2).padStart(
+		const currentMonth = new Date().getMonth();
+		const currentYear = new Date().getFullYear();
+
+		const turningDate = new Date(currentYear, currentMonth, turning_day);
+		const purchaseDate = new Date();
+
+		if (isBefore(purchaseDate, turningDate)) {
+			return `deste mês (${String(new Date().getMonth() + 1).padStart(
 				2,
 				'0',
 			)}/${new Date().getFullYear()})`;
 		}
 
-		return `do próximo mês (${String(new Date().getMonth() + 3).padStart(
+		return `do próximo mês (${String(new Date().getMonth() + 2).padStart(
 			2,
 			'0',
 		)}/${new Date().getFullYear()})`;
