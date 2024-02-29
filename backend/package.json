@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
+    "start": "NODE_ENV=production node dist/shared/infra/http/server.js",
     "dev": "NODE_ENV=development ts-node-dev --inspect --transpile-only --ignore node_modules src/shared/infra/http/server.ts",
     "migration:show": "ts-node-dev ./node_modules/typeorm/cli.js migration:show -d ./src/shared/infra/typeorm/bootstrap.ts",
     "migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run -d ./src/shared/infra/typeorm/bootstrap.ts",
@@ -54,7 +55,7 @@
     "prettier": "^2.0.5",
     "ts-jest": "^26.4.4",
     "ts-node-dev": "^1.0.0-pre.49",
-    "typescript": "^3.9.5"
+    "typescript": "^5.3.3"
   },
   "config": {
     "commitizen": {
