@@ -18,11 +18,8 @@ import { ExpenseInMonth } from '@/models/expenseInMonth';
 import { ExpenseDetailsModal } from '../ExpenseDetailsModal';
 import { formatCurrency } from 'helpers/formatCurrency';
 
-import {
-	FilterButton,
-	FilterContainer,
-	ShowExpenseDetailButton,
-} from './styles';
+import { FilterButton, FilterContainer } from './styles';
+import { Button } from '@/components/Button';
 
 interface ExpensesTableDataProps {
 	name: string;
@@ -30,6 +27,7 @@ interface ExpensesTableDataProps {
 	parcel: string;
 	parcel_amount: string;
 	is_shared: boolean;
+	is_recurring: boolean;
 	options: JSX.Element | string;
 }
 
@@ -44,33 +42,40 @@ const columns = [
 	columnBuilder.accessor('name', {
 		id: 'expense-name',
 		header: 'Nome',
-		size: 200,
+		size: 800,
 	}),
 	columnBuilder.accessor('card', {
 		id: 'expense-card',
 		header: 'Vinculado ao',
-		size: 100,
+		size: 300,
 	}),
 	columnBuilder.accessor('parcel', {
 		id: 'expense-parcel',
 		header: 'Parcela',
-		size: 50,
+		size: 300,
 	}),
 	columnBuilder.accessor('parcel_amount', {
 		id: 'expense-parcel-amount',
 		header: 'Valor da parcela',
-		size: 100,
+		size: 400,
 	}),
 	columnBuilder.display({
 		id: 'is_shared',
 		header: 'Compra dividida?',
 		cell: ({ row }) =>
-			row.original.is_shared ? (
+			row.original.is_shared && (
 				<CheckSquare weight="fill" size={24} color="#248277" />
-			) : (
-				<CheckSquare weight="fill" size={24} color="#cccccc" />
 			),
-		size: 100,
+		size: 500,
+	}),
+	columnBuilder.display({
+		id: 'is_recurring',
+		header: 'Despesa fixa?',
+		cell: ({ row }) =>
+			row.original.is_recurring && (
+				<CheckSquare weight="fill" size={24} color="#248277" />
+			),
+		size: 400,
 	}),
 	columnBuilder.display({
 		id: 'options',
@@ -134,14 +139,17 @@ export default function ExpensesTable({ month, year }: ExpensesTableProps) {
 			)} / ${String(expenseInMonth.number_total_of_parcel).padStart(2, '0')}`,
 			parcel_amount: formatCurrency(expenseInMonth.value_of_parcel),
 			is_shared: expenseInMonth.expense.split_expense,
+			is_recurring: expenseInMonth.expense.is_recurring,
 			options: (
-				<ShowExpenseDetailButton
+				<Button
 					type="button"
+					variant="outline"
+					size="sm"
 					onClick={() => handleSelectExpense(expenseInMonth)}
 				>
 					<DotsThreeOutlineVertical weight="fill" />
 					Detalhes
-				</ShowExpenseDetailButton>
+				</Button>
 			),
 		}));
 	}, [allExpensesInMonth]);
@@ -171,6 +179,8 @@ export default function ExpensesTable({ month, year }: ExpensesTableProps) {
 				isOpenModal={isOpenModal}
 				onClose={() => setIsOpenModal(false)}
 				expense={selectedExpense}
+				month={month}
+				year={year}
 			/>
 		</>
 	);
