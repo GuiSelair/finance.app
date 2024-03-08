@@ -1,17 +1,30 @@
-import { LayoutBoxContainer, LayoutBoxTitle } from "./styles";
+import { 
+	LayoutBoxContainer, 
+	LayoutBoxContent, 
+	LayoutBoxFooter, 
+	LayoutBoxFooterLeftSide, 
+	LayoutBoxFooterRightSide, 
+	LayoutBoxHeader, 
+	LayoutBoxHeaderButtonsContainer, 
+	LayoutBoxTitle
+} from "./styles";
 
 type LayoutBoxProps = {
-	title?: string;
 	children: React.ReactNode;
 }
 
-export function LayoutBox({ children, title }: LayoutBoxProps) {
-	const hasTitle = !!title;
-
+export function LayoutBox({ children }: LayoutBoxProps) {
 	return (
 		<LayoutBoxContainer>
-			{hasTitle && <LayoutBoxTitle>{title}</LayoutBoxTitle>}
 			{children}
 		</LayoutBoxContainer>
 	)
 }
+
+LayoutBox.Header = LayoutBoxHeader;
+LayoutBox.HeaderTitle = LayoutBoxTitle;
+LayoutBox.HeaderButtonsContainer = LayoutBoxHeaderButtonsContainer
+LayoutBox.Content = LayoutBoxContent;
+LayoutBox.Footer = LayoutBoxFooter;
+LayoutBox.FooterLeftSide = LayoutBoxFooterLeftSide;
+LayoutBox.FooterRightSide = LayoutBoxFooterRightSide;

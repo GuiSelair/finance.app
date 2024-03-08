@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { getDate, getMonth, getYear } from 'date-fns';
+import { setDay, getMonth, getYear, isBefore } from 'date-fns';
 
 import ICardRepository from '../../Card/repositories/ICardRepository';
 import Expense from '../infra/typeorm/entities/Expense';
@@ -61,24 +61,22 @@ class CreateExpenseInMonthService {
     purchaseDate,
     cardId,
   }: IGetFirstMonthOfExpense): Promise<number> {
-    let turningDay;
+    let turningDate: Date;
 
     if (cardId) {
       const cardFound = await this.cardRepository.findById(cardId);
       if (!cardFound) throw new AppError('[ERROR] Card not exists');
 
-      turningDay = cardFound.turning_day;
+      turningDate = setDay(new Date(), cardFound.turning_day);
     } else {
-      turningDay = getDate(purchaseDate);
+      turningDate = purchaseDate;
     }
 
-    const dayOfPurchase = getDate(purchaseDate);
-
-    if (turningDay < dayOfPurchase) {
-      return getMonth(purchaseDate) + 1;
+    if (isBefore(purchaseDate, turningDate)) {
+      return getMonth(purchaseDate);
     }
 
-    return getMonth(purchaseDate);
+    return getMonth(purchaseDate) + 1;
   }
 }
 

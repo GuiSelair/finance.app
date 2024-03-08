@@ -1,7 +1,15 @@
 import { inject, injectable } from 'tsyringe';
 
 import ICardRepository from '../repositories/ICardRepository';
-import { IFetchCardsRequest, IFetchCardsResponse } from '../dtos/IFetchCards';
+import Card from '../infra/typeorm/entities/Card';
+
+export interface IFetchCardsParams {
+  userId: string;
+}
+
+export interface IFetchCardsReturn {
+  cards: Card[];
+}
 
 @injectable()
 class FetchCardsService{
@@ -14,7 +22,7 @@ class FetchCardsService{
     this.cardRepository = cardRepository;
   }
 
-  public async execute({ userId }: IFetchCardsRequest): Promise<IFetchCardsResponse> {
+  public async execute({ userId }: IFetchCardsParams): Promise<IFetchCardsReturn> {
     const cards = await this.cardRepository.fetchAll(userId);
 
     return {

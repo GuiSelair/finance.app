@@ -5,24 +5,6 @@ export const HomeContainer = styled.div`
 	height: 800px;
 `;
 
-export const ListExpensesHeader = styled.header`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-
-	h2 {
-		font-size: ${props => props.theme.fontSizes.large};
-		color: ${props => props.theme.colors.gray400};
-		line-height: 105%;
-		font-weight: 600;
-	}
-
-	> div {
-		display: flex;
-		align-items: center;
-	}
-`;
-
 export const GoToCurrentMonthAndYearButton = styled.button`
 	all: unset;
 	border: 1px solid ${props => props.theme.colors.gray100};

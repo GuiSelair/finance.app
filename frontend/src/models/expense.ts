@@ -1,4 +1,4 @@
-import { Card } from './card';
+import { Card } from './Card';
 
 export interface Expense {
 	id: string;
@@ -8,6 +8,7 @@ export interface Expense {
 	due_date: string;
 	amount: number;
 	split_expense: boolean;
+	is_recurring: boolean;
 	share_with: string;
 	value_of_each: string;
 	card_id: string;

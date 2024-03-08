@@ -1,16 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import ExpensesTable from '@/pages/home/components/ExpensesTable';
-import { SelectMonthAndYear } from '@/pages/home/components/SelectMonthAndYear';
+import { SelectMonthAndYear } from '@/components/SelectMonthAndYear';
 import { Summary } from './components/Summary';
 import { SEO } from '@/components/SEO';
 import { LayoutBox } from '@/components/LayoutBox';
 
-import {
-	GoToCurrentMonthAndYearButton,
-	HomeContainer,
-	ListExpensesHeader,
-} from './styles';
+import { GoToCurrentMonthAndYearButton, HomeContainer } from './styles';
 
 export function HomePage(): JSX.Element {
 	const currentMonthAndYear = {
@@ -93,11 +89,9 @@ export function HomePage(): JSX.Element {
 					year={selectedMonthAndYear.year}
 				/>
 				<LayoutBox>
-					<ListExpensesHeader>
-						<div>
-							<h2>Despesas</h2>
-						</div>
-						<div>
+					<LayoutBox.Header>
+						<LayoutBox.HeaderTitle>Despesas</LayoutBox.HeaderTitle>
+						<LayoutBox.HeaderButtonsContainer>
 							<GoToCurrentMonthAndYearButton
 								type="button"
 								onClick={handleGoToCurrentMonth}
@@ -109,13 +103,14 @@ export function HomePage(): JSX.Element {
 								year={selectedMonthAndYear.year}
 								onSelectMonthAndYear={handleSelectMonthAndYear}
 							/>
-						</div>
-					</ListExpensesHeader>
-
-					<ExpensesTable
-						month={selectedMonthAndYear.month}
-						year={selectedMonthAndYear.year}
-					/>
+						</LayoutBox.HeaderButtonsContainer>
+					</LayoutBox.Header>
+					<LayoutBox.Content>
+						<ExpensesTable
+							month={selectedMonthAndYear.month}
+							year={selectedMonthAndYear.year}
+						/>
+					</LayoutBox.Content>
 				</LayoutBox>
 			</HomeContainer>
 		</>

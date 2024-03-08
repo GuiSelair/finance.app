@@ -1,32 +1,13 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-interface BaseDisplayFormProps {
-	margin?: string;
-	padding?: string;
-	alignItems?: 'center' | 'flex-start' | 'flex-end' | 'baseline' | 'stretch';
-	justifyContent?: 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly';
-	width?: string;
-	gap?: string;
-	flex?: number;
-}
+import { Box } from '@/components/Box';
 
-const BaseDisplayForm = styled.div<BaseDisplayFormProps>`
-	margin: ${({ margin }) => margin};
-	padding: ${({ padding }) => padding};
-	display: flex;
-	align-items: ${({ alignItems }) => alignItems};
-	justify-content: ${({ justifyContent }) => justifyContent};
-	width: ${({ width }) => width};
-	gap: ${({ gap }) => gap};
-	flex: ${({ flex }) => flex};
-`;
-
-export const Row = styled(BaseDisplayForm)`
+export const Row = styled(Box)`
 	display: flex;
 	align-items: center;
 `;
 
-export const Column = styled(BaseDisplayForm)`
+export const Column = styled(Box)`
 	display: flex;
 	flex-direction: column;
 `;

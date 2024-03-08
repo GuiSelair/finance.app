@@ -1,9 +1,11 @@
+import { Button } from '@/components/Button';
 import styled from 'styled-components';
 
 export const ExpenseBaseDetails = styled.div`
 	width: 100%;
 	display: grid;
-	grid-template-columns: 200px 1fr 107px;
+	grid-template-columns: 200px 1fr 107px 107px;
+	align-items: baseline;
 	margin-bottom: 1.5rem;
 	gap: 1rem;
 
@@ -136,4 +138,10 @@ export const Divider = styled.hr`
 	border-top: 1px solid ${props => props.theme.colors.gray100};
 	margin: 1rem 0;
 	padding: 0;
+`;
+
+export const RemoveExpenseButton = styled(Button).attrs({
+	variant: 'ghost',
+})`
+	background-color: ${props => props.theme.colors.red100};
 `;

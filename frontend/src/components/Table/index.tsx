@@ -1,4 +1,6 @@
+import { ReactElement } from 'react';
 import {
+	ColumnDef,
 	flexRender,
 	getCoreRowModel,
 	useReactTable,
@@ -6,8 +8,10 @@ import {
 
 import { TableContainer } from './styles';
 
+export type TableColumnsProps = ColumnDef<any, any>[];
+
 interface TableProps {
-	columns: any[];
+	columns: TableColumnsProps;
 	data: any[];
 }
 

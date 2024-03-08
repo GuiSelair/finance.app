@@ -5,10 +5,16 @@ import { Gear } from 'phosphor-react';
 import { useNavigation } from '@/hooks/useNavigation';
 import { NavLink } from '@/components/NavLink';
 import { HeaderContainer, Logo, AddExpenseLink, SystemOptions } from './styles';
+import { useContextSelector } from 'use-context-selector';
+import { AuthContext } from '@/contexts/AuthContext';
 
 export function Header(): JSX.Element {
 	const { primaryPageSelected, primaryNavigationMap, makePath } =
 		useNavigation();
+	const onSignOut = useContextSelector(
+		AuthContext,
+		context => context.onSignOut,
+	);
 
 	return (
 		<HeaderContainer>
@@ -37,13 +43,13 @@ export function Header(): JSX.Element {
 			</div>
 			<div>
 				<AddExpenseLink href="/add/expenses" prefetch={false}>
-					Criar despesa
+					Adicionar despesa
 				</AddExpenseLink>
 				<SystemOptions>
 					<Link href="/config">
 						<Gear size={24} />
 					</Link>
-					<button type="button">
+					<button type="button" onClick={onSignOut}>
 						<Image
 							src="http://www.github.com/guiselair.png"
 							alt=""
