@@ -43,6 +43,18 @@ const navigationMap = {
 		visible: true,
 		name: 'Divisões',
 	},
+	cards: {
+		title: 'Meios de pagamento',
+		navigation: [
+			{
+				name: 'Totalizadores',
+				path: 'totalizers',
+				defaultActive: true,
+			}
+		],
+		visible: true,
+		name: 'Cartões',
+	},
 } as NavigationMapProps;
 
 interface MakePathProps {

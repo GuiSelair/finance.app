@@ -1,18 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import ExpensesTable from '@/components/pages/home/ExpensesTable';
-import { SelectMonthAndYear } from '@/components/pages/home/SelectMonthAndYear';
-import { Summary } from '@/components/pages/home/Summary';
-import { SEO } from '@/components/shared/SEO';
-import { LayoutBox } from '@/components/shared/LayoutBox';
+import ExpensesTable from '@/pages/home/components/ExpensesTable';
+import { SelectMonthAndYear } from '@/components/SelectMonthAndYear';
+import { Summary } from './components/Summary';
+import { SEO } from '@/components/SEO';
+import { LayoutBox } from '@/components/LayoutBox';
 
-import {
-	GoToCurrentMonthAndYearButton,
-	HomeContainer,
-	ListExpensesHeader,
-} from '@/styles/pages/home.style';
+import { GoToCurrentMonthAndYearButton, HomeContainer } from './styles';
 
-export default function Home(): JSX.Element {
+export function HomePage(): JSX.Element {
 	const currentMonthAndYear = {
 		month: new Date().getMonth(),
 		year: new Date().getFullYear(),
@@ -93,11 +89,9 @@ export default function Home(): JSX.Element {
 					year={selectedMonthAndYear.year}
 				/>
 				<LayoutBox>
-					<ListExpensesHeader>
-						<div>
-							<h2>Despesas</h2>
-						</div>
-						<div>
+					<LayoutBox.Header>
+						<LayoutBox.HeaderTitle>Despesas</LayoutBox.HeaderTitle>
+						<LayoutBox.HeaderButtonsContainer>
 							<GoToCurrentMonthAndYearButton
 								type="button"
 								onClick={handleGoToCurrentMonth}
@@ -109,13 +103,14 @@ export default function Home(): JSX.Element {
 								year={selectedMonthAndYear.year}
 								onSelectMonthAndYear={handleSelectMonthAndYear}
 							/>
-						</div>
-					</ListExpensesHeader>
-
-					<ExpensesTable
-						month={selectedMonthAndYear.month}
-						year={selectedMonthAndYear.year}
-					/>
+						</LayoutBox.HeaderButtonsContainer>
+					</LayoutBox.Header>
+					<LayoutBox.Content>
+						<ExpensesTable
+							month={selectedMonthAndYear.month}
+							year={selectedMonthAndYear.year}
+						/>
+					</LayoutBox.Content>
 				</LayoutBox>
 			</HomeContainer>
 		</>

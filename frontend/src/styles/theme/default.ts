@@ -27,6 +27,7 @@ export const defaultTheme = {
 	},
 
 	fontSizes: {
+		xs: '0.75rem',
 		small: '0.875rem',
 		regular: '1rem',
 		medium: '1.5rem',
