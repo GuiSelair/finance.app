@@ -12,7 +12,8 @@
     "migration:create": "ts-node-dev ./node_modules/typeorm/cli.js migration:create ./src/shared/infra/typeorm/migrations/${npm_config_name}",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js -d ./src/shared/infra/typeorm/bootstrap.ts",
     "commit": "cz",
-    "test": "jest"
+    "test": "jest",
+    "production": "npm run migration:run && npm run build"
   },
   "author": "Guilherme Selair",
   "license": "ISC",
@@ -21,6 +22,7 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "date-fns": "^2.14.0",
+    "dotenv": "^16.4.5",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.0",
