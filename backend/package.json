@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "NODE_ENV=production node ./dist/src/shared/infra/http/server.js",
+    "start": "NODE_ENV=production node ./dist/shared/infra/http/server.js",
     "dev": "NODE_ENV=development ts-node-dev --inspect --transpile-only --ignore node_modules src/shared/infra/http/server.ts",
     "migration:show": "ts-node-dev ./node_modules/typeorm/cli.js migration:show -d ./src/shared/infra/typeorm/bootstrap.ts",
     "migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run -d ./src/shared/infra/typeorm/bootstrap.ts",

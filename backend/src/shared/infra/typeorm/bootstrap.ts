@@ -11,6 +11,9 @@ export const ConnectionSource = new DataSource({
   database: process.env.DB_DATABASE ?? 'finance-app',
   synchronize: true,
   logging: true,
-  entities: ['./src/modules/**/infra/typeorm/entities/*.ts'],
-  migrations: ['./src/shared/infra/typeorm/migrations/*.ts'],
+  entities: [
+    'dist/modules/**/infra/typeorm/entities/*{.ts,.js}',
+    // 'src/modules/**/infra/typeorm/entities/*{.ts,.js}',
+  ],
+  migrations: ['../dist/**/infra/typeorm/migrations/*{.ts,.js}'],
 });
