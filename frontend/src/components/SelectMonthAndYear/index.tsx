@@ -65,7 +65,7 @@ export function SelectMonthAndYear({
 	return (
 		<SelectMonthAndYearContainer>
 			<Select
-				options={months}
+				options={months as unknown as { label: string; value: string }[]}
 				value={currentMonthOption}
 				placeholder="Mês"
 				isClearable={false}
@@ -74,7 +74,7 @@ export function SelectMonthAndYear({
 				onChange={handleSelectMonth}
 			/>
 			<Select
-				options={years}
+				options={years as unknown as { label: string; value: string }[]}
 				value={currentYearOption}
 				placeholder="Ano"
 				isClearable={false}

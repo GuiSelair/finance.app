@@ -38,8 +38,6 @@ export function ExpenseDetailsModal({
 }: ExpenseDetailsModalProps) {
 	const { mutateAsync, isLoading: isDeleting } = useDeleteExpenseApi(
 		expense.expense_id,
-		month,
-		year,
 	);
 	if (!expense) return null;
 
