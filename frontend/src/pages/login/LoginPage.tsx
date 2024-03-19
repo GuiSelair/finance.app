@@ -43,13 +43,15 @@ export default function LoginPage(): JSX.Element {
 
 	const handleLoginSubmit = async (data: LoginInputsProps) => {
 		setIsPending(true);
-		await onSignIn({
+		const isLoginSuccessfull = await onSignIn({
 			email: data.email,
 			password: data.password,
 		});
-
 		setIsPending(false);
-		await router.push('/');
+
+		if (isLoginSuccessfull) {
+			await router.push('/');
+		}
 	};
 
 	return (
