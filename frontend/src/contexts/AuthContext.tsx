@@ -22,7 +22,7 @@ export interface AuthContextProps {
 		createdAt: Date;
 	};
 	token: string;
-	onSignIn: ({ email, password }: SignInProps) => Promise<void>;
+	onSignIn: ({ email, password }: SignInProps) => Promise<boolean>;
 	onSignOut: () => void;
 }
 
@@ -60,47 +60,55 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		return '';
 	});
 
-	const onSignIn = useCallback(async ({ email, password }: SignInProps) => {
-		try {
-			const response = await httpClient.post<{ token: string }>('/login', {
-				body: {
-					email,
-					password,
-				},
-			});
+	const onSignIn = useCallback(
+		async ({ email, password }: SignInProps): Promise<boolean> => {
+			try {
+				const response = await httpClient.post<{ token: string }>('/login', {
+					body: {
+						email,
+						password,
+					},
+				});
 
-			setToken(response.data.token);
-			cookies.setCookie(
-				undefined,
-				`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`,
-				response.data.token,
-				{
-					maxAge: 7 * 24 * 60 * 60, // 7 days
-				},
-			);
+				if (!response?.data?.token) throw new Error();
 
-			httpClient.applyAuthenticationToken(response.data.token);
-		} catch (error) {
-			if (error instanceof AxiosError) {
-				const errorFromServer = error.response?.data;
+				setToken(response.data.token);
+				cookies.setCookie(
+					undefined,
+					`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`,
+					response.data.token,
+					{
+						maxAge: 7 * 24 * 60 * 60, // 7 days
+					},
+				);
 
-				if (
-					errorFromServer?.message === 'Incorrect email/password combination'
-				) {
-					toast.error(AuthenticateErrors.EmailOrPasswordIncorrect, {
-						position: 'bottom-left',
-						theme: 'colored',
-					});
-					return;
+				httpClient.applyAuthenticationToken(response.data.token);
+				return true;
+			} catch (error) {
+				if (error instanceof AxiosError) {
+					const errorFromServer = error.response?.data;
+
+					if (
+						errorFromServer?.message === 'Incorrect email/password combination'
+					) {
+						toast.error(AuthenticateErrors.EmailOrPasswordIncorrect, {
+							position: 'bottom-left',
+							theme: 'colored',
+						});
+					}
+
+					return false;
 				}
-			}
 
-			toast.error(AuthenticateErrors.UnexpectedError, {
-				position: 'bottom-left',
-				theme: 'colored',
-			});
-		}
-	}, []);
+				toast.error(AuthenticateErrors.UnexpectedError, {
+					position: 'bottom-left',
+					theme: 'colored',
+				});
+				return false;
+			}
+		},
+		[],
+	);
 
 	const onSignOut = useCallback(async () => {
 		cookies.destroyCookie(
