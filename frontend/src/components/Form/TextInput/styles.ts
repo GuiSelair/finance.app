@@ -13,7 +13,9 @@ interface BaseInputStyleContainerProps {
 	isDisabled?: boolean;
 }
 
-export const BaseInputStyleContainer = styled.div<BaseInputStyleContainerProps>`
+export const BaseInputStyleContainer = styled.div.withConfig({
+	shouldForwardProp: prop => !['hasError', 'isDisabled'].includes(prop),
+})<BaseInputStyleContainerProps>`
 	display: flex;
 	align-items: center;
 	width: 100%;
