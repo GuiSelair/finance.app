@@ -30,6 +30,12 @@ const createExpenseFormSchema = yup.object().shape({
 });
 
 export default function CreateExpenses() {
+	const {
+		calculateParcelValue,
+		createExpenseSubmit,
+		goBack,
+		isCreatingExpense,
+	} = useCreateExpenses();
 	const formConfig = useForm<ICreateExpenseFields>({
 		resolver: yupResolver(createExpenseFormSchema),
 		defaultValues: {
@@ -42,8 +48,6 @@ export default function CreateExpenses() {
 		handleSubmit,
 		formState: { errors },
 	} = formConfig;
-	const { calculateParcelValue, createExpenseSubmit, goBack } =
-		useCreateExpenses();
 
 	const parcelValue =
 		calculateParcelValue(watch('totalValue'), watch('parcelQuantity')) ?? 0;
@@ -121,7 +125,11 @@ export default function CreateExpenses() {
 					<LayoutBox.FooterRightSide>
 						<ActionButtons>
 							<ActionButtons.Cancel onClick={goBack} />
-							<ActionButtons.Submit onClick={handleSubmit(createExpenseSubmit)}>
+							<ActionButtons.Submit
+								onClick={handleSubmit(createExpenseSubmit)}
+								isLoading={isCreatingExpense}
+								spinnerConfig={{ mode: 'light', size: 'sm' }}
+							>
 								Criar despesa
 							</ActionButtons.Submit>
 						</ActionButtons>

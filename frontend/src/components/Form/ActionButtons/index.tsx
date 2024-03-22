@@ -1,13 +1,15 @@
 import { ButtonsContainer } from './styles';
 
-import { Button } from '@/components/Button';
+import { Button, ButtonProps } from '@/components/Button';
 
-export function ActionButtons({ children }: { children: React.ReactNode }) {
+export function ActionButtons({
+	children,
+}: Readonly<{ children: React.ReactNode }>) {
 	return <ButtonsContainer>{children}</ButtonsContainer>;
 }
 
 ActionButtons.Cancel = function ActionButtonsCancel(
-	props: React.ButtonHTMLAttributes<HTMLButtonElement>,
+	props: Omit<ButtonProps, 'variant'>,
 ) {
 	return (
 		<Button type="button" variant="link" {...props}>
@@ -19,7 +21,7 @@ ActionButtons.Cancel = function ActionButtonsCancel(
 ActionButtons.Submit = function ActionButtonsSubmit({
 	children,
 	...rest
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+}: Omit<ButtonProps, 'variant' | 'type'>) {
 	return (
 		<Button type="submit" variant="solid" {...rest}>
 			{children}
