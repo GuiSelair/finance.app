@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createContext } from 'use-context-selector';
 import { useRouter } from 'next/router';
-import jwtDecode from 'jwt-decode';
+import { JWT } from '@/helpers/JWT';
 import { toast } from 'react-toastify';
 
 import { httpClient } from '@/providers/HTTPClient';
@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 					const errorFromServer = error.response?.data;
 
 					if (
-						errorFromServer.message === 'Incorrect email/password combination'
+						errorFromServer?.message === 'Incorrect email/password combination'
 					) {
 						toast.error(AuthenticateErrors.EmailOrPasswordIncorrect, {
 							position: 'bottom-left',
@@ -124,9 +124,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	useEffect(() => {
 		if (token) {
 			try {
-				const tokenDecoded = jwtDecode<JWTAuthenticateTokenContentProps>(token);
-				const isTokenExpired = tokenDecoded.exp * 1000 < Date.now();
+				const tokenDecoded =
+					JWT.decode<JWTAuthenticateTokenContentProps>(token);
+				if (!tokenDecoded) throw new Error();
 
+				const isTokenExpired = tokenDecoded.exp * 1000 < Date.now();
 				if (isTokenExpired) throw new Error();
 
 				setUserData({
