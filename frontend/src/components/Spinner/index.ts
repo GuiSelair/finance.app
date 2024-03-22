@@ -1,11 +1,16 @@
 import styled, { keyframes, css } from 'styled-components';
 
-interface SpinnerProps {
+export interface SpinnerProps {
 	/**
-	 * @description sm: 16px, md: 24px, lg: 32px
+	 * Variação do tamanho do spinner (sm: 16px, md: 24px, lg: 32px)
 	 * @default md
 	 */
 	size?: 'sm' | 'md' | 'lg';
+	/**
+	 * Modo de coloração do spinner (light: color white, dark: color green800)
+	 * @default dark
+	 */
+	mode?: 'light' | 'dark';
 }
 
 const spinAnimation = keyframes`
@@ -31,12 +36,15 @@ const SPINNER_SIZE_MAPPER = {
 	`,
 };
 
-export const Spinner = styled.div<SpinnerProps>`
+export const Spinner = styled.div.withConfig({
+	shouldForwardProp: prop => !['size', 'mode'].includes(prop),
+})<SpinnerProps>`
 	display: inline-block;
 	border: 3px solid transparent;
-	border-top-color: ${({ theme }) => theme.colors.green600};
+	border-top-color: ${({ theme, mode }) =>
+		mode === 'light' ? theme.colors.white : theme.colors.green800};
 	border-radius: 50%;
 	animation: ${spinAnimation} 0.5s linear infinite;
 
-	${({ size }) => SPINNER_SIZE_MAPPER[size || 'md']};
+	${({ size }) => SPINNER_SIZE_MAPPER[size ?? 'md']};
 `;

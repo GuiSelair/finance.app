@@ -6,6 +6,9 @@ const nextConfig = {
 		domains: ['www.github.com'],
 	},
 	pageExtensions: ['page.tsx', 'page.ts'],
+	compiler: {
+		styledComponents: true,
+	},
 };
 
 module.exports = nextConfig;

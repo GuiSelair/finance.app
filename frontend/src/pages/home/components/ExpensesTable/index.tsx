@@ -17,9 +17,11 @@ import { httpClient } from '@/providers/HTTPClient';
 import { ExpenseInMonth } from '@/models/expenseInMonth';
 import { ExpenseDetailsModal } from '../ExpenseDetailsModal';
 import { formatCurrency } from 'helpers/formatCurrency';
+import { Button } from '@/components/Button';
+import { Spinner } from '@/components/Spinner';
+import { Box } from '@/components/Box';
 
 import { FilterButton, FilterContainer } from './styles';
-import { Button } from '@/components/Button';
 
 interface ExpensesTableDataProps {
 	name: string;
@@ -90,37 +92,38 @@ export default function ExpensesTable({ month, year }: ExpensesTableProps) {
 	const [selectedExpense, setSelectedExpense] = useState<ExpenseInMonth>(
 		{} as ExpenseInMonth,
 	);
-	const { data: allExpensesInMonth, refetch } = useQuery(
-		['month-expenses', month, year],
-		async () => {
-			try {
-				const response = await httpClient.get<ExpenseInMonth[]>(
-					'/expenses/list',
+	const {
+		data: allExpensesInMonth,
+		refetch,
+		isLoading: isFetchingExpenses,
+	} = useQuery(['month-expenses', month, year], async () => {
+		try {
+			const response = await httpClient.get<ExpenseInMonth[]>(
+				'/expenses/list',
+				{
+					params: {
+						month,
+						year,
+					},
+				},
+			);
+
+			return response.data;
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				const errorFromServer = error.response?.data;
+
+				toast.error(
+					'Aconteceu um erro inesperado. Por favor, tente novamente...',
 					{
-						params: {
-							month,
-							year,
-						},
+						position: 'bottom-left',
+						theme: 'colored',
 					},
 				);
-
-				return response.data;
-			} catch (error) {
-				if (error instanceof AxiosError) {
-					const errorFromServer = error.response?.data;
-
-					toast.error(
-						'Aconteceu um erro inesperado. Por favor, tente novamente...',
-						{
-							position: 'bottom-left',
-							theme: 'colored',
-						},
-					);
-					throw new Error(errorFromServer.error);
-				}
+				throw new Error(errorFromServer.error);
 			}
-		},
-	);
+		}
+	});
 
 	const expenses: ExpensesTableDataProps[] = useMemo(() => {
 		if (!allExpensesInMonth) return [];
@@ -157,6 +160,14 @@ export default function ExpensesTable({ month, year }: ExpensesTableProps) {
 	useEffect(() => {
 		refetch();
 	}, [month, year]); // eslint-disable-line
+
+	if (isFetchingExpenses) {
+		return (
+			<Box alignItems="center" justifyContent="center" width="100%">
+				<Spinner size="md" mode="dark" />
+			</Box>
+		);
+	}
 
 	return (
 		<>

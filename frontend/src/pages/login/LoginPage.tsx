@@ -9,6 +9,7 @@ import { GetServerSideProps } from 'next';
 import { SEO } from '@/components/SEO';
 import { AuthContext } from '@/contexts/AuthContext';
 import { InputLabel, PasswordInput, TextInput } from '@/components/Form';
+import { Button } from '@/components/Button';
 
 import {
 	BackgroundContainer,
@@ -43,13 +44,15 @@ export default function LoginPage(): JSX.Element {
 
 	const handleLoginSubmit = async (data: LoginInputsProps) => {
 		setIsPending(true);
-		await onSignIn({
+		const isLoginSuccessfull = await onSignIn({
 			email: data.email,
 			password: data.password,
 		});
-
 		setIsPending(false);
-		await router.push('/');
+
+		if (isLoginSuccessfull) {
+			await router.push('/');
+		}
 	};
 
 	return (
@@ -84,9 +87,14 @@ export default function LoginPage(): JSX.Element {
 							/>
 						</InputLabel>
 
-						<button type="submit" disabled={isPending}>
+						<Button
+							type="submit"
+							isLoading={isPending}
+							variant="solid"
+							spinnerConfig={{ mode: 'light', size: 'md' }}
+						>
 							Entrar
-						</button>
+						</Button>
 					</Content>
 				</Container>
 				<HighlightImageContainer />

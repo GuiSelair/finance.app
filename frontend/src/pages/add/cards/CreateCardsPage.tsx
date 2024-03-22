@@ -122,8 +122,10 @@ export default function CreateCardsPage() {
 						<ActionButtons>
 							<ActionButtons.Cancel onClick={handleCancel} />
 							<ActionButtons.Submit
-								disabled={!isValid || isCreatingCard}
+								isDisabled={!isValid}
+								isLoading={isCreatingCard}
 								onClick={handleSubmit(handleCreateCard)}
+								spinnerConfig={{ mode: 'light', size: 'sm' }}
 							>
 								Criar cartão
 							</ActionButtons.Submit>

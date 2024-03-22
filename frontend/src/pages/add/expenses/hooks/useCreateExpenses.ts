@@ -69,6 +69,7 @@ export function useCreateExpenses() {
 	return {
 		calculateParcelValue,
 		createExpenseSubmit,
+		isCreatingExpense: createExpenseFetcher.isLoading,
 		goBack,
 	};
 }
