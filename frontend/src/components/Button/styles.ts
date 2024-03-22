@@ -1,9 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export interface ButtonContainerProps {
-	variant?: 'solid' | 'outline' | 'ghost' | 'link';
-	size?: 'xs' | 'sm' | 'md' | 'lg';
-}
+import { ButtonContainerProps } from './';
 
 const BUTTON_VARIANT_MAPPER = {
 	solid: css`
@@ -65,8 +62,11 @@ const BUTTON_SIZE_MAPPER = {
 	`,
 };
 
-export const ButtonContainer = styled.button<ButtonContainerProps>`
+export const ButtonContainer = styled.button.withConfig({
+	shouldForwardProp: prop => !['variant', 'size'].includes(prop),
+})<ButtonContainerProps>`
 	all: unset;
+	box-sizing: border-box;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -77,8 +77,8 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
 	transition: all 0.2s;
 	cursor: pointer;
 
-	${({ variant }) => BUTTON_VARIANT_MAPPER[variant || 'solid']};
-	${({ size }) => BUTTON_SIZE_MAPPER[size || 'md']};
+	${({ variant }) => BUTTON_VARIANT_MAPPER[variant ?? 'solid']};
+	${({ size }) => BUTTON_SIZE_MAPPER[size ?? 'md']};
 
 	&:focus {
 		box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.green500};

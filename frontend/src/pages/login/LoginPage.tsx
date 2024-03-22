@@ -9,6 +9,7 @@ import { GetServerSideProps } from 'next';
 import { SEO } from '@/components/SEO';
 import { AuthContext } from '@/contexts/AuthContext';
 import { InputLabel, PasswordInput, TextInput } from '@/components/Form';
+import { Button } from '@/components/Button';
 
 import {
 	BackgroundContainer,
@@ -86,9 +87,14 @@ export default function LoginPage(): JSX.Element {
 							/>
 						</InputLabel>
 
-						<button type="submit" disabled={isPending}>
+						<Button
+							type="submit"
+							isLoading={isPending}
+							variant="solid"
+							spinnerConfig={{ mode: 'light', size: 'md' }}
+						>
 							Entrar
-						</button>
+						</Button>
 					</Content>
 				</Container>
 				<HighlightImageContainer />
