@@ -42,7 +42,7 @@ export const Spinner = styled.div.withConfig({
 	display: inline-block;
 	border: 3px solid transparent;
 	border-top-color: ${({ theme, mode }) =>
-		mode === 'dark' ? theme.colors.green800 : theme.colors.white};
+		mode === 'light' ? theme.colors.white : theme.colors.green800};
 	border-radius: 50%;
 	animation: ${spinAnimation} 0.5s linear infinite;
 
