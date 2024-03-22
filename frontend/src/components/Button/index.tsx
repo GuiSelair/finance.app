@@ -17,7 +17,7 @@ export interface ButtonContainerProps {
 	size?: 'xs' | 'sm' | 'md' | 'lg';
 }
 
-interface ButtonProps
+export interface ButtonProps
 	extends ButtonContainerProps,
 		React.ButtonHTMLAttributes<HTMLButtonElement> {
 	isLoading?: boolean;
