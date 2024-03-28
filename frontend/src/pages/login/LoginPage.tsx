@@ -16,6 +16,8 @@ import {
 	HighlightImageContainer,
 	Content,
 	Container,
+	Logo,
+	ContertWrapper,
 } from './styles';
 
 const loginInputSchema = Yup.object().shape({
@@ -60,42 +62,47 @@ export default function LoginPage(): JSX.Element {
 			<SEO title="Faça seu login" />
 			<BackgroundContainer>
 				<Container>
-					<Content onSubmit={handleSubmit(handleLoginSubmit)}>
-						<h1>Faça seu login!</h1>
-						<h2>
-							Faça sua autenticação para começarmos a gerenciar suas despesas
-						</h2>
+					<ContertWrapper>
+						<Logo>
+							<strong>Finance</strong>.app
+						</Logo>
+						<Content onSubmit={handleSubmit(handleLoginSubmit)}>
+							<h1>Faça seu login!</h1>
+							<h2>
+								Faça sua autenticação para começarmos a gerenciar suas despesas
+							</h2>
 
-						<InputLabel>
-							Email:
-							<TextInput
-								type="email"
-								error={errors?.email?.message}
-								placeholder="Insira sua email"
-								{...register('email')}
-							/>
-						</InputLabel>
+							<InputLabel>
+								Email:
+								<TextInput
+									type="email"
+									error={errors?.email?.message}
+									placeholder="Insira sua email"
+									{...register('email')}
+								/>
+							</InputLabel>
 
-						<InputLabel>
-							Senha:
-							<PasswordInput
-								type="password"
-								id="password"
-								error={errors?.password?.message}
-								placeholder="Insira sua senha"
-								{...register('password')}
-							/>
-						</InputLabel>
+							<InputLabel>
+								Senha:
+								<PasswordInput
+									type="password"
+									id="password"
+									error={errors?.password?.message}
+									placeholder="Insira sua senha"
+									{...register('password')}
+								/>
+							</InputLabel>
 
-						<Button
-							type="submit"
-							isLoading={isPending}
-							variant="solid"
-							spinnerConfig={{ mode: 'light', size: 'md' }}
-						>
-							Entrar
-						</Button>
-					</Content>
+							<Button
+								type="submit"
+								isLoading={isPending}
+								variant="solid"
+								spinnerConfig={{ mode: 'light', size: 'md' }}
+							>
+								Entrar
+							</Button>
+						</Content>
+					</ContertWrapper>
 				</Container>
 				<HighlightImageContainer />
 			</BackgroundContainer>
