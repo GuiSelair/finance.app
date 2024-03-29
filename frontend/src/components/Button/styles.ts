@@ -58,12 +58,12 @@ const BUTTON_SIZE_MAPPER = {
 	`,
 	lg: css`
 		padding: 14px 18px;
-		font-size: ${({ theme }) => theme.fontSizes.regular};
+		font-size: ${({ theme }) => theme.fontSizes['semi-medium']};
 	`,
 };
 
 export const ButtonContainer = styled.button.withConfig({
-	shouldForwardProp: prop => !['variant', 'size'].includes(prop),
+	shouldForwardProp: prop => !['variant', 'size', 'fullWidth'].includes(prop),
 })<ButtonContainerProps>`
 	all: unset;
 	box-sizing: border-box;
@@ -73,7 +73,7 @@ export const ButtonContainer = styled.button.withConfig({
 	text-align: center;
 	border-radius: 8px;
 	gap: 8px;
-
+	width: ${({ fullWidth }) => (fullWidth ? '100%' : 'fit-content')};
 	transition: all 0.2s;
 	cursor: pointer;
 
