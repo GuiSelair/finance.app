@@ -12,12 +12,15 @@ import { InputLabel, PasswordInput, TextInput } from '@/components/Form';
 import { Button } from '@/components/Button';
 
 import {
-	BackgroundContainer,
+	LoginContainer,
 	HighlightImageContainer,
-	Content,
-	Container,
-	Logo,
-	ContertWrapper,
+	LoginFormContent,
+	HeaderLogo,
+	ResponsiveContainer,
+	LoginContentCenter,
+	LoginSubtitle,
+	LoginTitle,
+	LoginFormSubmitButton,
 } from './styles';
 
 const loginInputSchema = Yup.object().shape({
@@ -60,17 +63,17 @@ export default function LoginPage(): JSX.Element {
 	return (
 		<>
 			<SEO title="Faça seu login" />
-			<BackgroundContainer>
-				<Container>
-					<ContertWrapper>
-						<Logo>
+			<LoginContainer>
+				<LoginContentCenter>
+					<ResponsiveContainer>
+						<HeaderLogo>
 							<strong>Finance</strong>.app
-						</Logo>
-						<Content onSubmit={handleSubmit(handleLoginSubmit)}>
-							<h1>Faça seu login!</h1>
-							<h2>
-								Faça sua autenticação para começarmos a gerenciar suas despesas
-							</h2>
+						</HeaderLogo>
+						<LoginFormContent onSubmit={handleSubmit(handleLoginSubmit)}>
+							<LoginTitle>Faça seu login!</LoginTitle>
+							<LoginSubtitle>
+								Faça sua autenticação para começar a gerenciar suas despesas.
+							</LoginSubtitle>
 
 							<InputLabel>
 								Email:
@@ -93,19 +96,21 @@ export default function LoginPage(): JSX.Element {
 								/>
 							</InputLabel>
 
-							<Button
+							<LoginFormSubmitButton
 								type="submit"
 								isLoading={isPending}
 								variant="solid"
+								size="lg"
 								spinnerConfig={{ mode: 'light', size: 'md' }}
+								fullWidth
 							>
 								Entrar
-							</Button>
-						</Content>
-					</ContertWrapper>
-				</Container>
+							</LoginFormSubmitButton>
+						</LoginFormContent>
+					</ResponsiveContainer>
+				</LoginContentCenter>
 				<HighlightImageContainer />
-			</BackgroundContainer>
+			</LoginContainer>
 		</>
 	);
 }
