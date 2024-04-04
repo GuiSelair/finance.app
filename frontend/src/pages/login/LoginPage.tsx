@@ -12,10 +12,15 @@ import { InputLabel, PasswordInput, TextInput } from '@/components/Form';
 import { Button } from '@/components/Button';
 
 import {
-	BackgroundContainer,
+	LoginContainer,
 	HighlightImageContainer,
-	Content,
-	Container,
+	LoginFormContent,
+	HeaderLogo,
+	ResponsiveContainer,
+	LoginContentCenter,
+	LoginSubtitle,
+	LoginTitle,
+	LoginFormSubmitButton,
 } from './styles';
 
 const loginInputSchema = Yup.object().shape({
@@ -58,47 +63,54 @@ export default function LoginPage(): JSX.Element {
 	return (
 		<>
 			<SEO title="Faça seu login" />
-			<BackgroundContainer>
-				<Container>
-					<Content onSubmit={handleSubmit(handleLoginSubmit)}>
-						<h1>Faça seu login!</h1>
-						<h2>
-							Faça sua autenticação para começarmos a gerenciar suas despesas
-						</h2>
+			<LoginContainer>
+				<LoginContentCenter>
+					<ResponsiveContainer>
+						<HeaderLogo>
+							<strong>Finance</strong>.app
+						</HeaderLogo>
+						<LoginFormContent onSubmit={handleSubmit(handleLoginSubmit)}>
+							<LoginTitle>Faça seu login!</LoginTitle>
+							<LoginSubtitle>
+								Faça sua autenticação para começar a gerenciar suas despesas.
+							</LoginSubtitle>
 
-						<InputLabel>
-							Email:
-							<TextInput
-								type="email"
-								error={errors?.email?.message}
-								placeholder="Insira sua email"
-								{...register('email')}
-							/>
-						</InputLabel>
+							<InputLabel>
+								Email:
+								<TextInput
+									type="email"
+									error={errors?.email?.message}
+									placeholder="Insira sua email"
+									{...register('email')}
+								/>
+							</InputLabel>
 
-						<InputLabel>
-							Senha:
-							<PasswordInput
-								type="password"
-								id="password"
-								error={errors?.password?.message}
-								placeholder="Insira sua senha"
-								{...register('password')}
-							/>
-						</InputLabel>
+							<InputLabel>
+								Senha:
+								<PasswordInput
+									type="password"
+									id="password"
+									error={errors?.password?.message}
+									placeholder="Insira sua senha"
+									{...register('password')}
+								/>
+							</InputLabel>
 
-						<Button
-							type="submit"
-							isLoading={isPending}
-							variant="solid"
-							spinnerConfig={{ mode: 'light', size: 'md' }}
-						>
-							Entrar
-						</Button>
-					</Content>
-				</Container>
+							<LoginFormSubmitButton
+								type="submit"
+								isLoading={isPending}
+								variant="solid"
+								size="lg"
+								spinnerConfig={{ mode: 'light', size: 'md' }}
+								fullWidth
+							>
+								Entrar
+							</LoginFormSubmitButton>
+						</LoginFormContent>
+					</ResponsiveContainer>
+				</LoginContentCenter>
 				<HighlightImageContainer />
-			</BackgroundContainer>
+			</LoginContainer>
 		</>
 	);
 }
