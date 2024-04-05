@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { BaseModal } from '@/components/BaseModal';
 import { ExpenseInMonth } from '@/models/expenseInMonth';
 import { defaultTheme } from '@/styles/theme/default';
-import { formatCurrency } from 'helpers/formatCurrency';
-import { dateFormat } from 'helpers/dateFormat';
+import { formatCurrency } from '@/helpers/formatCurrency';
+import { dateFormat } from '@/helpers/dateFormat';
+import { useDeleteExpenseApi } from '@/hooks/api/useDeleteExpenseApi';
 
 import {
 	Divider,
@@ -18,8 +19,7 @@ import {
 	ExpenseDescriptionAndCardDetails,
 	ExpenseSplitDetails,
 	RemoveExpenseButton,
-} from './styles';
-import { useDeleteExpenseApi } from '../../hooks/useDeleteExpenseApi';
+} from './ExpenseDetailsModal.styles';
 
 interface ExpenseDetailsModalProps {
 	isOpenModal: boolean;

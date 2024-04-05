@@ -5,7 +5,7 @@ import {
 	OptionsContainer,
 	CardContent,
 	PriceContainer,
-} from './styles';
+} from './SummaryCard.styles';
 
 interface SummaryCardProps {
 	icon?: React.ComponentType<IconProps>;
@@ -15,7 +15,7 @@ interface SummaryCardProps {
 	variant?: 'info' | 'error' | 'success';
 }
 
-export default function SummaryCard({
+export function SummaryCard({
 	title,
 	value,
 	icon: Icon,

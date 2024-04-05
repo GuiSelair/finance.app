@@ -4,11 +4,11 @@ import { useQuery } from 'react-query';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 
-import SummaryCard from '../SummaryCard';
+import { SummaryCard } from '../SummaryCard';
 import { httpClient } from '@/providers/HTTPClient';
 import { Spinner } from '@/components/Spinner';
 
-import { Container } from './styles';
+import { Container } from './Summary.styles';
 
 interface MonthBalanceProps {
 	economy: number;

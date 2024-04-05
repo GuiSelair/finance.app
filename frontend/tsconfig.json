@@ -14,19 +14,8 @@
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"incremental": true,
-		"baseUrl": "./src/",
 		"paths": {
-			"@/components/*": ["components/*"],
-			"@/pages/*": ["pages/*"],
-			"@/styles/*": ["styles/*"],
-			"@/contexts/*": ["contexts/*"],
-			"@/providers/*": ["providers/*"],
-			"@/errors/*": ["errors/*"],
-			"@/layouts/*": ["layouts/*"],
-			"@/hooks/*": ["hooks/*"],
-			"@/models/*": ["models/*"],
-			"@/helpers/*": ["helpers/*"],
-			"@/services/*": ["services/*"]
+			"@/*": ["./src/*"]
 		}
 	},
 	"include": ["src", ".eslintrc.json"],

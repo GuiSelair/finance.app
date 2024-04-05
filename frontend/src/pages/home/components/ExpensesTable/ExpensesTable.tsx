@@ -16,12 +16,12 @@ import Table from '@/components/Table';
 import { httpClient } from '@/providers/HTTPClient';
 import { ExpenseInMonth } from '@/models/expenseInMonth';
 import { ExpenseDetailsModal } from '../ExpenseDetailsModal';
-import { formatCurrency } from 'helpers/formatCurrency';
+import { formatCurrency } from '@/helpers/formatCurrency';
 import { Button } from '@/components/Button';
 import { Spinner } from '@/components/Spinner';
 import { Box } from '@/components/Box';
 
-import { FilterButton, FilterContainer } from './styles';
+import { FilterButton, FilterContainer } from './ExpensesTable.styles';
 
 interface ExpensesTableDataProps {
 	name: string;
@@ -87,7 +87,7 @@ const columns = [
 	}),
 ];
 
-export default function ExpensesTable({ month, year }: ExpensesTableProps) {
+export function ExpensesTable({ month, year }: ExpensesTableProps) {
 	const [isOpenModal, setIsOpenModal] = useState(false);
 	const [selectedExpense, setSelectedExpense] = useState<ExpenseInMonth>(
 		{} as ExpenseInMonth,
