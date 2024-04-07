@@ -11,11 +11,7 @@ export function useLogin() {
 	const router = useRouter();
 	const [isAuthenticating, setIsAuthenticating] = useState(false);
 	const onSignIn = useContextSelector(AuthContext, value => value.onSignIn);
-	const {
-		register,
-		formState: { errors: validationErrors },
-		handleSubmit,
-	} = useForm<LoginFieldsType>({
+	const formSchema = useForm<LoginFieldsType>({
 		resolver: yupResolver(loginFormSchema),
 	});
 
@@ -32,13 +28,12 @@ export function useLogin() {
 		}
 	}
 
-	const handleFormSubmit = handleSubmit(handleLoginSubmit);
+	const handleFormSubmit = formSchema.handleSubmit(handleLoginSubmit);
 
 	return {
-		form: {
-			register,
-			validationErrors,
-			handleFormSubmit,
+		formSchema: {
+			...formSchema,
+			handleSubmit: handleFormSubmit,
 		},
 		isAuthenticating,
 	};

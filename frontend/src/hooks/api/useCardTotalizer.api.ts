@@ -1,20 +1,39 @@
-import { CardService } from '@/services/http/cardService';
 import { useQuery } from 'react-query';
 import { toast } from 'react-toastify';
 
-interface IUseFetchCardTotalizer {
+import { httpClient } from '@/providers/HTTPClient';
+
+interface IFetchCardTotalizerParams {
 	month: number;
 	year: number;
 }
 
-export const useCardTotalizerApi = ({ month, year }: IUseFetchCardTotalizer) =>
+interface IFetchCardTotalizerReturn {
+	id: string;
+	name: string;
+	turningDay: number;
+	total: number;
+}
+
+export const useCardTotalizerApi = ({
+	month,
+	year,
+}: IFetchCardTotalizerParams) =>
 	useQuery(
 		['cardTotalizer', month, year],
 		async () => {
-			return CardService.fetchCardTotalizer({
-				month,
-				year,
-			});
+			const apiResponse = await httpClient.get<IFetchCardTotalizerReturn[]>(
+				'/cards/totalizers',
+				{
+					params: {
+						month,
+						year,
+					},
+				},
+			);
+
+			const data = apiResponse.data;
+			return data;
 		},
 		{
 			onError: () => {

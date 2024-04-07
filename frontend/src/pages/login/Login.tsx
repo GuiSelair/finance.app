@@ -15,9 +15,13 @@ import {
 } from './Login.styles';
 
 export default function LoginPage() {
-	const { form, isAuthenticating } = useLogin();
+	const { formSchema, isAuthenticating } = useLogin();
 
-	const { handleFormSubmit, register, validationErrors } = form;
+	const {
+		handleSubmit,
+		register,
+		formState: { errors: validationErrors },
+	} = formSchema;
 
 	return (
 		<>
@@ -28,7 +32,7 @@ export default function LoginPage() {
 						<HeaderLogo>
 							<strong>Finance</strong>.app
 						</HeaderLogo>
-						<LoginFormContent onSubmit={handleFormSubmit}>
+						<LoginFormContent onSubmit={handleSubmit}>
 							<LoginTitle>Faça seu login!</LoginTitle>
 							<LoginSubtitle>
 								Faça sua autenticação para começar a gerenciar suas despesas.
