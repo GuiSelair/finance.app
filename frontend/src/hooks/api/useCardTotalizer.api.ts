@@ -7,10 +7,7 @@ interface IUseFetchCardTotalizer {
 	year: number;
 }
 
-export const useFetchCardTotalizerApi = ({
-	month,
-	year,
-}: IUseFetchCardTotalizer) =>
+export const useCardTotalizerApi = ({ month, year }: IUseFetchCardTotalizer) =>
 	useQuery(
 		['cardTotalizer', month, year],
 		async () => {

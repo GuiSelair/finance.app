@@ -7,7 +7,7 @@ import { ExpenseInMonth } from '@/models/expenseInMonth';
 import { defaultTheme } from '@/styles/theme/default';
 import { formatCurrency } from '@/helpers/formatCurrency';
 import { dateFormat } from '@/helpers/dateFormat';
-import { useDeleteExpenseApi } from '@/hooks/api/useDeleteExpenseApi';
+import { useDeleteExpenseApi } from '@/hooks/api/useDeleteExpense.api';
 
 import {
 	Divider,
@@ -35,7 +35,7 @@ export function ExpenseDetailsModal({
 	onClose,
 	month,
 	year,
-}: ExpenseDetailsModalProps) {
+}: Readonly<ExpenseDetailsModalProps>) {
 	const { mutateAsync, isLoading: isDeleting } = useDeleteExpenseApi(
 		expense.expense_id,
 	);
