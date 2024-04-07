@@ -1,7 +1,5 @@
 import React from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { FormProvider } from 'react-hook-form';
 
 import { LayoutBox } from '@/components/LayoutBox';
 import {
@@ -12,48 +10,32 @@ import {
 	Column,
 } from '@/components/Form';
 import { SEO } from '@/components/SEO';
+
 import { PaymentMethodSelectionSection } from './components/PaymentMethodSelection';
+import { useCreateExpense } from './hooks/useCreateExpense';
 import {
-	ICreateExpenseFields,
-	useCreateExpenses,
-} from './hooks/useCreateExpenses';
+	RegisterExpenseForm,
+	Divider,
+	ValueInput,
+} from './CreateExpense.styles';
 
-import { RegisterExpenseForm, Divider, ValueInput } from './styles';
-
-const createExpenseFormSchema = yup.object().shape({
-	name: yup.string().required('Campo obrigatório'),
-	category: yup.string(),
-	totalValue: yup.string().required('Campo obrigatório'),
-	parcelQuantity: yup.number().required('Campo obrigatório'),
-	paymentMethod: yup.object().required('Campo obrigatório'),
-	isRecurring: yup.boolean(),
-});
-
-export default function CreateExpenses() {
+export default function CreateExpensePage() {
 	const {
-		calculateParcelValue,
 		createExpenseSubmit,
 		goBack,
 		isCreatingExpense,
-	} = useCreateExpenses();
-	const formConfig = useForm<ICreateExpenseFields>({
-		resolver: yupResolver(createExpenseFormSchema),
-		defaultValues: {
-			parcelQuantity: 1,
-		},
-	});
+		formSchema,
+		parcelValue,
+	} = useCreateExpense();
 
 	const {
-		watch,
+		register,
 		handleSubmit,
 		formState: { errors },
-	} = formConfig;
-
-	const parcelValue =
-		calculateParcelValue(watch('totalValue'), watch('parcelQuantity')) ?? 0;
+	} = formSchema;
 
 	return (
-		<FormProvider {...formConfig}>
+		<FormProvider {...formSchema}>
 			<SEO title="Adicionar despesa" />
 			<LayoutBox>
 				<LayoutBox.Header>
@@ -67,7 +49,7 @@ export default function CreateExpenses() {
 								<TextInput
 									placeholder="Insira o nome de sua despesa aqui"
 									error={errors.name?.message}
-									{...formConfig.register('name')}
+									{...register('name')}
 								/>
 							</InputLabel>
 						</Row>
@@ -80,7 +62,7 @@ export default function CreateExpenses() {
 								<TextInput
 									placeholder="Insira a categoria de sua despesa aqui..."
 									error={errors.category?.message}
-									{...formConfig.register('category')}
+									{...register('category')}
 								/>
 							</InputLabel>
 						</Row>
@@ -93,14 +75,16 @@ export default function CreateExpenses() {
 										<ValueInput
 											prefix="R$"
 											error={errors.totalValue?.message}
-											{...formConfig.register('totalValue')}
+											{...register('totalValue', {
+												valueAsNumber: true,
+											})}
 										/>
 									</InputLabel>
 									<InputLabel>
 										Parcelas:
 										<ValueInput
 											error={errors.parcelQuantity?.message}
-											{...formConfig.register('parcelQuantity', {
+											{...register('parcelQuantity', {
 												valueAsNumber: true,
 											})}
 										/>
@@ -111,10 +95,7 @@ export default function CreateExpenses() {
 									</InputLabel>
 									<InputLabel>
 										Despesa fixa:
-										<TextInput
-											type="checkbox"
-											{...formConfig.register('isRecurring')}
-										/>
+										<TextInput type="checkbox" {...register('isRecurring')} />
 									</InputLabel>
 								</Row>
 							</Column>

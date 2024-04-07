@@ -1,33 +1,18 @@
-import { useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useMemo } from 'react';
 import Link from 'next/link';
-import { toast } from 'react-toastify';
-import { ArrowSquareOut } from 'phosphor-react';
+import { ArrowSquareOut as ArrowSquareOutIcon } from 'phosphor-react';
 import { useFormContext, Controller } from 'react-hook-form';
-import { isBefore, toDate } from 'date-fns';
+import { isBefore } from 'date-fns';
 
-import {
-	InputLabel,
-	Select,
-	SelectOptionProps,
-	Row,
-	Column,
-} from '@/components/Form';
-import { Card } from '@/models/Card';
-import { httpClient } from '@/providers/HTTPClient';
-import { CardDetails, FieldDescription } from './styles';
+import { InputLabel, Select, Row, Column } from '@/components/Form';
+import { CardDetails, FieldDescription } from './PaymentMethodSelection.styles';
+import { useListCardsApi } from '@/hooks/api/useListCards.api';
+import { CreateExpenseFieldsType } from '../../constants/formSchema';
 
 export function PaymentMethodSelectionSection() {
-	const [paymentMethodOptionSelected, setPaymentMethodOptionSelected] =
-		useState<SelectOptionProps | null>(null);
-	const { data: userAllPaymentMethods, isError } = useQuery(
-		'payment-methods',
-		async () => {
-			const { data } = await httpClient.get<{ cards: Card[] }>('/cards/list');
-			return data.cards;
-		},
-	);
-	const { control } = useFormContext();
+	const { data: userAllPaymentMethods } = useListCardsApi();
+	const { control, watch } = useFormContext<CreateExpenseFieldsType>();
+	const paymentMethodOptionSelected = watch('paymentMethod') ?? undefined;
 
 	const paymentMethodsOptions = useMemo(() => {
 		if (!userAllPaymentMethods?.length) return;
@@ -64,20 +49,12 @@ export function PaymentMethodSelectionSection() {
 		)}/${new Date().getFullYear()})`;
 	};
 
-	if (isError) {
-		toast.error(
-			'Ocorreu um erro ao carregar os meios de pagamento. Tente novamente mais tarde.',
-		);
-		return null;
-	}
-
 	return (
 		<Row margin="0.5rem 0 0 0">
 			<Column width="418px">
 				<InputLabel>
 					Meio de pagamento:
 					<div>
-						{/* TODO: Refatorar */}
 						<Controller
 							name="paymentMethod"
 							control={control}
@@ -86,27 +63,16 @@ export function PaymentMethodSelectionSection() {
 									isLoading={!paymentMethodsOptions}
 									placeholder="Selecione o meio de pagamento"
 									options={paymentMethodsOptions ?? []}
-									value={paymentMethodOptionSelected}
-									onChange={value => {
-										setPaymentMethodOptionSelected(value as SelectOptionProps);
-										field.onChange(value);
-									}}
+									{...field}
 								/>
 							)}
 						/>
-						{/* <Select
-							isLoading={!paymentMethodsOptions}
-							placeholder="Selecione o meio de pagamento"
-							options={paymentMethodsOptions ?? []}
-							value={paymentMethodOptionSelected}
-							onChange={(value) => setPaymentMethodOptionSelected(value as SelectOptionProps)}
-						/> */}
 						<FieldDescription>
-							Não encontrou o meio de pagamento?
+							Não encontrou o meio de pagamento?{' '}
 							<strong>
 								<Link href={'/add/cards'} prefetch={false}>
 									Crie um aqui!
-									<ArrowSquareOut />
+									<ArrowSquareOutIcon />
 								</Link>
 							</strong>
 						</FieldDescription>
