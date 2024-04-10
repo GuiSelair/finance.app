@@ -1,6 +1,7 @@
-import { LinkProps } from 'next/link';
 import { PropsWithChildren } from 'react';
-import { LinkToPage } from './styles';
+import { LinkProps } from 'next/link';
+
+import { LinkToPage } from './NavLink.styles';
 
 interface NavLinkProps extends LinkProps {
 	href: string;

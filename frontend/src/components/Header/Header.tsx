@@ -4,7 +4,12 @@ import { Gear } from 'phosphor-react';
 
 import { useNavigation } from '@/hooks/useNavigation';
 import { NavLink } from '@/components/NavLink';
-import { HeaderContainer, Logo, AddExpenseLink, SystemOptions } from './styles';
+import {
+	HeaderContainer,
+	Logo,
+	AddExpenseLink,
+	SystemOptions,
+} from './Header.styles';
 import { useContextSelector } from 'use-context-selector';
 import { AuthContext } from '@/contexts/AuthContext';
 

@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 import { createColumnHelper } from '@tanstack/react-table';
 
 import { TextInput } from '@/components/Form/TextInput';
-import Table from '@/components/Table';
+import { Table } from '@/components/Table';
 import { httpClient } from '@/providers/HTTPClient';
 import { ExpenseInMonth } from '@/models/expenseInMonth';
 import { ExpenseDetailsModal } from '../ExpenseDetailsModal';

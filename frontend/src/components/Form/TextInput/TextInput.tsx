@@ -1,7 +1,12 @@
 import { forwardRef } from 'react';
 import { IconProps, WarningCircle } from 'phosphor-react';
 
-import { Container, BaseInputStyleContainer, Error, Prefix } from './styles';
+import {
+	Container,
+	BaseInputStyleContainer,
+	Error,
+	Prefix,
+} from './TextInput.styles';
 
 export interface BaseInputProps
 	extends React.InputHTMLAttributes<HTMLInputElement> {

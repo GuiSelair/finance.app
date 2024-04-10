@@ -1,6 +1,6 @@
-import Head from "next/head";
+import Head from 'next/head';
 
-interface ISEO {
+interface ISEOProps {
 	title: string;
 	description?: string;
 	image?: string;
@@ -16,9 +16,9 @@ export function SEO({
 	shouldExcludeTitleSuffix = false,
 	shouldIndexPage = true,
 	children,
-}: ISEO) {
+}: Readonly<ISEOProps>) {
 	const pageTitle = `${title} ${
-		!shouldExcludeTitleSuffix ? "| FinanceAPP" : ""
+		!shouldExcludeTitleSuffix ? '| FinanceAPP' : ''
 	}`;
 	const pageImage = image ? `${image}` : null;
 
@@ -44,7 +44,7 @@ export function SEO({
 			<meta content="pt_BR" property="og:locale" />
 			<meta content="website" property="og:type" />
 			<meta content={pageTitle} property="og:site_name" />
-			
+
 			{pageImage && (
 				<>
 					<meta content={pageImage} property="og:image" />

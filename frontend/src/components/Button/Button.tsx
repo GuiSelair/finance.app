@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Spinner, SpinnerProps } from '../Spinner';
 
-import { ButtonContainer } from './styles';
+import { ButtonContainer } from './Button.styles';
 
 export interface ButtonContainerProps {
 	/**

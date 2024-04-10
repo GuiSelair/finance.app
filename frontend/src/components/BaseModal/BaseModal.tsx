@@ -1,5 +1,5 @@
-import * as Dialog from '@radix-ui/react-dialog';
 import { PropsWithChildren } from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'phosphor-react';
 
 import {
@@ -8,7 +8,7 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalOverlay,
-} from './styles';
+} from './BaseModal.styles';
 
 interface BaseModalProps {
 	title: string;

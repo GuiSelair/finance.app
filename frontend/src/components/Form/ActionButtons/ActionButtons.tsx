@@ -1,6 +1,6 @@
-import { ButtonsContainer } from './styles';
-
 import { Button, ButtonProps } from '@/components/Button';
+
+import { ButtonsContainer } from './ActionButtons.styles';
 
 export function ActionButtons({
 	children,

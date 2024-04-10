@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import * as Dialog from '@radix-ui/react-dialog';
+import { Content, Overlay } from '@radix-ui/react-dialog';
 
-export const ModalContainer = styled(Dialog.Content)`
+export const ModalContainer = styled(Content)`
 	width: 50rem;
 	background: ${({ theme }) => theme.colors.white};
 	border-radius: 0.5rem;
@@ -13,7 +13,7 @@ export const ModalContainer = styled(Dialog.Content)`
 	transform: translate(-50%, -50%);
 `;
 
-export const ModalOverlay = styled(Dialog.Overlay)`
+export const ModalOverlay = styled(Overlay)`
 	position: fixed;
 	width: 100vw;
 	height: 1000vh;

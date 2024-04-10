@@ -1,4 +1,3 @@
-import { ReactElement } from 'react';
 import {
 	ColumnDef,
 	flexRender,
@@ -6,7 +5,7 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 
-import { TableContainer } from './styles';
+import { TableContainer } from './Table.styles';
 
 export type TableColumnsProps = ColumnDef<any, any>[];
 
@@ -15,7 +14,7 @@ interface TableProps {
 	data: any[];
 }
 
-export default function Table({ columns, data }: TableProps) {
+export function Table({ columns, data }: Readonly<TableProps>) {
 	const table = useReactTable({
 		columns,
 		data,

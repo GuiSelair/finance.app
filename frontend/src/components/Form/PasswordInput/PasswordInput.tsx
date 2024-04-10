@@ -1,8 +1,12 @@
 import { useState, forwardRef } from 'react';
 import { Eye, EyeSlash, IconProps, WarningCircle } from 'phosphor-react';
 
-import { BaseInputStyleContainer, Error, Container } from '../TextInput/styles';
-import { HiddenButton } from './styles';
+import {
+	BaseInputStyleContainer,
+	Error,
+	Container,
+} from '../TextInput/TextInput.styles';
+import { HiddenButton } from './PasswordInput.styles';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	icon?: React.ComponentType<IconProps>;

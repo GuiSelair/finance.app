@@ -5,7 +5,7 @@ import { getMonths, getMonth } from '@/helpers/getMonths';
 import { getYears } from '@/helpers/getYears';
 import { AuthContext } from '@/contexts/AuthContext';
 
-import { SelectMonthAndYearContainer } from './styles';
+import { SelectMonthAndYearContainer } from './SelectMonthAndYear.styles';
 
 interface SelectMonthAndYearProps {
 	month: number;
@@ -17,7 +17,7 @@ export function SelectMonthAndYear({
 	month,
 	year,
 	onSelectMonthAndYear,
-}: SelectMonthAndYearProps) {
+}: Readonly<SelectMonthAndYearProps>) {
 	const userCreatedAt = useContextSelector(
 		AuthContext,
 		context => context.user.createdAt,
