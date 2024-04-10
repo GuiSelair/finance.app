@@ -6,11 +6,12 @@ import { getYears } from '@/helpers/getYears';
 import { AuthContext } from '@/contexts/AuthContext';
 
 import { SelectMonthAndYearContainer } from './SelectMonthAndYear.styles';
+import { selectedMonthYearContext } from '@/contexts';
 
 interface SelectMonthAndYearProps {
 	month: number;
 	year: number;
-	onSelectMonthAndYear: (month?: number, year?: number) => void;
+	onSelectMonthAndYear: (month: number, year?: number) => void;
 }
 
 export function SelectMonthAndYear({
@@ -21,6 +22,10 @@ export function SelectMonthAndYear({
 	const userCreatedAt = useContextSelector(
 		AuthContext,
 		context => context.user.createdAt,
+	);
+	const selectedMonth = useContextSelector(
+		selectedMonthYearContext,
+		context => context.month,
 	);
 
 	const months = getMonths();
@@ -55,7 +60,7 @@ export function SelectMonthAndYear({
 	}
 
 	function handleSelectYear(yearSelected: any) {
-		onSelectMonthAndYear(undefined, yearSelected?.value as number);
+		onSelectMonthAndYear(selectedMonth, yearSelected?.value as number);
 		saveMonthAndYearSelectedToLocalStorage(
 			String(month),
 			String(yearSelected?.value),
