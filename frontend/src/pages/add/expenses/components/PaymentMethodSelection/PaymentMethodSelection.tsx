@@ -9,7 +9,7 @@ import { CardDetails, FieldDescription } from './PaymentMethodSelection.styles';
 import { useListCardsApi } from '@/hooks/api/useListCards.api';
 import { CreateExpenseFieldsType } from '../../constants/formSchema';
 
-export function PaymentMethodSelectionSection() {
+export default function PaymentMethodSelectionSection() {
 	const { data: userAllPaymentMethods } = useListCardsApi();
 	const { control, watch } = useFormContext<CreateExpenseFieldsType>();
 	const paymentMethodOptionSelected = watch('paymentMethod') ?? undefined;

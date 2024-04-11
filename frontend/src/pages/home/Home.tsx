@@ -1,10 +1,10 @@
-import { ExpensesTable } from './components/ExpensesTable';
 import { SelectMonthAndYear } from '@/components/SelectMonthAndYear';
-import { Summary } from './components/Summary';
 import { SEO } from '@/components/SEO';
 import { LayoutBox } from '@/components/LayoutBox';
 
 import { useDashboard } from './hooks/useDashboard';
+import { Summary } from './components/Summary';
+import { ExpensesTable } from './components/ExpensesTable';
 import { GoToCurrentMonthAndYearButton, HomeContainer } from './Home.styles';
 
 export default function HomePage() {

@@ -15,7 +15,7 @@ interface SummaryCardProps {
 	variant?: 'info' | 'error' | 'success';
 }
 
-export function SummaryCard({
+export default function SummaryCard({
 	title,
 	value,
 	icon: Icon,

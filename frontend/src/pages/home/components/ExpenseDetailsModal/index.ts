@@ -1,1 +1,1 @@
-export * from './ExpenseDetailsModal';
+export { default as ExpenseDetailsModal } from './ExpenseDetailsModal';

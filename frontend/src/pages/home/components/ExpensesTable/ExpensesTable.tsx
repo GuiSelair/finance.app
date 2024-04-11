@@ -87,7 +87,7 @@ const columns = [
 	}),
 ];
 
-export function ExpensesTable({ month, year }: ExpensesTableProps) {
+export default function ExpensesTable({ month, year }: ExpensesTableProps) {
 	const [isOpenModal, setIsOpenModal] = useState(false);
 	const [selectedExpense, setSelectedExpense] = useState<ExpenseInMonth>(
 		{} as ExpenseInMonth,

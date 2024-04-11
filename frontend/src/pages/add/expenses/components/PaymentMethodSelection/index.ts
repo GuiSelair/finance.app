@@ -1,1 +1,1 @@
-export * from './PaymentMethodSelection';
+export { default as PaymentMethodSelectionSection } from './PaymentMethodSelection';

@@ -1,1 +1,1 @@
-export * from './SummaryCard';
+export { default as SummaryCard } from './SummaryCard';

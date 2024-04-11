@@ -29,7 +29,7 @@ interface ExpenseDetailsModalProps {
 	year: number;
 }
 
-export function ExpenseDetailsModal({
+export default function ExpenseDetailsModal({
 	expense,
 	isOpenModal,
 	onClose,

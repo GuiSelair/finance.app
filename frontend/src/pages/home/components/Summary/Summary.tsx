@@ -21,7 +21,7 @@ interface SummaryProps {
 	year: number;
 }
 
-export const Summary = ({ month, year }: SummaryProps) => {
+export default function Summary({ month, year }: SummaryProps) {
 	const {
 		data,
 		refetch,
@@ -98,4 +98,4 @@ export const Summary = ({ month, year }: SummaryProps) => {
 			/>
 		</Container>
 	);
-};
+}
