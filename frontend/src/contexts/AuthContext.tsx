@@ -95,9 +95,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 							position: 'bottom-left',
 							theme: 'colored',
 						});
+						return false;
 					}
-
-					return false;
 				}
 
 				toast.error(AuthenticateErrors.UnexpectedError, {

@@ -1,7 +1,7 @@
 import { TableColumnsProps } from '@/components/Table';
 
-import { CardTotalizerHighlightValue } from '../styles';
 import { Button } from '@/components/Button';
+import { CardTotalizerHighlightValue } from '../CardTotalizer.styles';
 
 export const CARD_TOTALIZER_TABLE_COLUMNS: TableColumnsProps = [
 	{
@@ -38,11 +38,9 @@ export const CARD_TOTALIZER_TABLE_COLUMNS: TableColumnsProps = [
 		header: 'Ações',
 		accessorKey: 'actions',
 		cell: ({ row }) => (
-			<>
-				<Button size="sm" variant="outline" isDisabled>
-					Detalhes
-				</Button>
-			</>
+			<Button size="sm" variant="outline" isDisabled>
+				Detalhes
+			</Button>
 		),
 	},
 ];
