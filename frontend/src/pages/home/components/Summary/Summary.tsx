@@ -1,101 +1,58 @@
-import { useEffect } from 'react';
-import { Coins, CoinVertical, Wallet } from 'phosphor-react';
-import { useQuery } from 'react-query';
-import { AxiosError } from 'axios';
-import { toast } from 'react-toastify';
+import {
+	Coins as CoinsIcon,
+	CoinVertical as CoinVerticalIcon,
+	Wallet as WalletIcon,
+} from 'phosphor-react';
 
 import { SummaryCard } from '../SummaryCard';
-import { httpClient } from '@/providers/HTTPClient';
-import { Spinner } from '@/components/Spinner';
 
-import { Container } from './Summary.styles';
+import { SummaryContainer } from './Summary.styles';
 
-interface MonthBalanceProps {
+export interface IExpensesSummary {
 	economy: number;
 	totalOfExpenses: number;
 	totalPayable: number;
 }
 
-interface SummaryProps {
-	month: number;
-	year: number;
+export interface IFetchSummaryResponse {
+	summary?: IExpensesSummary;
+	isLoading: boolean;
+	isError: boolean;
 }
 
-export default function Summary({ month, year }: SummaryProps) {
-	const {
-		data,
-		refetch,
-		isLoading: isFetchingSummary,
-	} = useQuery(['summary', month, year], async () => {
-		try {
-			const response = await httpClient.get<MonthBalanceProps>(
-				'/expenses/balance',
-				{
-					params: {
-						month,
-						year,
-					},
-				},
-			);
+interface ISummaryProps {
+	fetchSummary: () => IFetchSummaryResponse;
+}
 
-			return response.data;
-		} catch (error) {
-			if (error instanceof AxiosError) {
-				const errorFromServer = error.response?.data;
+export default function Summary({ fetchSummary }: Readonly<ISummaryProps>) {
+	const { summary, isLoading: isFetchingSummary } = fetchSummary();
 
-				toast.error(
-					'Aconteceu um erro inesperado. Por favor, tente novamente...',
-					{
-						position: 'bottom-left',
-						theme: 'colored',
-					},
-				);
-				throw new Error(errorFromServer.error);
-			}
-		}
-	});
-
-	useEffect(() => {
-		refetch();
-	}, [month, year]); // eslint-disable-line
+	const totalOfExpenses = summary?.totalOfExpenses ?? 0;
+	const totalPayable = summary?.totalPayable ?? 0;
+	const economy = summary?.economy ?? 0;
 
 	return (
-		<Container>
+		<SummaryContainer>
 			<SummaryCard
 				title="Total de gastos"
-				value={data?.totalOfExpenses ?? 0}
-				icon={() =>
-					isFetchingSummary ? (
-						<Spinner size="sm" mode="dark" />
-					) : (
-						<Coins size={24} />
-					)
-				}
+				value={totalOfExpenses}
+				icon={<CoinsIcon size={24} />}
+				isLoading={isFetchingSummary}
 			/>
 			<SummaryCard
 				title="Total a pagar"
-				value={data?.totalPayable ?? 0}
-				icon={() =>
-					isFetchingSummary ? (
-						<Spinner size="sm" mode="dark" />
-					) : (
-						<CoinVertical size={24} />
-					)
-				}
+				value={totalPayable}
 				variant="error"
+				icon={<CoinVerticalIcon size={24} />}
+				isLoading={isFetchingSummary}
 			/>
 			<SummaryCard
 				title="Economia"
-				value={data?.economy ?? 0}
+				value={economy}
 				variant="success"
-				icon={() =>
-					isFetchingSummary ? (
-						<Spinner size="sm" mode="dark" />
-					) : (
-						<Wallet size={24} />
-					)
-				}
+				icon={<WalletIcon size={24} />}
+				isLoading={isFetchingSummary}
 			/>
-		</Container>
+		</SummaryContainer>
 	);
 }

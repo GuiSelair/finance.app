@@ -1,90 +1,60 @@
 import { useContextSelector } from 'use-context-selector';
+import { getYear } from 'date-fns';
 
-import { Select } from '@/components/Form/Select';
-import { getMonths, getMonth } from '@/helpers/getMonths';
-import { getYears } from '@/helpers/getYears';
-import { AuthContext } from '@/contexts/AuthContext';
+import { Select, SelectOptionProps } from '@/components/Form/Select';
+import { getMonthOption, getMonthOptions } from '@/helpers/monthOptions';
+import { getYearOptions } from '@/helpers/yearOptions';
+import { selectedMonthYearContext, AuthContext } from '@/contexts';
 
 import { SelectMonthAndYearContainer } from './SelectMonthAndYear.styles';
-import { selectedMonthYearContext } from '@/contexts';
 
-interface SelectMonthAndYearProps {
-	month: number;
-	year: number;
-	onSelectMonthAndYear: (month: number, year?: number) => void;
-}
-
-export function SelectMonthAndYear({
-	month,
-	year,
-	onSelectMonthAndYear,
-}: Readonly<SelectMonthAndYearProps>) {
+export function SelectMonthAndYear() {
 	const userCreatedAt = useContextSelector(
 		AuthContext,
-		context => context.user.createdAt,
+		ctx => ctx.user.createdAt,
 	);
-	const selectedMonth = useContextSelector(
-		selectedMonthYearContext,
-		context => context.month,
+	const {
+		month: selectedMonth,
+		year: selectedYear,
+		handleSelectMonthAndYear,
+	} = useContextSelector(selectedMonthYearContext, ctx => ctx);
+
+	if (!userCreatedAt || typeof selectedMonth === 'undefined') return null;
+
+	const monthOptions = getMonthOptions();
+	const currentMonthOption = getMonthOption(selectedMonth);
+
+	const yearOptions = getYearOptions(getYear(userCreatedAt) ?? 2022);
+	const currentYearOption = yearOptions.find(
+		yearOption => Number(yearOption.value) === selectedYear,
 	);
 
-	const months = getMonths();
-	const currentMonthOption = getMonth(month);
-
-	const years = getYears(userCreatedAt?.getFullYear() || 2022);
-	const currentYearOption = years.find(yearOption => yearOption.value === year);
-
-	function saveMonthAndYearSelectedToLocalStorage(month: string, year: string) {
-		if (!window?.localStorage) return;
-
-		localStorage.setItem(
-			`${
-				process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''
-			}-last-selected-month`,
-			month,
-		);
-		localStorage.setItem(
-			`${
-				process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''
-			}-last-selected-year`,
-			year,
-		);
+	function handleSelectMonth(option: SelectOptionProps) {
+		handleSelectMonthAndYear(Number(option.value));
 	}
 
-	function handleSelectMonth(monthSelected: any) {
-		onSelectMonthAndYear(monthSelected?.value as number);
-		saveMonthAndYearSelectedToLocalStorage(
-			String(monthSelected?.value),
-			String(year),
-		);
-	}
-
-	function handleSelectYear(yearSelected: any) {
-		onSelectMonthAndYear(selectedMonth, yearSelected?.value as number);
-		saveMonthAndYearSelectedToLocalStorage(
-			String(month),
-			String(yearSelected?.value),
-		);
+	function handleSelectYear(option: SelectOptionProps) {
+		handleSelectMonthAndYear(selectedMonth, Number(option.value));
 	}
 
 	return (
 		<SelectMonthAndYearContainer>
 			<Select
-				options={months as unknown as { label: string; value: string }[]}
+				options={monthOptions}
 				value={currentMonthOption}
 				placeholder="Mês"
 				isClearable={false}
 				noOptionsMessage={() => 'Mês não encontrado'}
 				width="150px"
-				onChange={handleSelectMonth}
+				onChange={newValue => handleSelectMonth(newValue as SelectOptionProps)}
 			/>
 			<Select
-				options={years as unknown as { label: string; value: string }[]}
+				options={yearOptions}
 				value={currentYearOption}
 				placeholder="Ano"
 				isClearable={false}
 				noOptionsMessage={() => 'Ano não encontrado'}
-				onChange={handleSelectYear}
+				onChange={newValue => handleSelectYear(newValue as SelectOptionProps)}
 			/>
 		</SelectMonthAndYearContainer>
 	);

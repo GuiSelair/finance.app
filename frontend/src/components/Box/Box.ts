@@ -18,7 +18,20 @@ interface BoxProps {
 	flex?: number;
 }
 
-export const Box = styled.div<BoxProps>`
+export const Box = styled.div.withConfig({
+	shouldForwardProp: props =>
+		![
+			'margin',
+			'padding',
+			'flexDirection',
+			'alignItems',
+			'justifyContent',
+			'width',
+			'height',
+			'gap',
+			'flex',
+		].includes(props),
+})<BoxProps>`
 	display: flex;
 	margin: ${({ margin }) => margin};
 	padding: ${({ padding }) => padding};

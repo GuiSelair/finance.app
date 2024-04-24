@@ -1,10 +1,16 @@
-import { Button } from '@/components/Button';
+import { CheckCircle, Trash } from 'phosphor-react';
 import styled from 'styled-components';
+
+import { Button } from '@/components/Button';
+
+interface IExpensePaidIconProps {
+	isPaid: boolean;
+}
 
 export const ExpenseBaseDetails = styled.div`
 	width: 100%;
 	display: grid;
-	grid-template-columns: 200px 1fr 107px 107px;
+	grid-template-columns: 200px 1fr 120px 107px;
 	align-items: baseline;
 	margin-bottom: 1.5rem;
 	gap: 1rem;
@@ -130,8 +136,6 @@ export const ExpenseCard = styled.div`
 	}
 `;
 
-export const ExpenseSplitDetails = styled.div``;
-
 export const Divider = styled.hr`
 	display: block;
 	border: 0;
@@ -144,4 +148,17 @@ export const RemoveExpenseButton = styled(Button).attrs({
 	variant: 'ghost',
 })`
 	background-color: ${props => props.theme.colors.red100};
+`;
+
+export const ExpensePaidIcon = styled(CheckCircle).attrs({
+	fill: 'fill',
+})<IExpensePaidIconProps>`
+	color: ${props =>
+		props.isPaid ? props.theme.colors.green800 : props.theme.colors.gray200};
+`;
+
+export const DeleteExpenseIcon = styled(Trash).attrs({
+	fill: 'fill',
+})`
+	color: ${props => props.theme.colors.red500};
 `;

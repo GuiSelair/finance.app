@@ -1,59 +1,65 @@
-import { DotsThreeVertical, IconProps } from 'phosphor-react';
+import { useMemo } from 'react';
+
+import { formatCurrency } from '@/helpers/formatCurrency';
+import { Spinner } from '@/components';
+
 import {
 	SummaryCardContainer,
-	IconContainer,
-	OptionsContainer,
-	CardContent,
+	CircularIconContainer,
+	SummaryCardContent,
 	PriceContainer,
+	SummaryCardHeader,
+	SummaryCardTitle,
 } from './SummaryCard.styles';
 
-interface SummaryCardProps {
-	icon?: React.ComponentType<IconProps>;
+interface ISummaryCardProps {
+	icon?: React.ReactNode;
 	title: string;
 	value: number;
-	options?: React.ReactNode;
 	variant?: 'info' | 'error' | 'success';
+	isLoading?: boolean;
 }
 
 export default function SummaryCard({
 	title,
 	value,
-	icon: Icon,
-	options,
+	icon,
 	variant,
-}: SummaryCardProps) {
-	const priceFormatted = new Intl.NumberFormat('pt-BR', {
-		currency: 'BRL',
-		style: 'currency',
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 3,
-	})
-		.format(value)
-		.replace('R$', '');
+	isLoading = false,
+}: Readonly<ISummaryCardProps>) {
+	const priceFormatted = formatCurrency(value)?.replace('R$', '');
+	const shouldShowHeader = !!icon;
 
-	const shouldShowHeader = Icon;
+	const BaseSummaryCard = useMemo(() => {
+		return ({ children }: React.PropsWithChildren<{}>) => (
+			<SummaryCardContainer variant={variant ?? 'info'}>
+				{shouldShowHeader && (
+					<SummaryCardHeader>
+						<CircularIconContainer>{icon}</CircularIconContainer>
+					</SummaryCardHeader>
+				)}
+				<SummaryCardContent>
+					<SummaryCardTitle>{title}</SummaryCardTitle>
+					<PriceContainer>
+						<span>R$</span>
+						{children}
+					</PriceContainer>
+				</SummaryCardContent>
+			</SummaryCardContainer>
+		);
+	}, [shouldShowHeader, variant, icon, title]);
+
+	if (isLoading) {
+		return (
+			<BaseSummaryCard>
+				<Spinner size="md" mode="same-color" style={{ marginLeft: 8 }} />
+			</BaseSummaryCard>
+		);
+	}
 
 	return (
-		<SummaryCardContainer variant={variant ?? 'info'}>
-			{shouldShowHeader && (
-				<header>
-					{Icon && (
-						<IconContainer>
-							<Icon />
-						</IconContainer>
-					)}
-				</header>
-			)}
-			<OptionsContainer>
-				<DotsThreeVertical weight="bold" size={20} color="#000" />
-			</OptionsContainer>
-			<CardContent>
-				<span>{title}</span>
-				<PriceContainer>
-					<span>R$</span>
-					<strong>{priceFormatted}</strong>
-				</PriceContainer>
-			</CardContent>
-		</SummaryCardContainer>
+		<BaseSummaryCard>
+			<strong>{priceFormatted}</strong>
+		</BaseSummaryCard>
 	);
 }

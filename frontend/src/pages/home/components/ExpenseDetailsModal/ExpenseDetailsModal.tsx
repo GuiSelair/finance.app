@@ -1,15 +1,15 @@
 import React from 'react';
-import { CheckCircle, Link as LinkIcon, Trash } from 'phosphor-react';
+import { Link as LinkIcon } from 'phosphor-react';
 import Link from 'next/link';
 
 import { BaseModal } from '@/components/BaseModal';
 import { ExpenseInMonth } from '@/models/expenseInMonth';
-import { defaultTheme } from '@/styles/theme/default';
 import { formatCurrency } from '@/helpers/formatCurrency';
 import { dateFormat } from '@/helpers/dateFormat';
-import { useDeleteExpenseApi } from '@/hooks/api/useDeleteExpense.api';
+import { formatParcel } from '@/helpers/formatParcel';
 
 import {
+	DeleteExpenseIcon,
 	Divider,
 	ExpenseAmountDetails,
 	ExpenseAmountDetailsItem,
@@ -17,44 +17,71 @@ import {
 	ExpenseCard,
 	ExpenseDescription,
 	ExpenseDescriptionAndCardDetails,
-	ExpenseSplitDetails,
+	ExpensePaidIcon,
 	RemoveExpenseButton,
 } from './ExpenseDetailsModal.styles';
 
-interface ExpenseDetailsModalProps {
+export interface IDeleteExpenseResponse {
+	isDeleting: boolean;
+	executeDelete: () => Promise<void>;
+}
+
+interface IExpenseDetailsModalProps {
 	isOpenModal: boolean;
 	onClose: () => void;
-	expense: ExpenseInMonth;
-	month: number;
-	year: number;
+	expenseInMonth: ExpenseInMonth | null;
+	deleteExpense: (expenseId: string) => IDeleteExpenseResponse;
 }
 
 export default function ExpenseDetailsModal({
-	expense,
+	expenseInMonth,
 	isOpenModal,
 	onClose,
-	month,
-	year,
-}: Readonly<ExpenseDetailsModalProps>) {
-	const { mutateAsync, isLoading: isDeleting } = useDeleteExpenseApi(
-		expense.expense_id,
-	);
-	if (!expense) return null;
+	deleteExpense,
+}: Readonly<IExpenseDetailsModalProps>) {
+	if (!expenseInMonth) return null;
 
-	const expenseTotalAmountFormatted = formatCurrency(expense?.expense?.amount);
-	const expenseParcelAmountFormatted = formatCurrency(expense?.value_of_parcel);
-	const parcels = `${String(expense?.number_current_of_parcel).padStart(
-		2,
-		'0',
-	)} / ${String(expense?.number_total_of_parcel).padStart(2, '0')}`;
+	const { expense } = expenseInMonth;
+	const { executeDelete, isDeleting } = deleteExpense(
+		expenseInMonth?.expense_id,
+	);
+
+	const expenseTotalAmountFormatted = formatCurrency(expense?.amount);
+	const expenseParcelAmountFormatted = formatCurrency(
+		expenseInMonth?.value_of_parcel,
+	);
+	const parcelsFormatted = formatParcel(
+		expenseInMonth?.number_current_of_parcel,
+		expenseInMonth?.number_total_of_parcel,
+	);
 	const expenseCreatedAtFormatted = dateFormat(
 		new Date(expense.created_at),
 		'dd/MM/yyyy',
 	);
+	const expenseIdCut = `${expenseInMonth?.expense_id?.slice(0, 20)}...`;
 
-	function handleDeleteExpense() {
-		mutateAsync({});
+	async function handleDeleteExpense() {
+		if (!expenseInMonth?.expense_id) return null;
+		executeDelete();
 		onClose();
+	}
+
+	function makeParcelSection() {
+		if (expense?.is_recurring) {
+			return (
+				<ExpenseAmountDetailsItem>
+					<span>Despesa</span>
+					<strong>FIXA</strong>
+				</ExpenseAmountDetailsItem>
+			);
+		}
+
+		return (
+			<ExpenseAmountDetailsItem>
+				<span>Parcela</span>
+				<strong>{parcelsFormatted}</strong>
+			</ExpenseAmountDetailsItem>
+		);
 	}
 
 	return (
@@ -66,23 +93,16 @@ export default function ExpenseDetailsModal({
 			<ExpenseBaseDetails>
 				<div>
 					<span>Chave ID</span>
-					<p>{expense?.expense_id?.slice(0, 20)}...</p>
+					<p>{expenseIdCut}</p>
 				</div>
 				<div>
 					<span>Nome</span>
-					<p>{expense?.expense?.name ?? 'Nome não especificado'}</p>
+					<p>{expense?.name}</p>
 				</div>
 				<div>
-					<span>Paga?</span>
+					<span>Despesa paga?</span>
 					<p>
-						<CheckCircle
-							weight="fill"
-							color={
-								expense?.isPaid
-									? defaultTheme.colors.green800
-									: defaultTheme.colors.gray200
-							}
-						/>
+						<ExpensePaidIcon isPaid={expenseInMonth?.isPaid ?? false} />
 					</p>
 				</div>
 				<div>
@@ -92,7 +112,7 @@ export default function ExpenseDetailsModal({
 						onClick={handleDeleteExpense}
 						isLoading={isDeleting}
 					>
-						<Trash weight="fill" color={defaultTheme.colors.red500} />
+						<DeleteExpenseIcon />
 					</RemoveExpenseButton>
 				</div>
 			</ExpenseBaseDetails>
@@ -105,17 +125,7 @@ export default function ExpenseDetailsModal({
 					<span>Valor da parcela</span>
 					<strong>{expenseParcelAmountFormatted}</strong>
 				</ExpenseAmountDetailsItem>
-				{expense?.expense?.is_recurring ? (
-					<ExpenseAmountDetailsItem>
-						<span>Despesa</span>
-						<strong>FIXA</strong>
-					</ExpenseAmountDetailsItem>
-				) : (
-					<ExpenseAmountDetailsItem>
-						<span>Parcela</span>
-						<strong>{parcels}</strong>
-					</ExpenseAmountDetailsItem>
-				)}
+				{makeParcelSection()}
 				<ExpenseAmountDetailsItem>
 					<span>Criada em</span>
 					<p>{expenseCreatedAtFormatted}</p>
@@ -125,12 +135,12 @@ export default function ExpenseDetailsModal({
 			<ExpenseDescriptionAndCardDetails>
 				<ExpenseDescription>
 					<span>Descrição</span>
-					<p>{expense?.expense?.description ?? '--'}</p>
+					<p>{expense?.description ?? '--'}</p>
 				</ExpenseDescription>
 				<ExpenseCard>
 					<span>Vinculado ao</span>
 					<div>
-						<p>{expense?.expense?.card?.name}</p>
+						<p>{expense?.card?.name}</p>
 						<Link href="/cards/totalizers">
 							<button type="button">
 								<LinkIcon weight="bold" />
@@ -139,7 +149,6 @@ export default function ExpenseDetailsModal({
 					</div>
 				</ExpenseCard>
 			</ExpenseDescriptionAndCardDetails>
-			<ExpenseSplitDetails></ExpenseSplitDetails>
 		</BaseModal>
 	);
 }

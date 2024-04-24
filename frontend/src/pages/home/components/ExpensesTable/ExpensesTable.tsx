@@ -1,165 +1,91 @@
+import { useMemo, useState } from 'react';
 import {
-	MagnifyingGlass,
-	Funnel,
-	ArrowCircleDown,
-	CheckSquare,
-	DotsThreeOutlineVertical,
+	MagnifyingGlass as MagnifyingGlassIcon,
+	Funnel as FunnelIcon,
+	ArrowCircleDown as ArrowCircleDownIcon,
+	DotsThreeOutlineVertical as DotsThreeOutlineVerticalIcon,
 } from 'phosphor-react';
-import { useEffect, useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
-import { AxiosError } from 'axios';
-import { toast } from 'react-toastify';
-import { createColumnHelper } from '@tanstack/react-table';
 
 import { TextInput } from '@/components/Form/TextInput';
-import { Table } from '@/components/Table';
-import { httpClient } from '@/providers/HTTPClient';
+import { Table, Spinner, Box, Button } from '@/components';
 import { ExpenseInMonth } from '@/models/expenseInMonth';
-import { ExpenseDetailsModal } from '../ExpenseDetailsModal';
 import { formatCurrency } from '@/helpers/formatCurrency';
-import { Button } from '@/components/Button';
-import { Spinner } from '@/components/Spinner';
-import { Box } from '@/components/Box';
+import { formatParcel } from '@/helpers/formatParcel';
+
+import {
+	ExpenseDetailsModal,
+	IDeleteExpenseResponse,
+} from '../ExpenseDetailsModal';
+import { expensesTableColumns } from '../../constants/tableColumns';
 
 import { FilterButton, FilterContainer } from './ExpensesTable.styles';
 
-interface ExpensesTableDataProps {
+export interface IExpensesTableData {
 	name: string;
 	card: string;
 	parcel: string;
-	parcel_amount: string;
-	is_shared: boolean;
-	is_recurring: boolean;
+	parcelAmount: string;
+	isShared: boolean;
+	isRecurring: boolean;
 	options: JSX.Element | string;
 }
 
-interface ExpensesTableProps {
-	month: number;
-	year: number;
+export interface IFetchExpensesResponse {
+	isFetchingExpenses: boolean;
+	expensesInMonth?: ExpenseInMonth[];
+}
+interface IExpensesTableProps {
+	fetchExpenses: () => IFetchExpensesResponse;
+	deleteExpense: (expenseId: string) => IDeleteExpenseResponse;
 }
 
-const columnBuilder = createColumnHelper<ExpensesTableDataProps>();
-
-const columns = [
-	columnBuilder.accessor('name', {
-		id: 'expense-name',
-		header: 'Nome',
-		size: 800,
-	}),
-	columnBuilder.accessor('card', {
-		id: 'expense-card',
-		header: 'Vinculado ao',
-		size: 300,
-	}),
-	columnBuilder.accessor('parcel', {
-		id: 'expense-parcel',
-		header: 'Parcela',
-		size: 300,
-	}),
-	columnBuilder.accessor('parcel_amount', {
-		id: 'expense-parcel-amount',
-		header: 'Valor da parcela',
-		size: 400,
-	}),
-	columnBuilder.display({
-		id: 'is_shared',
-		header: 'Compra dividida?',
-		cell: ({ row }) =>
-			row.original.is_shared && (
-				<CheckSquare weight="fill" size={24} color="#248277" />
-			),
-		size: 500,
-	}),
-	columnBuilder.display({
-		id: 'is_recurring',
-		header: 'Despesa fixa?',
-		cell: ({ row }) =>
-			row.original.is_recurring && (
-				<CheckSquare weight="fill" size={24} color="#248277" />
-			),
-		size: 400,
-	}),
-	columnBuilder.display({
-		id: 'options',
-		header: 'Opções',
-		cell: ({ row }) => row.original.options,
-		size: 100,
-	}),
-];
-
-export default function ExpensesTable({ month, year }: ExpensesTableProps) {
-	const [isOpenModal, setIsOpenModal] = useState(false);
-	const [selectedExpense, setSelectedExpense] = useState<ExpenseInMonth>(
-		{} as ExpenseInMonth,
+export default function ExpensesTable({
+	fetchExpenses,
+	deleteExpense,
+}: Readonly<IExpensesTableProps>) {
+	const [isOpenExpenseModal, setIsOpenExpenseModal] = useState(false);
+	const [selectedExpense, setSelectedExpense] = useState<ExpenseInMonth | null>(
+		null,
 	);
-	const {
-		data: allExpensesInMonth,
-		refetch,
-		isLoading: isFetchingExpenses,
-	} = useQuery(['month-expenses', month, year], async () => {
-		try {
-			const response = await httpClient.get<ExpenseInMonth[]>(
-				'/expenses/list',
-				{
-					params: {
-						month,
-						year,
-					},
-				},
-			);
+	const { isFetchingExpenses, expensesInMonth } = fetchExpenses();
 
-			return response.data;
-		} catch (error) {
-			if (error instanceof AxiosError) {
-				const errorFromServer = error.response?.data;
+	function handleSelectExpense(expenseInMonth: ExpenseInMonth) {
+		setSelectedExpense(expenseInMonth);
+		setIsOpenExpenseModal(true);
+	}
 
-				toast.error(
-					'Aconteceu um erro inesperado. Por favor, tente novamente...',
-					{
-						position: 'bottom-left',
-						theme: 'colored',
-					},
-				);
-				throw new Error(errorFromServer.error);
-			}
-		}
-	});
+	const expensesTableData = useMemo<IExpensesTableData[]>(() => {
+		if (!expensesInMonth) return [];
 
-	const expenses: ExpensesTableDataProps[] = useMemo(() => {
-		if (!allExpensesInMonth) return [];
+		return expensesInMonth.map(expenseInMonth => {
+			const {
+				expense,
+				number_current_of_parcel: numberCurrentOfParcel,
+				number_total_of_parcel: numberTotalOfParcel,
+				value_of_parcel: valueOfParcel,
+			} = expenseInMonth;
 
-		const handleSelectExpense = (expenseInMonth: ExpenseInMonth) => {
-			setSelectedExpense(expenseInMonth);
-			setIsOpenModal(true);
-		};
-
-		return allExpensesInMonth.map(expenseInMonth => ({
-			name: expenseInMonth.expense.name,
-			card: expenseInMonth.expense.card.name,
-			parcel: `${String(expenseInMonth.number_current_of_parcel).padStart(
-				2,
-				'0',
-			)} / ${String(expenseInMonth.number_total_of_parcel).padStart(2, '0')}`,
-			parcel_amount: formatCurrency(expenseInMonth.value_of_parcel),
-			is_shared: expenseInMonth.expense.split_expense,
-			is_recurring: expenseInMonth.expense.is_recurring,
-			options: (
-				<Button
-					type="button"
-					variant="outline"
-					size="sm"
-					onClick={() => handleSelectExpense(expenseInMonth)}
-				>
-					<DotsThreeOutlineVertical weight="fill" />
-					Detalhes
-				</Button>
-			),
-		}));
-	}, [allExpensesInMonth]);
-
-	useEffect(() => {
-		refetch();
-	}, [month, year]); // eslint-disable-line
+			return {
+				name: expense?.name,
+				card: expense?.card?.name,
+				parcel: formatParcel(numberCurrentOfParcel, numberTotalOfParcel),
+				parcelAmount: formatCurrency(valueOfParcel),
+				isShared: expense.split_expense,
+				isRecurring: expense.is_recurring,
+				options: (
+					<Button
+						type="button"
+						variant="outline"
+						size="sm"
+						onClick={() => handleSelectExpense(expenseInMonth)}
+					>
+						<DotsThreeOutlineVerticalIcon weight="fill" />
+						Detalhes
+					</Button>
+				),
+			};
+		});
+	}, [expensesInMonth]);
 
 	if (isFetchingExpenses) {
 		return (
@@ -173,25 +99,24 @@ export default function ExpensesTable({ month, year }: ExpensesTableProps) {
 		<>
 			<FilterContainer>
 				<TextInput
-					icon={() => <MagnifyingGlass size={24} />}
+					icon={() => <MagnifyingGlassIcon size={24} />}
 					placeholder="Pesquise pelo nome da despesa"
 				/>
 				<FilterButton>
-					<Funnel size={24} />
+					<FunnelIcon size={24} />
 					Filtros
 				</FilterButton>
 				<FilterButton>
-					<ArrowCircleDown size={24} />
+					<ArrowCircleDownIcon size={24} />
 					Exportar
 				</FilterButton>
 			</FilterContainer>
-			<Table columns={columns} data={expenses} />
+			<Table columns={expensesTableColumns} data={expensesTableData} />
 			<ExpenseDetailsModal
-				isOpenModal={isOpenModal}
-				onClose={() => setIsOpenModal(false)}
-				expense={selectedExpense}
-				month={month}
-				year={year}
+				isOpenModal={isOpenExpenseModal}
+				onClose={() => setIsOpenExpenseModal(false)}
+				expenseInMonth={selectedExpense}
+				deleteExpense={deleteExpense}
 			/>
 		</>
 	);
