@@ -7,7 +7,8 @@ export function useDeleteExpenseApi(expenseId: string): UseMutationResult {
 	const queryClient = useQueryClient();
 	return useMutation(
 		async () => {
-			await httpClient.delete(`/expenses/${expenseId}`);
+			const { data } = await httpClient.delete(`/expenses/${expenseId}`);
+			if (!data) throw new Error('Erro ao deletar despesa.');
 		},
 		{
 			onError: () => {

@@ -1,6 +1,4 @@
-import { SelectMonthAndYear } from '@/components/SelectMonthAndYear';
-import { SEO } from '@/components/SEO';
-import { LayoutBox } from '@/components/LayoutBox';
+import { SelectMonthAndYear, SEO, LayoutBox } from '@/components';
 
 import { useDashboard } from './hooks/useDashboard';
 import { Summary } from './components/Summary';
@@ -9,10 +7,10 @@ import { GoToCurrentMonthAndYearButton, HomeContainer } from './Home.styles';
 
 export default function HomePage() {
 	const {
+		fetchSummaryExpenses,
 		handleRestoreToCurrentMonthAndYear,
-		handleSelectMonthAndYear,
-		month,
-		year,
+		deleteExpense,
+		fetchExpenses,
 	} = useDashboard();
 
 	return (
@@ -22,7 +20,7 @@ export default function HomePage() {
 				description="Consolidado mensal de despesas"
 			/>
 			<HomeContainer>
-				<Summary month={month} year={year} />
+				<Summary fetchSummary={fetchSummaryExpenses} />
 				<LayoutBox>
 					<LayoutBox.Header>
 						<LayoutBox.HeaderTitle>Despesas</LayoutBox.HeaderTitle>
@@ -33,15 +31,14 @@ export default function HomePage() {
 							>
 								Mês atual
 							</GoToCurrentMonthAndYearButton>
-							<SelectMonthAndYear
-								month={month}
-								year={year}
-								onSelectMonthAndYear={handleSelectMonthAndYear}
-							/>
+							<SelectMonthAndYear />
 						</LayoutBox.HeaderButtonsContainer>
 					</LayoutBox.Header>
 					<LayoutBox.Content>
-						<ExpensesTable month={month} year={year} />
+						<ExpensesTable
+							fetchExpenses={fetchExpenses}
+							deleteExpense={deleteExpense}
+						/>
 					</LayoutBox.Content>
 				</LayoutBox>
 			</HomeContainer>

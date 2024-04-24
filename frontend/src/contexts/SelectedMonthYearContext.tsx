@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { getYear, getMonth } from 'date-fns';
 import { createContext } from 'use-context-selector';
 
@@ -20,6 +20,7 @@ const defaultYear = getYear(new Date());
 export function SelectedMonthYearProvider({
 	children,
 }: Readonly<React.PropsWithChildren<{}>>) {
+	const isFirstRender = useRef(true);
 	const [selectedMonth, setSelectedMonth] = useState(defaultMonth);
 	const [selectedYear, setSelectedYear] = useState(defaultYear);
 
@@ -76,6 +77,11 @@ export function SelectedMonthYearProvider({
 
 	/** Effect responsável por salvar a seleção de mês e ano no local storage. */
 	useEffect(() => {
+		if (isFirstRender.current) {
+			isFirstRender.current = false;
+			return;
+		}
+
 		saveToLocalStorage();
 	}, [selectedMonth, selectedYear]);
 

@@ -41,7 +41,7 @@ export default function App({
 					</LayoutOrNot>
 				</QueryClientProvider>
 			</AuthProvider>
-			<ToastContainer />
+			<ToastContainer position="bottom-right" theme="light" />
 		</ThemeProvider>
 	);
 }

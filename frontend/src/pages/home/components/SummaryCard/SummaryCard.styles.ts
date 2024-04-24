@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const summaryCardVariants = {
+const summaryCardVariantsMapper = {
 	info: {
 		text: '#075985',
 		headerBackground: '#e0f2fe',
@@ -15,55 +15,52 @@ const summaryCardVariants = {
 	},
 };
 
-interface SummaryCardProps {
-	variant: 'info' | 'error' | 'success';
+interface ISummaryCardProps {
+	variant: keyof typeof summaryCardVariantsMapper;
 }
 
-export const SummaryCardContainer = styled.article<SummaryCardProps>`
+export const CircularIconContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+`;
+
+export const SummaryCardContainer = styled.article.withConfig({
+	shouldForwardProp: prop => !['variant'].includes(prop),
+})<ISummaryCardProps>`
 	background: ${props => props.theme.colors.white};
 	display: flex;
 	flex-direction: column;
 	padding: 1rem;
 	border-radius: 8px;
 	position: relative;
-	color: ${props => summaryCardVariants[props.variant].text};
+	color: ${props => summaryCardVariantsMapper[props.variant].text};
 
-	> header {
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 1.5rem;
-
-		> div {
-			background: ${props =>
-				summaryCardVariants[props.variant].headerBackground};
-		}
+	${CircularIconContainer} {
+		background: ${props =>
+			summaryCardVariantsMapper[props.variant].headerBackground};
 	}
 `;
 
-export const IconContainer = styled.div`
-	border-radius: 50%;
+export const SummaryCardHeader = styled.header`
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 40px;
-	height: 40px;
+	justify-content: space-between;
+	margin-bottom: 1.5rem;
 `;
 
-export const OptionsContainer = styled.div`
-	position: absolute;
-	top: 16px;
-	right: 16px;
-`;
-
-export const CardContent = styled.section`
+export const SummaryCardContent = styled.section`
 	display: flex;
 	flex-direction: column;
+`;
 
-	> span {
-		font-weight: 500;
-		display: block;
-		margin-bottom: 0.5rem;
-	}
+export const SummaryCardTitle = styled.span`
+	font-weight: 500;
+	display: block;
+	margin-bottom: 0.5rem;
+	font-size: 1.25rem;
 `;
 
 export const PriceContainer = styled.div`
