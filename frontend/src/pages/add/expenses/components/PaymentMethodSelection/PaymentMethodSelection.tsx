@@ -29,11 +29,11 @@ export default function PaymentMethodSelectionSection() {
 		);
 		if (!userPaymentMethodSelected) return;
 
-		const { turning_day } = userPaymentMethodSelected;
+		const { turningDay } = userPaymentMethodSelected;
 		const currentMonth = new Date().getMonth();
 		const currentYear = new Date().getFullYear();
 
-		const turningDate = new Date(currentYear, currentMonth, turning_day);
+		const turningDate = new Date(currentYear, currentMonth, turningDay);
 		const purchaseDate = new Date();
 
 		if (isBefore(purchaseDate, turningDate)) {
