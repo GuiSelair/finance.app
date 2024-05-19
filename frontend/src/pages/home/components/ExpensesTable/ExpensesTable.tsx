@@ -8,7 +8,7 @@ import {
 
 import { TextInput } from '@/components/Form/TextInput';
 import { Table, Spinner, Box, Button } from '@/components';
-import { ExpenseInMonth } from '@/models/expenseInMonth';
+import { ExpenseInMonth } from '@/models/ExpenseInMonth';
 import { formatCurrency } from '@/helpers/formatCurrency';
 import { formatParcel } from '@/helpers/formatParcel';
 
@@ -58,20 +58,16 @@ export default function ExpensesTable({
 		if (!expensesInMonth) return [];
 
 		return expensesInMonth.map(expenseInMonth => {
-			const {
-				expense,
-				number_current_of_parcel: numberCurrentOfParcel,
-				number_total_of_parcel: numberTotalOfParcel,
-				value_of_parcel: valueOfParcel,
-			} = expenseInMonth;
+			const { expense, quantityParcel, currentParcel, valueParcel } =
+				expenseInMonth;
 
 			return {
 				name: expense?.name,
 				card: expense?.card?.name,
-				parcel: formatParcel(numberCurrentOfParcel, numberTotalOfParcel),
-				parcelAmount: formatCurrency(valueOfParcel),
-				isShared: expense.split_expense,
-				isRecurring: expense.is_recurring,
+				parcel: formatParcel(currentParcel, quantityParcel),
+				parcelAmount: formatCurrency(valueParcel),
+				isShared: expense?.isSplitedExpense,
+				isRecurring: expense?.isRecurring,
 				options: (
 					<Button
 						type="button"

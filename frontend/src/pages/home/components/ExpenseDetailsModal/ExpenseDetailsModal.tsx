@@ -3,7 +3,7 @@ import { Link as LinkIcon } from 'phosphor-react';
 import Link from 'next/link';
 
 import { BaseModal } from '@/components/BaseModal';
-import { ExpenseInMonth } from '@/models/expenseInMonth';
+import { ExpenseInMonth } from '@/models/ExpenseInMonth';
 import { formatCurrency } from '@/helpers/formatCurrency';
 import { dateFormat } from '@/helpers/dateFormat';
 import { formatParcel } from '@/helpers/formatParcel';
@@ -43,31 +43,31 @@ export default function ExpenseDetailsModal({
 
 	const { expense } = expenseInMonth;
 	const { executeDelete, isDeleting } = deleteExpense(
-		expenseInMonth?.expense_id,
+		expenseInMonth?.expenseId,
 	);
 
 	const expenseTotalAmountFormatted = formatCurrency(expense?.amount);
 	const expenseParcelAmountFormatted = formatCurrency(
-		expenseInMonth?.value_of_parcel,
+		expenseInMonth?.valueParcel,
 	);
 	const parcelsFormatted = formatParcel(
-		expenseInMonth?.number_current_of_parcel,
-		expenseInMonth?.number_total_of_parcel,
+		expenseInMonth?.currentParcel,
+		expenseInMonth?.quantityParcel,
 	);
 	const expenseCreatedAtFormatted = dateFormat(
-		new Date(expense.created_at),
+		new Date(expense?.createdAt ?? new Date()),
 		'dd/MM/yyyy',
 	);
-	const expenseIdCut = `${expenseInMonth?.expense_id?.slice(0, 20)}...`;
+	const expenseIdCut = `${expenseInMonth?.expenseId?.slice(0, 20)}...`;
 
 	async function handleDeleteExpense() {
-		if (!expenseInMonth?.expense_id) return null;
+		if (!expenseInMonth?.expenseId) return null;
 		executeDelete();
 		onClose();
 	}
 
 	function makeParcelSection() {
-		if (expense?.is_recurring) {
+		if (expense?.isRecurring) {
 			return (
 				<ExpenseAmountDetailsItem>
 					<span>Despesa</span>

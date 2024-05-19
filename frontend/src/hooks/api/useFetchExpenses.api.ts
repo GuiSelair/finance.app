@@ -3,7 +3,7 @@ import { UseQueryResult, useQuery } from 'react-query';
 import { toast } from 'react-toastify';
 import { useContextSelector } from 'use-context-selector';
 
-import { ExpenseInMonth } from '@/models/expenseInMonth';
+import { ExpenseInMonth } from '@/models/ExpenseInMonth';
 import { httpClient } from '@/providers/HTTPClient';
 import { selectedMonthYearContext } from '@/contexts';
 

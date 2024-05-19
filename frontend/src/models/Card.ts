@@ -1,10 +1,34 @@
-export interface Card {
+import { parseISO } from 'date-fns';
+
+export interface CardProps {
 	id: string;
-	user_id: string;
+	userId: string;
 	name: string;
 	flag: string;
-	due_day: number;
-	turning_day: number;
-	created_at: string;
-	updated_at: string;
+	dueDay: number;
+	turningDay: number;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export class Card {
+	id: string;
+	name: string;
+	flag: string;
+	userId: string;
+	dueDay: number;
+	turningDay: number;
+	createdAt: Date;
+	updatedAt: Date;
+
+	constructor(data: CardProps) {
+		this.id = data.id;
+		this.name = data.name;
+		this.flag = data.flag;
+		this.userId = data.userId;
+		this.dueDay = data.dueDay;
+		this.turningDay = data.turningDay;
+		this.createdAt = parseISO(data.createdAt);
+		this.updatedAt = parseISO(data.updatedAt);
+	}
 }
