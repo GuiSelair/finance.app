@@ -5,7 +5,7 @@ import { Expense } from './Expense';
 export interface ExpenseInMonthProps {
 	id: string;
 	expenseId: string;
-	expense?: Expense;
+	expense: Expense;
 	currentParcel: number;
 	quantityParcel: number;
 	valueParcel: number;
@@ -19,7 +19,7 @@ export interface ExpenseInMonthProps {
 export class ExpenseInMonth {
 	id: string;
 	expenseId: string;
-	expense?: Expense;
+	expense: Expense;
 	currentParcel: number;
 	quantityParcel: number;
 	valueParcel: number;

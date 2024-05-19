@@ -38,6 +38,7 @@ export class Expense {
 	amountFormatted?: string;
 	sharedWith?: string;
 	valueOfEach?: string;
+	createdAt?: Date;
 
 	constructor(data: ExpenseProps) {
 		this.id = data.id;
@@ -52,5 +53,8 @@ export class Expense {
 		this.userId = data.userId;
 		this.card = data.card;
 		this.parcel = Number(data.parcel);
+		this.sharedWith = data.shareWith ?? undefined;
+		this.valueOfEach = data.valueOfEach ?? undefined;
+		this.createdAt = parseIsoTODate(data.createdAt);
 	}
 }
