@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 
-import { ConnectionSource } from '../../../../../shared/infra/typeorm/bootstrap';
+import { ConnectionSource } from '@shared/infra/typeorm/bootstrap';
 import ICreateUserDTO from '../../../dtos/ICreateUserDTO';
 import IUsersRepository from '../../../repositories/IUsersRepository';
 import User from '../entities/User';
@@ -9,7 +9,7 @@ class UsersRepository implements IUsersRepository {
   private repository: Repository<User>;
 
   constructor() {
-    this.repository = ConnectionSource.getRepository(User)
+    this.repository = ConnectionSource.getRepository(User);
   }
 
   public async create({

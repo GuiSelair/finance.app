@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { ConnectionSource } from '../../../../../shared/infra/typeorm/bootstrap'
+import { ConnectionSource } from '@shared/infra/typeorm/bootstrap';
 
 import ICreateCard from '../../../dtos/ICreateCard';
 import ICardRepository from '../../../repositories/ICardRepository';

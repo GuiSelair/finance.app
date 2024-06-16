@@ -8,8 +8,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import Card from '../../../../Card/infra/typeorm/entities/Card';
-import User from '../../../../User/infra/typeorm/entities/User';
+import Card from '@modules/Card/infra/typeorm/entities/Card';
+import User from '@modules/User/infra/typeorm/entities/User';
 
 @Entity('expenses')
 class Expense {

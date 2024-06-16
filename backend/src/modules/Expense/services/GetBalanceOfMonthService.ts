@@ -1,5 +1,5 @@
 import { injectable, inject } from 'tsyringe';
-import AppError from '../../../shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
 
 import { IBalance, IGetBalance } from '../dtos/IBalance';
 import IExpensesInMonthRepository from '../repositories/IExpensesInMonthRepository';

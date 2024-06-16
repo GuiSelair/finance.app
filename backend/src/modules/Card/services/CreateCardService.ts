@@ -3,7 +3,7 @@ import Card from '../infra/typeorm/entities/Card';
 
 import ICardRepository from '../repositories/ICardRepository';
 import ICreateCard from '../dtos/ICreateCard';
-import AppError from '../../../shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
 
 @injectable()
 class CreateCardService {

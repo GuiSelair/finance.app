@@ -3,9 +3,9 @@ import { inject, injectable } from 'tsyringe';
 import ICreateExpense from '../dtos/ICreateExpense';
 import Expense from '../infra/typeorm/entities/Expense';
 import IExpensesRepository from '../repositories/IExpensesRepository';
-import ICardRepository from '../../Card/repositories/ICardRepository';
-import IUsersRepository from '../../User/repositories/IUsersRepository';
-import AppError from '../../../shared/errors/AppError';
+import ICardRepository from '@modules/Card/repositories/ICardRepository';
+import IUsersRepository from '@modules/User/repositories/IUsersRepository';
+import AppError from '@shared/errors/AppError';
 
 @injectable()
 class CreateExpensesService {
