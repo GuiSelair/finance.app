@@ -10,8 +10,25 @@
     "emitDecoratorMetadata": true,
     "outDir": "./dist", // Diretório onde os arquivos transpilados serão colocados
     "rootDir": "./src", // Diretório onde estão os arquivos TypeScript
-    "strictPropertyInitialization": false // Desabilita a verificação de inicialização estrita de propriedades
+    "strictPropertyInitialization": false, // Desabilita a verificação de inicialização estrita de propriedades
+    "baseUrl": "./src",
+    "paths": {
+      "@modules/*": [
+        "./modules/*"
+      ],
+      "@config/*": [
+        "./config/*"
+      ],
+      "@shared/*": [
+        "./shared/*"
+      ],
+    }
   },
-  "include": ["src"], // Os arquivos TypeScript a serem transpilados
-  "exclude": ["node_modules", "src/**/*.spec.ts"] // Exclui a pasta node_modules
+  "include": [
+    "src"
+  ], // Os arquivos TypeScript a serem transpilados
+  "exclude": [
+    "node_modules",
+    "src/**/*.spec.ts"
+  ] // Exclui a pasta node_modules
 }
