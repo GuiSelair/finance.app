@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import AppError from '../../../shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
 import { IListAllExpensesInMonth } from '../dtos/IListAllExpensesInMonth';
 import ExpenseMonth from '../infra/typeorm/entities/ExpenseInMonth';
 import IExpensesInMonthRepository from '../repositories/IExpensesInMonthRepository';

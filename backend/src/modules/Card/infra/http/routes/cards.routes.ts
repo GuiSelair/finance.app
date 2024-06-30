@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import ensureAuthenticated from '../../../../User/infra/http/middlewares/ensureAuthenticated';
+import ensureAuthenticated from '@modules/User/infra/http/middlewares/ensureAuthenticated';
 
 import CardController from '../controllers/CardsController';
 

@@ -7,7 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import User from '../../../../User/infra/typeorm/entities/User';
+import User from '@modules/User/infra/typeorm/entities/User';
 
 @Entity('cards')
 class Card {

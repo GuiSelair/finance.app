@@ -1,10 +1,10 @@
 import { inject, injectable } from 'tsyringe';
 import { setDay, getMonth, getYear, isBefore } from 'date-fns';
 
-import ICardRepository from '../../Card/repositories/ICardRepository';
+import ICardRepository from '@modules/Card/repositories/ICardRepository';
 import Expense from '../infra/typeorm/entities/Expense';
 import IExpensesInMonthRepository from '../repositories/IExpensesInMonthRepository';
-import AppError from '../../../shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
 import ICreateExpenseInMonth, {
   IGetFirstMonthOfExpense,
 } from '../dtos/ICreateExpenseInMonth';

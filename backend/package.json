@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "start": "NODE_ENV=production node ./dist/shared/infra/http/server.js",
     "dev": "NODE_ENV=development ts-node-dev --inspect --transpile-only --ignore node_modules src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js -d ./src/shared/infra/typeorm/bootstrap.ts",
@@ -45,6 +45,7 @@
     "jest": "^29.7.0",
     "ts-jest": "^29.1.4",
     "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.10",
     "typescript": "^5.4.5"
   }
 }

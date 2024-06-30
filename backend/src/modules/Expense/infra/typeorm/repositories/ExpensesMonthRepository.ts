@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 
-import { ConnectionSource } from '../../../../../shared/infra/typeorm/bootstrap'
+import { ConnectionSource } from '@shared/infra/typeorm/bootstrap';
 import ICreateExpenseInMonth from '../../../dtos/ICreateExpenseInMonth';
 import IExpensesMonthRepository from '../../../repositories/IExpensesInMonthRepository';
 import ExpenseMonth from '../entities/ExpenseInMonth';
@@ -33,7 +33,7 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
         ...(userId && {
           expense: {
             user_id: userId,
-          }
+          },
         }),
       },
       relations: ['expense', 'expense.card'],

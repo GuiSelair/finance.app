@@ -1,10 +1,10 @@
 import { injectable, inject, container } from 'tsyringe';
 
-import AppError from '../../../shared/errors/AppError';
-import IExpensesInMonthRepository from '../../Expense/repositories/IExpensesInMonthRepository';
+import AppError from '@shared/errors/AppError';
+import IExpensesInMonthRepository from '@modules/Expense/repositories/IExpensesInMonthRepository';
+import ExpenseInMonth from '@modules/Expense/infra/typeorm/entities/ExpenseInMonth';
 import FetchCardsService from './FetchCardsService';
 import Card from '../infra/typeorm/entities/Card';
-import ExpenseInMonth from '../../Expense/infra/typeorm/entities/ExpenseInMonth';
 
 export interface ICardTotalizerReturn {
   id: string;
@@ -42,10 +42,16 @@ export default class CardTotalizerService {
     const fetchCardsService = container.resolve(FetchCardsService);
     const { cards: allCards } = await fetchCardsService.execute({ userId });
 
-    if (!allCards.length) { return []; }
+    if (!allCards.length) {
+      return [];
+    }
 
-    const expensesInSpecificMonth = await this.expenseMonthRepository.findByMonthAndYear(month, year, userId);
-    const expensesInMonthGroupByCard = this.getExpensesTotalGroupByCard(expensesInSpecificMonth, allCards);
+    const expensesInSpecificMonth =
+      await this.expenseMonthRepository.findByMonthAndYear(month, year, userId);
+    const expensesInMonthGroupByCard = this.getExpensesTotalGroupByCard(
+      expensesInSpecificMonth,
+      allCards,
+    );
 
     return expensesInMonthGroupByCard;
   }
@@ -57,14 +63,17 @@ export default class CardTotalizerService {
    * @param cards - The list of cards.
    * @returns An array of objects containing the card ID, name, turning day, and total expenses.
    */
-  private getExpensesTotalGroupByCard(expensesInMonth: ExpenseInMonth[], cards: Card[]): ICardTotalizerReturn[] {
+  private getExpensesTotalGroupByCard(
+    expensesInMonth: ExpenseInMonth[],
+    cards: Card[],
+  ): ICardTotalizerReturn[] {
     return cards.reduce<ICardTotalizerReturn[]>((accumulator, card) => {
       const expensesInCard = expensesInMonth.filter(
         expenseInMonth => expenseInMonth.expense.card_id === card.id,
       );
       const total = expensesInCard.reduce((accumulator, expenseInCard) => {
         return accumulator + expenseInCard.value_of_parcel;
-      }, 0)
+      }, 0);
 
       accumulator.push({
         id: card.id,

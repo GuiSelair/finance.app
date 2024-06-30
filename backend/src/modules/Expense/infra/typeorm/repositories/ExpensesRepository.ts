@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 
-import { ConnectionSource } from '../../../../../shared/infra/typeorm/bootstrap'
+import { ConnectionSource } from '@shared/infra/typeorm/bootstrap';
 import ICreateExpense from '../../../dtos/ICreateExpense';
 import IExpensesRepository from '../../../repositories/IExpensesRepository';
 import Expense from '../entities/Expense';
@@ -52,7 +52,9 @@ class ExpensesRepository implements IExpensesRepository {
     return !!result?.affected;
   }
 
-  public async fetchAllRecurringExpenses(userId?: string): Promise<Expense[] | undefined> {
+  public async fetchAllRecurringExpenses(
+    userId?: string,
+  ): Promise<Expense[] | undefined> {
     return this.repository.find({
       where: {
         is_recurring: true,
