@@ -2,6 +2,8 @@ import 'dotenv/config';
 
 import { DataSource } from 'typeorm';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 export const ConnectionSource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST ?? 'localhost',
@@ -11,9 +13,15 @@ export const ConnectionSource = new DataSource({
   database: process.env.DB_DATABASE ?? 'finance-app',
   synchronize: true,
   logging: true,
+
   entities: [
-    'dist/modules/**/infra/typeorm/entities/*{.ts,.js}',
-    // 'src/modules/**/infra/typeorm/entities/*{.ts,.js}',
+    isProduction
+      ? 'dist/modules/**/infra/typeorm/entities/*{.ts,.js}'
+      : 'src/modules/**/infra/typeorm/entities/*{.ts,.js}',
   ],
-  migrations: ['../dist/**/infra/typeorm/migrations/*{.ts,.js}'],
+  migrations: [
+    isProduction
+      ? '../dist/infra/typeorm/migrations/*{.ts,.js}'
+      : '../src/infra/typeorm/migrations/*{.ts,.js}',
+  ],
 });
