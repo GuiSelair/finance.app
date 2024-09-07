@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 import Card from '@modules/Card/infra/typeorm/entities/Card';
-import User from '@modules/User/infra/typeorm/entities/User';
+import User from '@modules/User/infra/typeorm/entities/UserMapper';
 
 @Entity('expenses')
 class Expense {

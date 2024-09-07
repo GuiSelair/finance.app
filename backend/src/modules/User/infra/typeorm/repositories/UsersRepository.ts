@@ -1,22 +1,18 @@
 import { Repository } from 'typeorm';
 
 import { ConnectionSource } from '@shared/infra/typeorm/bootstrap';
-import ICreateUserDTO from '../../../dtos/ICreateUserDTO';
-import IUsersRepository from '../../../repositories/IUsersRepository';
-import User from '../entities/User';
+import { UserMapper } from '../entities/UserMapper';
+import type { IUsersRepository } from '@modules/User/domain/repositories/IUsersRepository';
+import { User } from '@modules/User/domain/models/User';
 
-class UsersRepository implements IUsersRepository {
-  private repository: Repository<User>;
+export class UsersRepository implements IUsersRepository {
+  private repository: Repository<UserMapper>;
 
   constructor() {
-    this.repository = ConnectionSource.getRepository(User);
+    this.repository = ConnectionSource.getRepository(UserMapper);
   }
 
-  public async create({
-    name,
-    email,
-    password,
-  }: ICreateUserDTO): Promise<User> {
+  public async create({ name, email, password }: User): Promise<UserMapper> {
     const user = this.repository.create({
       name,
       email,
@@ -28,7 +24,7 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  public async findByEmail(email: string): Promise<User | null> {
+  public async findByEmail(email: string): Promise<UserMapper | null> {
     const user = await this.repository.findOne({
       where: {
         email,
@@ -38,7 +34,7 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  public async findById(id: string): Promise<User | null> {
+  public async findById(id: string): Promise<UserMapper | null> {
     const user = await this.repository.findOne({
       where: {
         id,
@@ -48,5 +44,3 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 }
-
-export default UsersRepository;

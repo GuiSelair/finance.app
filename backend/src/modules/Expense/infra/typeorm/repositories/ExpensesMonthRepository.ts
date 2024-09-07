@@ -1,8 +1,8 @@
 import { Repository } from 'typeorm';
 
 import { ConnectionSource } from '@shared/infra/typeorm/bootstrap';
-import ICreateExpenseInMonth from '../../../dtos/ICreateExpenseInMonth';
-import IExpensesMonthRepository from '../../../repositories/IExpensesInMonthRepository';
+import ICreateExpenseInMonth from '../../../domain/dtos/ICreateExpenseInMonth';
+import IExpensesMonthRepository from '../../../domain/repositories/IExpensesInMonthRepository';
 import ExpenseMonth from '../entities/ExpenseInMonth';
 
 class ExpensesMonthRepository implements IExpensesMonthRepository {
@@ -12,9 +12,7 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
     this.repository = ConnectionSource.getRepository(ExpenseMonth);
   }
 
-  public async create(
-    expenseMonthList: ICreateExpenseInMonth[],
-  ): Promise<ExpenseMonth[]> {
+  public async create(expenseMonthList: ICreateExpenseInMonth[]): Promise<ExpenseMonth[]> {
     const expenseMonth = this.repository.create(expenseMonthList);
     await this.repository.save(expenseMonth);
 

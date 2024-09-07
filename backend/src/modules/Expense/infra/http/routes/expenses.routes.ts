@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import ensureAuthenticated from '../../../../User/infra/http/middlewares/ensureAuthenticated';
+import ensureAuthenticated from '../../../../../shared/infra/http/middlewares/ensureAuthenticated';
 import ExpensesController from '../controllers/ExpensesController';
 
 const expensesRouter = Router();

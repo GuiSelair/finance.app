@@ -1,18 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { container } from 'tsyringe';
 
-import CreateExpenseService from '../../../services/CreateExpenseService';
-import CreateExpenseInMonthService from '../../../services/CreateExpenseInMonthService';
-import ListAllExpensesInMonthService from '../../../services/ListAllExpensesInMonthService';
-import GetBalanceOfMonthService from '../../../services/GetBalanceOfMonthService';
-import RemoveExpenseService from '../../../services/RemoveExpenseService';
+import CreateExpenseService from '../../../domain/services/CreateExpenseService';
+import CreateExpenseInMonthService from '../../../domain/services/CreateExpenseInMonthService';
+import ListAllExpensesInMonthService from '../../../domain/services/ListAllExpensesInMonthService';
+import GetBalanceOfMonthService from '../../../domain/services/GetBalanceOfMonthService';
+import RemoveExpenseService from '../../../domain/services/RemoveExpenseService';
 
 class ExpensesController {
-  public async create(
-    request: Request,
-    response: Response,
-    _: NextFunction,
-  ): Promise<Response> {
+  public async create(request: Request, response: Response, _: NextFunction): Promise<Response> {
     // TODO: Adicionar validação do body
     const {
       name, // Required
@@ -28,9 +24,7 @@ class ExpensesController {
     } = request.body;
     const { id } = request.user;
     const createExpenseService = container.resolve(CreateExpenseService);
-    const createExpensesInMonthService = container.resolve(
-      CreateExpenseInMonthService,
-    );
+    const createExpensesInMonthService = container.resolve(CreateExpenseInMonthService);
 
     const expense = await createExpenseService.execute({
       name,
@@ -51,21 +45,15 @@ class ExpensesController {
     return response.status(201).json(expense);
   }
 
-  public async show(
-    request: Request,
-    response: Response,
-    _: NextFunction,
-  ): Promise<Response> {
+  public async show(request: Request, response: Response, _: NextFunction): Promise<Response> {
     const { id } = request.user;
     const { month, year } = request.query;
 
     if (!month || !year) {
-      return response.status(400).json({ error: 'Parameters not found' })
+      return response.status(400).json({ error: 'Parameters not found' });
     }
 
-    const listAllExpensesInMonth = container.resolve(
-      ListAllExpensesInMonthService,
-    );
+    const listAllExpensesInMonth = container.resolve(ListAllExpensesInMonthService);
     const expensesInMonth = await listAllExpensesInMonth.execute({
       month: Number(month),
       year: Number(year),
@@ -74,11 +62,7 @@ class ExpensesController {
     return response.status(200).json(expensesInMonth);
   }
 
-  public async index(
-    request: Request,
-    response: Response,
-    _: NextFunction,
-  ): Promise<Response> {
+  public async index(request: Request, response: Response, _: NextFunction): Promise<Response> {
     const { id } = request.user;
     const { month, year } = request.query;
     const getBalanceOfMonth = container.resolve(GetBalanceOfMonthService);
@@ -92,11 +76,7 @@ class ExpensesController {
     return response.status(200).json(balance);
   }
 
-  public async delete(
-    request: Request,
-    response: Response,
-    _: NextFunction,
-  ): Promise<Response> {
+  public async delete(request: Request, response: Response, _: NextFunction): Promise<Response> {
     const { id } = request.user;
     const { id: expenseId } = request.params;
 

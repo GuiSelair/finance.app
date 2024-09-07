@@ -1,8 +1,8 @@
 import { Repository } from 'typeorm';
 import { ConnectionSource } from '@shared/infra/typeorm/bootstrap';
 
-import ICreateCard from '../../../dtos/ICreateCard';
-import ICardRepository from '../../../repositories/ICardRepository';
+import ICreateCard from '../../../domain/dtos/ICreateCard';
+import ICardRepository from '../../../domain/repositories/ICardRepository';
 import Card from '../entities/Card';
 
 class CardsRepository implements ICardRepository {
@@ -12,13 +12,7 @@ class CardsRepository implements ICardRepository {
     this.repository = ConnectionSource.getRepository(Card);
   }
 
-  public async create({
-    name,
-    due_day,
-    flag,
-    user_id,
-    turning_day,
-  }: ICreateCard): Promise<Card> {
+  public async create({ name, due_day, flag, user_id, turning_day }: ICreateCard): Promise<Card> {
     const newCard = this.repository.create({
       name,
       due_day,
