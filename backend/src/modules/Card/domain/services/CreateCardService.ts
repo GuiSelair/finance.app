@@ -1,8 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 
 import AppError from '@errors/AppError';
-import { CardMapper } from '@modules/Card/infra/typeorm/entities/Card';
-import { ICardRepository } from '../repositories/ICardRepository';
+import { ICardsRepository } from '../repositories/ICardRepository';
+import { Card } from '../models/Card';
 
 interface ICreateCardDTO {
   name: string;
@@ -13,36 +13,29 @@ interface ICreateCardDTO {
 }
 
 @injectable()
-class CreateCardService {
-  private cardRepository: ICardRepository;
+export class CreateCardService {
+  private cardsRepository: ICardsRepository;
 
   constructor(
-    @inject('CardRepository')
-    cardRepository: ICardRepository,
+    @inject('CardsRepository')
+    cardRepository: ICardsRepository,
   ) {
-    this.cardRepository = cardRepository;
+    this.cardsRepository = cardRepository;
   }
 
-  public async execute({
-    name,
-    due_day,
-    flag,
-    user_id,
-    turning_day,
-  }: ICreateCardDTO): Promise<Card> {
-    const card = await this.cardRepository.findByName(name);
-    if (card) throw new AppError('Impossible create two cards with same name');
+  public async execute(cardDTO: ICreateCardDTO) {
+    const cardToCreate = this.makeCardModel(cardDTO);
 
-    const newCard = await this.cardRepository.create({
-      due_day,
-      flag,
-      name,
-      user_id,
-      turning_day,
-    });
+    const cardFounded = await this.cardsRepository.findByName(
+      cardToCreate.name,
+      cardToCreate.user_id,
+    );
+    if (cardFounded) throw new AppError('Impossible create two cards with same name');
 
-    return newCard;
+    return await this.cardsRepository.create(cardToCreate);
+  }
+
+  private makeCardModel(card: ICreateCardDTO) {
+    return new Card(card, 'create');
   }
 }
-
-export default CreateCardService;

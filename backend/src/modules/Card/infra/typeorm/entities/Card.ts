@@ -7,19 +7,19 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import User from '@modules/User/infra/typeorm/entities/UserMapper';
+import { UserMapper } from '@modules/User/infra/typeorm/entities/UserMapper';
 
 @Entity('cards')
-class Card {
+export class CardMapper {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   user_id: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => UserMapper)
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user: UserMapper;
 
   @Column()
   name: string;
@@ -39,5 +39,3 @@ class Card {
   @CreateDateColumn()
   updated_at: Date;
 }
-
-export default Card;

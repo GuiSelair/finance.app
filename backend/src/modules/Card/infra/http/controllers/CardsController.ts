@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 
 import { requestValidations } from '@helpers/requestValidations';
 
-import CreateCardService from '@modules/Card/domain/services/CreateCardService';
+import { CreateCardService } from '@modules/Card/domain/services/CreateCardService';
 import CardTotalizerService from '@modules/Card/domain/services/CardTotalizerService';
 import FetchCardsService from '@modules/Card/domain/services/FetchCardsService';
 
@@ -19,8 +19,8 @@ export class CardsController {
       due_day,
       flag,
       name,
-      user_id: id,
       turning_day,
+      user_id: id,
     });
 
     return response.status(201).json(card);

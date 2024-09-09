@@ -1,18 +1,18 @@
 import { Repository } from 'typeorm';
-import { ConnectionSource } from '@shared/infra/typeorm/bootstrap';
 
-import ICreateCard from '../../../domain/dtos/ICreateCard';
-import ICardRepository from '../../../domain/repositories/ICardRepository';
-import Card from '../entities/Card';
+import { DataSourceConfiguration } from '@shared/infra/typeorm/bootstrap';
+import { ICardsRepository } from '@modules/Card/domain/repositories/ICardRepository';
+import { Card } from '@modules/Card/domain/models/Card';
+import { CardMapper } from '../entities/Card';
 
-class CardsRepository implements ICardRepository {
-  private repository: Repository<Card>;
+export class CardsRepository implements ICardsRepository {
+  private repository: Repository<CardMapper>;
 
   constructor() {
-    this.repository = ConnectionSource.getRepository(Card);
+    this.repository = DataSourceConfiguration.getRepository(CardMapper);
   }
 
-  public async create({ name, due_day, flag, user_id, turning_day }: ICreateCard): Promise<Card> {
+  public async create({ name, due_day, flag, user_id, turning_day }: Card): Promise<CardMapper> {
     const newCard = this.repository.create({
       name,
       due_day,
@@ -26,17 +26,18 @@ class CardsRepository implements ICardRepository {
     return newCard;
   }
 
-  public async findByName(name: string): Promise<Card | null> {
+  public async findByName(name: string, user_id: string): Promise<CardMapper | null> {
     const cardFound = await this.repository.findOne({
       where: {
         name,
+        user_id,
       },
     });
 
     return cardFound;
   }
 
-  public async findById(id: string): Promise<Card | null> {
+  public async findById(id: string): Promise<CardMapper | null> {
     const cardFound = await this.repository.findOne({
       where: {
         id,
@@ -46,21 +47,11 @@ class CardsRepository implements ICardRepository {
     return cardFound;
   }
 
-  public async fetchAll(userId: string): Promise<Card[] | null> {
+  public async fetch(user_id: string): Promise<CardMapper[] | undefined> {
     return this.repository.find({
       where: {
-        user_id: userId,
-      },
-    });
-  }
-
-  public async fetch(userId: string): Promise<Card[] | undefined> {
-    return this.repository.find({
-      where: {
-        user_id: userId,
+        user_id,
       },
     });
   }
 }
-
-export default CardsRepository;

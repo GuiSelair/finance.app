@@ -1,9 +1,9 @@
-import ICreateCard from '../dtos/ICreateCard';
-import Card from '../../infra/typeorm/entities/Card';
+import { CardMapper } from '../../infra/typeorm/entities/Card';
+import { Card } from '../models/Card';
 
-export default interface ICardRepository {
-  create(data: ICreateCard): Promise<Card>;
-  findByName(name: string): Promise<Card | null>;
-  findById(id: string): Promise<Card | null>;
-  fetchAll(userId: string): Promise<Card[] | null>;
+export interface ICardsRepository {
+  create(data: Card): Promise<CardMapper>;
+  findByName(name: string, user_id: string): Promise<CardMapper | null>;
+  findById(id: string): Promise<CardMapper | null>;
+  fetch(user_id: string): Promise<CardMapper[] | undefined>;
 }

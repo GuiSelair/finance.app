@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 
-import { ConnectionSource } from '@shared/infra/typeorm/bootstrap';
+import { DataSourceConfiguration } from '@shared/infra/typeorm/bootstrap';
 import { UserMapper } from '../entities/UserMapper';
 import type { IUsersRepository } from '@modules/User/domain/repositories/IUsersRepository';
 import { User } from '@modules/User/domain/models/User';
@@ -9,7 +9,7 @@ export class UsersRepository implements IUsersRepository {
   private repository: Repository<UserMapper>;
 
   constructor() {
-    this.repository = ConnectionSource.getRepository(UserMapper);
+    this.repository = DataSourceConfiguration.getRepository(UserMapper);
   }
 
   public async create({ name, email, password }: User): Promise<UserMapper> {
