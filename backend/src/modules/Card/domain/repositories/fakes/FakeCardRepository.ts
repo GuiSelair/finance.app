@@ -1,7 +1,7 @@
 import { v4 as createUUID } from 'uuid';
 
 import ICreateCard from '../../dtos/ICreateCard';
-import ICardRepository from '../ICardRepository';
+import ICardRepository from '../ICardsRepository';
 import Card from '../../../infra/typeorm/entities/Card';
 
 class CardsRepository implements ICardRepository {

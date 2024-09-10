@@ -4,8 +4,8 @@ import { container } from 'tsyringe';
 import { requestValidations } from '@helpers/requestValidations';
 
 import { CreateCardService } from '@modules/Card/domain/services/CreateCardService';
-import CardTotalizerService from '@modules/Card/domain/services/CardTotalizerService';
-import FetchCardsService from '@modules/Card/domain/services/FetchCardsService';
+import { CardSummaryService } from '@modules/Card/domain/services/CardTotalizerService';
+import { FetchCardsService } from '@modules/Card/domain/services/FetchCardsService';
 
 export class CardsController {
   public async create(request: Request, response: Response) {
@@ -26,18 +26,23 @@ export class CardsController {
     return response.status(201).json(card);
   }
 
-  public async getTotalizers(request: Request, response: Response) {
+  public async summary(request: Request, response: Response) {
     const { month, year } = request.query;
     const { id } = request.user;
 
-    const cardTotalizerService = container.resolve(CardTotalizerService);
-    const totalizers = await cardTotalizerService.execute({
+    requestValidations.throwIfPropertyNotExists(request.query, String(month));
+    requestValidations.throwIfPropertyNotExists(request.query, String(year));
+    requestValidations.throwIfIsNaN({ name: 'month', value: Number(month) });
+    requestValidations.throwIfIsNaN({ name: 'year', value: Number(year) });
+
+    const cardSummaryService = container.resolve(CardSummaryService);
+    const summary = await cardSummaryService.execute({
       month: Number(month),
       year: Number(year),
-      userId: id,
+      user_id: id,
     });
 
-    return response.status(200).json(totalizers);
+    return response.status(200).json(summary);
   }
 
   public async show(request: Request, response: Response) {
@@ -45,7 +50,7 @@ export class CardsController {
 
     const fetchCardsService = container.resolve(FetchCardsService);
     const cardsList = await fetchCardsService.execute({
-      userId: id,
+      user_id: id,
     });
 
     return response.status(200).json(cardsList);

@@ -10,7 +10,7 @@ const cardsController = new CardsController();
 cardsRoutes.use(ensureAuthenticated);
 
 cardsRoutes.post('/', cardsController.create);
-cardsRoutes.get('/totalizers', cardsController.getTotalizers);
+cardsRoutes.get('/totalizers', cardsController.summary);
 cardsRoutes.get('/list', cardsController.show);
 
 export default cardsRoutes;

@@ -18,16 +18,17 @@ export class Card {
     updated_at: z.date().optional(),
   });
 
-  public readonly id?: number;
-  public readonly name: string;
-  public readonly flag: string;
-  public readonly due_day: number;
-  public readonly turning_day: number;
-  public readonly user_id: string;
+  public readonly id?: string;
+  public readonly name?: string;
+  public readonly flag?: string;
+  public readonly due_day?: number;
+  public readonly turning_day?: number;
+  public readonly user_id?: string;
   public readonly created_at?: Date;
   public readonly updated_at?: Date;
+  public total?: number;
 
-  constructor(input: Card, validate: boolean | 'create' | 'partial' = true) {
+  constructor(input: Partial<Card>, validate: boolean | 'create' | 'partial' = true) {
     if (validate) {
       let schema = Card.schema;
 
@@ -45,11 +46,10 @@ export class Card {
         }
         case 'partial': {
           const partialUser = schema.partial({
-            id: true,
-            name: true,
             flag: true,
             due_day: true,
             turning_day: true,
+            user_id: true,
           });
           partialUser.parse(input);
           break;
@@ -58,5 +58,9 @@ export class Card {
     }
 
     Object.assign(this, input);
+  }
+
+  setTotal(total: number) {
+    this.total = total;
   }
 }

@@ -5,7 +5,7 @@ import '@shared/providers';
 import { IUsersRepository } from '@modules/User/domain/repositories/IUsersRepository';
 import { UsersRepository } from '@modules/User/infra/typeorm/repositories/UsersRepository';
 
-import { ICardsRepository } from '@modules/Card/domain/repositories/ICardRepository';
+import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository';
 import { CardsRepository } from '@modules/Card/infra/typeorm/repositories/CardsRepository';
 
 import IExpensesRepository from '@modules/Expense/domain/repositories/IExpensesRepository';

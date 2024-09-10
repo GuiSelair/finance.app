@@ -1,34 +1,38 @@
 import { inject, injectable } from 'tsyringe';
 
-import ICardRepository from '../repositories/ICardRepository';
-import Card from '../../infra/typeorm/entities/Card';
+import { ICardsRepository } from '../repositories/ICardsRepository';
+import { Card } from '../models/Card';
+import { CardMapper } from '@modules/Card/infra/typeorm/entities/Card';
 
-export interface IFetchCardsParams {
-  userId: string;
+export interface IFetchCardsDTO {
+  user_id: string;
 }
 
-export interface IFetchCardsReturn {
+export interface IFetchCardsOutput {
   cards: Card[];
 }
 
 @injectable()
-class FetchCardsService {
-  private cardRepository: ICardRepository;
+export class FetchCardsService {
+  private cardsRepository: ICardsRepository;
 
   constructor(
-    @inject('CardRepository')
-    cardRepository: ICardRepository,
+    @inject('CardsRepository')
+    cardsRepository: ICardsRepository,
   ) {
-    this.cardRepository = cardRepository;
+    this.cardsRepository = cardsRepository;
   }
 
-  public async execute({ userId }: IFetchCardsParams): Promise<IFetchCardsReturn> {
-    const cards = await this.cardRepository.fetchAll(userId);
+  public async execute({ user_id }: IFetchCardsDTO): Promise<IFetchCardsOutput> {
+    const cardsMapper = await this.cardsRepository.fetch(user_id);
+    const cards = this.makeCardsModel(cardsMapper || []);
 
     return {
-      cards: cards ?? [],
+      cards,
     };
   }
-}
 
-export default FetchCardsService;
+  private makeCardsModel(cardsMapper: CardMapper[]) {
+    return cardsMapper.map(cardMapper => new Card(cardMapper));
+  }
+}

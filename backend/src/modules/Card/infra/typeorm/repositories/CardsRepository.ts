@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 
 import { DataSourceConfiguration } from '@shared/infra/typeorm/bootstrap';
-import { ICardsRepository } from '@modules/Card/domain/repositories/ICardRepository';
+import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository';
 import { Card } from '@modules/Card/domain/models/Card';
 import { CardMapper } from '../entities/Card';
 

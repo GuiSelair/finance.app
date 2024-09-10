@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import ICreateExpense from '../dtos/ICreateExpense';
 import Expense from '../../infra/typeorm/entities/Expense';
 import IExpensesRepository from '../repositories/IExpensesRepository';
-import ICardRepository from '@modules/Card/domain/repositories/ICardRepository';
+import ICardRepository from '@modules/Card/domain/repositories/ICardsRepository';
 import IUsersRepository from '@modules/User/domain/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 

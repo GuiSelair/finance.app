@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 import { setDay, getMonth, getYear, isBefore } from 'date-fns';
 
-import ICardRepository from '@modules/Card/domain/repositories/ICardRepository';
+import ICardRepository from '@modules/Card/domain/repositories/ICardsRepository';
 import Expense from '../../infra/typeorm/entities/Expense';
 import IExpensesInMonthRepository from '../repositories/IExpensesInMonthRepository';
 import AppError from '@shared/errors/AppError';

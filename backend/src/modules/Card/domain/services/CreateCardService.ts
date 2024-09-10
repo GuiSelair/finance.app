@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
 import AppError from '@errors/AppError';
-import { ICardsRepository } from '../repositories/ICardRepository';
+import { ICardsRepository } from '../repositories/ICardsRepository';
 import { Card } from '../models/Card';
 
 interface ICreateCardDTO {
@@ -27,8 +27,8 @@ export class CreateCardService {
     const cardToCreate = this.makeCardModel(cardDTO);
 
     const cardFounded = await this.cardsRepository.findByName(
-      cardToCreate.name,
-      cardToCreate.user_id,
+      cardToCreate.name!,
+      cardToCreate.user_id!,
     );
     if (cardFounded) throw new AppError('Impossible create two cards with same name');
 
