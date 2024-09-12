@@ -1,4 +1,4 @@
-import ExpenseInMonth from '../../../infra/typeorm/entities/ExpenseInMonth';
+import ExpenseInMonth from '../../../infra/typeorm/entities/ExpenseMonthMapper';
 import ICreateExpenseInMonth from '../../dtos/ICreateExpenseInMonth';
 import IExpensesInMonthRepository from '../IExpensesInMonthRepository';
 

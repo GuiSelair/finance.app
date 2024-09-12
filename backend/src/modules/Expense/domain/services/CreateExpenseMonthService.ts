@@ -9,7 +9,7 @@ import { ExpenseMonth } from '../models/ExpenseMonth';
 
 interface IGetFirstMonthOfExpenseProps {
   purchaseDate: Date;
-  cardId?: string;
+  cardId: string;
   userId: string;
 }
 
@@ -77,19 +77,31 @@ export class CreateExpenseMonthService {
   }: IGetFirstMonthOfExpenseProps): Promise<number> {
     let turningDate: Date;
 
-    if (cardId) {
-      const cardFound = await this.cardsRepository.findById(cardId, userId);
-      if (!cardFound) throw new AppError('Error in generate expenses parcels, card not found.');
+    const cardFound = await this.cardsRepository.findById(cardId, userId);
+    if (!cardFound) throw new AppError('Error in generate expenses parcels, card not found.');
 
-      turningDate = setDay(new Date(), cardFound.turning_day);
-    } else {
-      turningDate = purchaseDate;
-    }
+    turningDate = setDay(new Date(), cardFound.turning_day);
 
     if (isBefore(purchaseDate, turningDate)) {
-      return getMonth(purchaseDate);
+      return getMonth(purchaseDate); // TODO: Vamos utilizar mes como mes atual + 1 para ter meses até 12?
     }
 
     return getMonth(purchaseDate) + 1;
   }
 }
+
+/**
+ * Regra de negócio:
+ * 1. Caso uma nova despesa seja adiciona:
+ *    - Caso o cartão não esteja virado, adicionar despesa para ser cobrada no mês atual
+ *    - Caso o cartão esteja virado, adicionar despesa para o próximo mês
+ *
+ * Exemplo:
+ * - Cartão com virada para dia 25:
+ *    - Data de virada: 25/09
+ *    --------------------------
+ *    1. Comprei hoje (12/09): Deve ser inserida com o mês atual (09)
+ *    2. Comprei no dia de vencimento (25/09): Deve ser inserida para o próximo mês (10)
+ *    3. Comprei depois do vencimento (01/10): Deve ser inserida com o mês atual (10)
+ *    4. Comprei hoje (12/09) mas lancei no sistema dia (02/10): Deve ser inserida no mês anterior (09) --- ESSE PONTO FALHA
+ */

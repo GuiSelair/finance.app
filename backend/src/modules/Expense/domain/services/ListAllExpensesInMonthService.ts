@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
-import { ExpenseMonthMapper } from '../../infra/typeorm/entities/ExpenseInMonth';
+import { ExpenseMonthMapper } from '../../infra/typeorm/entities/ExpenseMonthMapper';
 import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthRepository';
 
 export interface IListAllExpensesInMonthDTO {
@@ -24,7 +24,7 @@ export class ListAllExpensesInMonthService {
     month,
     year,
     user_id,
-  }: IListAllExpensesInMonthDTO): Promise<ExpenseMonthMapper[]> {
+  }: IListAllExpensesInMonthDTO): Promise<ExpenseMonthMapper[] | undefined> {
     const expenses = await this.expensesMonthRepository.findByMonthAndYear(month, year, user_id);
     return expenses;
   }

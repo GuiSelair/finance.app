@@ -4,7 +4,7 @@ import { container } from 'tsyringe';
 import { requestValidations } from '@helpers/requestValidations';
 
 import { CreateCardService } from '@modules/Card/domain/services/CreateCardService';
-import { CardSummaryService } from '@modules/Card/domain/services/CardTotalizerService';
+import { CardSummaryService } from '@modules/Card/domain/services/CardSummaryService';
 import { FetchCardsService } from '@modules/Card/domain/services/FetchCardsService';
 
 export class CardsController {

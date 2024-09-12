@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import 'dotenv/config';
-import '../../ioc';
+import '@shared/ioc';
 
 import { httpServer } from '@infra/http';
 import { schedulerJob } from '@infra/scheduler';

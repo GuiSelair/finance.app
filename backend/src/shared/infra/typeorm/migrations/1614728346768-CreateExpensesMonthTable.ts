@@ -1,7 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateExpensesMonthTable1614728346768
-  implements MigrationInterface {
+export default class CreateExpensesMonthTable1614728346768 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -35,7 +34,7 @@ export default class CreateExpensesMonthTable1614728346768
             type: 'float4',
           },
           {
-            name: 'isPaid',
+            name: 'is_paid',
             type: 'boolean',
             default: false,
           },

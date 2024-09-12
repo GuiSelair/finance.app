@@ -41,7 +41,7 @@ export class ExpenseMonthMapper {
   @Column({
     default: false,
   })
-  isPaid: boolean;
+  is_paid: boolean;
 
   @CreateDateColumn()
   created_at: Date;

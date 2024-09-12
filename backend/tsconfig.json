@@ -36,9 +36,10 @@
   },
   "include": [
     "src"
-  ], // Os arquivos TypeScript a serem transpilados
+  ],
   "exclude": [
     "node_modules",
-    "src/**/*.spec.ts"
-  ] // Exclui a pasta node_modules
+    "src/**/*.spec.ts",
+    "src/**/fakes/**"
+  ]
 }

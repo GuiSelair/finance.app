@@ -1,11 +1,10 @@
 import { injectable, inject } from 'tsyringe';
 
 import { IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
-import { ExpenseInMonth } from '@modules/Expense/infra/typeorm/entities/ExpenseInMonth';
+import { ExpenseMonthMapper } from '@modules/Expense/infra/typeorm/entities/ExpenseMonthMapper';
 import { Card } from '../models/Card';
 import { ICardsRepository } from '../repositories/ICardsRepository';
 import { CardMapper } from '@modules/Card/infra/typeorm/entities/CardMapper';
-import AppError from '@shared/errors/AppError';
 
 export interface ICardSummaryDTO {
   month: number;
@@ -29,21 +28,14 @@ export class CardSummaryService {
   }
 
   public async execute({ month, user_id, year }: ICardSummaryDTO): Promise<Card[]> {
-    if (month < 0 || month > 12) {
-      throw new AppError('Month number invalid, try a number between 1 and 12');
-    }
-
     const cardsMapper = await this.cardsRepository.fetch(user_id);
     if (!cardsMapper) {
       return [];
     }
     const cards = this.makeCardsModel(cardsMapper);
 
-    const expensesInSpecificMonth = await this.expenseMonthRepository.findByMonthAndYear(
-      month,
-      year,
-      user_id,
-    );
+    const expensesInSpecificMonth =
+      (await this.expenseMonthRepository.findByMonthAndYear(month, year, user_id)) || [];
 
     const expensesInMonthGroupByCard = this.getExpensesTotalGroupByCard(
       expensesInSpecificMonth,
@@ -60,7 +52,10 @@ export class CardSummaryService {
    * @param cards - The list of cards.
    * @returns An array of objects containing the card ID, name, turning day, and total expenses.
    */
-  private getExpensesTotalGroupByCard(expensesInMonth: ExpenseInMonth[], cards: Card[]): Card[] {
+  private getExpensesTotalGroupByCard(
+    expensesInMonth: ExpenseMonthMapper[],
+    cards: Card[],
+  ): Card[] {
     return cards.reduce<Card[]>((accumulator, card) => {
       const expensesInCard = expensesInMonth.filter(
         expenseInMonth => expenseInMonth?.expense?.card_id === card.id,

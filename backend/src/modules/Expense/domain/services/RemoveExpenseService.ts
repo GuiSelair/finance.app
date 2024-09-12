@@ -19,7 +19,7 @@ export class RemoveExpenseService {
   }
 
   public async execute({ expense_id, user_id }: IRemoveExpenseDTO): Promise<boolean> {
-    const expenseFound = await this.expensesRepository.findByIdAndUserId(expense_id, user_id);
+    const expenseFound = await this.expensesRepository.findById(expense_id, user_id);
 
     if (!expenseFound) {
       return false;

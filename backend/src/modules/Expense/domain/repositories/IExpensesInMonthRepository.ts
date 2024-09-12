@@ -1,4 +1,4 @@
-import { ExpenseMonthMapper } from '../../infra/typeorm/entities/ExpenseInMonth';
+import { ExpenseMonthMapper } from '../../infra/typeorm/entities/ExpenseMonthMapper';
 import { ExpenseMonth } from '../models/ExpenseMonth';
 
 export interface IExpensesMonthRepository {
