@@ -27,13 +27,14 @@ export class CardsController {
   }
 
   public async summary(request: Request, response: Response) {
+    requestValidations.throwIfPropertyNotExists(request.query, 'month');
+    requestValidations.throwIfPropertyNotExists(request.query, 'year');
+
     const { month, year } = request.query;
     const { id } = request.user;
 
-    requestValidations.throwIfPropertyNotExists(request.query, String(month));
-    requestValidations.throwIfPropertyNotExists(request.query, String(year));
-    requestValidations.throwIfIsNaN({ name: 'month', value: Number(month) });
-    requestValidations.throwIfIsNaN({ name: 'year', value: Number(year) });
+    requestValidations.throwIfPropertyMonthIsNotValid(Number(month));
+    requestValidations.throwIfPropertyYearIsNotValid(Number(year));
 
     const cardSummaryService = container.resolve(CardSummaryService);
     const summary = await cardSummaryService.execute({

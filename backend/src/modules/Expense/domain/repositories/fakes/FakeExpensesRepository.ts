@@ -1,7 +1,7 @@
 import { v4 as createUUID } from 'uuid';
 
 import ICreateExpense from '../../dtos/ICreateExpense';
-import Expense from '../../../infra/typeorm/entities/Expense';
+import Expense from '../../../infra/typeorm/entities/ExpenseMapper';
 import IExpensesRepository from '../IExpensesRepository';
 import FakeExpensesInMonthRepository from './FakeExpensesInMonthRepository';
 

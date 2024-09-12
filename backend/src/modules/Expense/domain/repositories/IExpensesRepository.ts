@@ -1,10 +1,10 @@
-import ICreateExpense from '../dtos/ICreateExpense';
-import Expense from '../../infra/typeorm/entities/Expense';
+import { ExpenseMapper } from '../../infra/typeorm/entities/ExpenseMapper';
+import { Expense } from '../models/Expense';
 
-export default interface IExpensesRepository {
-  create(args: ICreateExpense): Promise<Expense>;
-  fetchAllExpenses(userId: string): Promise<Expense[] | null>;
-  fetchAllRecurringExpenses(): Promise<Expense[] | undefined>;
-  findByIdAndUserId(id: string, userId: string): Promise<Expense | null>;
+export interface IExpensesRepository {
+  create(args: Expense): Promise<ExpenseMapper>;
+  fetch(userId: string): Promise<ExpenseMapper[] | null>;
+  fetchRecurringExpenses(): Promise<ExpenseMapper[] | undefined>;
+  findById(id: string, userId: string): Promise<ExpenseMapper | null>;
   remove(id: string): Promise<boolean>;
 }

@@ -1,20 +1,20 @@
 import { injectable, inject } from 'tsyringe';
 import { addMonths, addYears, getMonth, getYear } from 'date-fns';
 
-import IExpensesRepository from '../repositories/IExpensesRepository';
-import IExpensesInMonthRepository from '../repositories/IExpensesInMonthRepository';
-import ICreateExpenseInMonth from '../dtos/ICreateExpenseInMonth';
+import { IExpensesRepository } from '../repositories/IExpensesRepository';
+import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthRepository';
+import { ExpenseMonth } from '../models/ExpenseMonth';
 
 @injectable()
 export class InsertRecurringExpensesInNextMonthsService {
   private expensesRepository: IExpensesRepository;
-  private expensesInMonthRepository: IExpensesInMonthRepository;
+  private expensesInMonthRepository: IExpensesMonthRepository;
 
   constructor(
     @inject('ExpensesRepository')
     expensesRepository: IExpensesRepository,
     @inject('ExpensesMonthRepository')
-    expensesInMonthRepository: IExpensesInMonthRepository,
+    expensesInMonthRepository: IExpensesMonthRepository,
   ) {
     this.expensesRepository = expensesRepository;
     this.expensesInMonthRepository = expensesInMonthRepository;
@@ -24,7 +24,7 @@ export class InsertRecurringExpensesInNextMonthsService {
     const nextMonth = getMonth(addMonths(new Date(), 1));
     const nextYear = getYear(addMonths(new Date(), 1));
 
-    const recurringExpenses = await this.expensesRepository.fetchAllRecurringExpenses();
+    const recurringExpenses = await this.expensesRepository.fetchRecurringExpenses();
     if (!recurringExpenses?.length) return;
 
     const expensesInMonth = await this.expensesInMonthRepository.findByMonthAndYear(
@@ -38,18 +38,19 @@ export class InsertRecurringExpensesInNextMonthsService {
     );
     if (!recurringExpensesToInsertAgain.length) return;
 
-    const expensesInMonthToInsert = recurringExpensesToInsertAgain.map(
-      (expense): ICreateExpenseInMonth => {
-        return {
+    const expensesInMonthToInsert = recurringExpensesToInsertAgain.map((expense): ExpenseMonth => {
+      return new ExpenseMonth(
+        {
           expense_id: expense.id,
           number_current_of_parcel: 1,
           number_total_of_parcel: 1,
           value_of_parcel: expense.amount,
           month: nextMonth,
           year: nextYear,
-        };
-      },
-    );
+        },
+        'create',
+      );
+    });
 
     await this.expensesInMonthRepository.create(expensesInMonthToInsert);
     return;

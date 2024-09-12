@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { DataSourceConfiguration } from '@shared/infra/typeorm/bootstrap';
 import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository';
 import { Card } from '@modules/Card/domain/models/Card';
-import { CardMapper } from '../entities/Card';
+import { CardMapper } from '../entities/CardMapper';
 
 export class CardsRepository implements ICardsRepository {
   private repository: Repository<CardMapper>;
@@ -37,10 +37,11 @@ export class CardsRepository implements ICardsRepository {
     return cardFound;
   }
 
-  public async findById(id: string): Promise<CardMapper | null> {
+  public async findById(id: string, user_id: string): Promise<CardMapper | null> {
     const cardFound = await this.repository.findOne({
       where: {
         id,
+        user_id,
       },
     });
 

@@ -2,7 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import { ICardsRepository } from '../repositories/ICardsRepository';
 import { Card } from '../models/Card';
-import { CardMapper } from '@modules/Card/infra/typeorm/entities/Card';
+import { CardMapper } from '@modules/Card/infra/typeorm/entities/CardMapper';
 
 export interface IFetchCardsDTO {
   user_id: string;

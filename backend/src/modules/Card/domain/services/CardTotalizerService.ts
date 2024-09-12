@@ -1,10 +1,11 @@
 import { injectable, inject } from 'tsyringe';
 
-import { IExpensesInMonthRepository } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
 import { ExpenseInMonth } from '@modules/Expense/infra/typeorm/entities/ExpenseInMonth';
 import { Card } from '../models/Card';
 import { ICardsRepository } from '../repositories/ICardsRepository';
-import { CardMapper } from '@modules/Card/infra/typeorm/entities/Card';
+import { CardMapper } from '@modules/Card/infra/typeorm/entities/CardMapper';
+import AppError from '@shared/errors/AppError';
 
 export interface ICardSummaryDTO {
   month: number;
@@ -14,12 +15,12 @@ export interface ICardSummaryDTO {
 
 @injectable()
 export class CardSummaryService {
-  private expenseMonthRepository: IExpensesInMonthRepository;
+  private expenseMonthRepository: IExpensesMonthRepository;
   private cardsRepository: ICardsRepository;
 
   constructor(
     @inject('ExpensesMonthRepository')
-    expenseMonthRepository: IExpensesInMonthRepository,
+    expenseMonthRepository: IExpensesMonthRepository,
     @inject('CardsRepository')
     cardsRepository,
   ) {
@@ -28,6 +29,10 @@ export class CardSummaryService {
   }
 
   public async execute({ month, user_id, year }: ICardSummaryDTO): Promise<Card[]> {
+    if (month < 0 || month > 12) {
+      throw new AppError('Month number invalid, try a number between 1 and 12');
+    }
+
     const cardsMapper = await this.cardsRepository.fetch(user_id);
     if (!cardsMapper) {
       return [];

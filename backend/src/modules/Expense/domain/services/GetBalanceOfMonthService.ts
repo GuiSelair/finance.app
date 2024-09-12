@@ -1,27 +1,29 @@
 import { injectable, inject } from 'tsyringe';
-import AppError from '@shared/errors/AppError';
 
-import { IBalance, IGetBalance } from '../dtos/IBalance';
-import IExpensesInMonthRepository from '../repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthRepository';
+
+interface IBalanceOutput {
+  totalOfExpenses: number;
+  totalPayable: number;
+  economy: number;
+}
+
+interface IGetBalanceDTO {
+  month: number;
+  year: number;
+  user_id: string;
+}
 
 @injectable()
-class GetBalanceOfMonthService {
+export class GetBalanceOfMonthService {
   constructor(
     @inject('ExpensesMonthRepository')
-    private readonly expensesMonthRepository: IExpensesInMonthRepository,
+    private readonly expensesMonthRepository: IExpensesMonthRepository,
   ) {}
 
-  async execute({ month, userId, year }: IGetBalance): Promise<IBalance> {
-    if (month < 0 || month > 12)
-      throw new AppError('[ERROR]: Month number invalid, try a number between 1 and 12');
-
-    if (!year) throw new AppError('[ERROR]: Year not be empty');
-
-    const allExpensesInMonth = await this.expensesMonthRepository.findByMonthAndYear(
-      month,
-      year,
-      userId,
-    );
+  async execute({ month, user_id, year }: IGetBalanceDTO): Promise<IBalanceOutput> {
+    const allExpensesInMonth =
+      (await this.expensesMonthRepository.findByMonthAndYear(month, year, user_id)) || [];
 
     const { totalOfExpenses, totalPayable } = allExpensesInMonth.reduce(
       (accumulator, expense) => {
@@ -43,5 +45,3 @@ class GetBalanceOfMonthService {
     };
   }
 }
-
-export default GetBalanceOfMonthService;

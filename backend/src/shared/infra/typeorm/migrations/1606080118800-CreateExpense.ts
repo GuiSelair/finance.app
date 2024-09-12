@@ -32,20 +32,6 @@ export default class CreateExpense1606080118800 implements MigrationInterface {
             type: 'float4',
           },
           {
-            name: 'split_expense',
-            type: 'boolean',
-          },
-          {
-            name: 'share_with',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'value_of_each',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
             name: 'card_id',
             type: 'uuid',
             isNullable: true,

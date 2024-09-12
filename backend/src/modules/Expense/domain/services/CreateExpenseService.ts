@@ -1,32 +1,64 @@
-import { inject, injectable } from 'tsyringe';
+import { inject, injectable, container } from 'tsyringe';
 
-import ICreateExpense from '../dtos/ICreateExpense';
-import Expense from '../../infra/typeorm/entities/Expense';
-import IExpensesRepository from '../repositories/IExpensesRepository';
-import ICardRepository from '@modules/Card/domain/repositories/ICardsRepository';
-import IUsersRepository from '@modules/User/domain/repositories/IUsersRepository';
-import AppError from '@shared/errors/AppError';
+import AppError from '@errors/AppError';
+import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository';
+import { ExpenseMapper } from '../../infra/typeorm/entities/ExpenseMapper';
+import { IExpensesRepository } from '../repositories/IExpensesRepository';
+import { Expense } from '../models/Expense';
+import { CreateExpenseMonthService } from './CreateExpenseMonthService';
+
+export interface ICreateExpenseDTO {
+  name: string;
+  amount: number;
+  card_id: string;
+  user_id: string;
+  parcel: number;
+  purchase_date?: Date;
+  description?: string;
+  due_date?: Date;
+  is_recurring?: boolean;
+}
 
 @injectable()
-class CreateExpensesService {
+export class CreateExpenseService {
   private expensesRepository: IExpensesRepository;
-  private cardsRepository: ICardRepository;
-  private usersRepository: IUsersRepository;
+  private cardsRepository: ICardsRepository;
 
   constructor(
     @inject('ExpensesRepository')
     expensesRepository: IExpensesRepository,
-    @inject('CardRepository')
-    cardsRepository: ICardRepository,
-    @inject('UsersRepository')
-    usersRepository: IUsersRepository,
+    @inject('CardsRepository')
+    cardsRepository: ICardsRepository,
   ) {
     this.expensesRepository = expensesRepository;
     this.cardsRepository = cardsRepository;
-    this.usersRepository = usersRepository;
   }
 
-  public async execute({
+  public async execute(expenseDTO: ICreateExpenseDTO): Promise<ExpenseMapper> {
+    const expenseToCreate = this.makeExpenseModel(expenseDTO);
+
+    const cardFound = await this.cardsRepository.findById(
+      expenseToCreate.card_id!,
+      expenseToCreate.user_id!,
+    );
+    if (!cardFound) {
+      throw new AppError('Card not found');
+    }
+
+    const newExpense = await this.expensesRepository.create(expenseToCreate);
+
+    try {
+      const createExpenseMonthService = container.resolve(CreateExpenseMonthService);
+      createExpenseMonthService.execute(this.makeExpenseModel(newExpense));
+    } catch (err) {
+      await this.expensesRepository.remove(newExpense.id);
+      throw new AppError(err);
+    }
+
+    return newExpense;
+  }
+
+  private makeExpenseModel({
     name,
     description,
     amount,
@@ -34,42 +66,22 @@ class CreateExpensesService {
     card_id,
     user_id,
     parcel = 1,
-    split_expense = false,
-    value_of_each = [],
-    share_with = [],
     purchase_date = new Date(),
     is_recurring = false,
-  }: ICreateExpense): Promise<Expense> {
-    const transformValuesOfEachArrayToString = Array(value_of_each)?.join('&');
-    const transformShareWithArrayToString = Array(share_with)?.join('&');
-
-    const userFound = await this.usersRepository.findById(user_id ?? '');
-    if (!userFound) {
-      throw new AppError('User not found');
-    }
-
-    const cardFound = await this.cardsRepository.findById(card_id ?? '');
-    if (!cardFound) {
-      throw new AppError('Card not found');
-    }
-
-    const newExpense = await this.expensesRepository.create({
-      name,
-      description,
-      amount,
-      purchase_date,
-      due_date,
-      card_id,
-      user_id,
-      parcel,
-      split_expense,
-      value_of_each: transformValuesOfEachArrayToString,
-      share_with: transformShareWithArrayToString,
-      is_recurring,
-    });
-
-    return newExpense;
+  }: ICreateExpenseDTO) {
+    return new Expense(
+      {
+        name,
+        description,
+        amount,
+        due_date,
+        card_id,
+        user_id,
+        parcel,
+        purchase_date,
+        is_recurring,
+      },
+      'create',
+    );
   }
 }
-
-export default CreateExpensesService;

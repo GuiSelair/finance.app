@@ -1,7 +1,11 @@
-import ICreateExpenseInMonth from '../dtos/ICreateExpenseInMonth';
-import ExpenseInMonth from '../../infra/typeorm/entities/ExpenseInMonth';
+import { ExpenseMonthMapper } from '../../infra/typeorm/entities/ExpenseInMonth';
+import { ExpenseMonth } from '../models/ExpenseMonth';
 
-export default interface IExpensesInMonthRepository {
-  create(args: ICreateExpenseInMonth[]): Promise<ExpenseInMonth[]>;
-  findByMonthAndYear(month: number, year: number, userId?: string): Promise<ExpenseInMonth[]>;
+export interface IExpensesMonthRepository {
+  create(args: ExpenseMonth[]): Promise<ExpenseMonthMapper[]>;
+  findByMonthAndYear(
+    month: number,
+    year: number,
+    user_id?: string,
+  ): Promise<ExpenseMonthMapper[] | undefined>;
 }

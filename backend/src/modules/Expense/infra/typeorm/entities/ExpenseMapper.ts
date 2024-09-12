@@ -8,11 +8,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import Card from '@modules/Card/infra/typeorm/entities/Card';
-import User from '@modules/User/infra/typeorm/entities/UserMapper';
+import { CardMapper } from '@modules/Card/infra/typeorm/entities/CardMapper';
+import { UserMapper } from '@modules/User/infra/typeorm/entities/UserMapper';
 
 @Entity('expenses')
-class Expense {
+export class ExpenseMapper {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -38,34 +38,21 @@ class Expense {
   amount: number;
 
   @Column()
-  split_expense?: boolean;
-
-  @Column({
-    nullable: true,
-  })
-  share_with?: string;
-
-  @Column({
-    nullable: true,
-  })
-  value_of_each?: string;
-
-  @Column()
   is_recurring: boolean;
 
   @Column()
   card_id: string;
 
-  @ManyToOne(() => Card, { cascade: true })
+  @ManyToOne(() => CardMapper, { cascade: true })
   @JoinColumn({ name: 'card_id' })
-  card: Card;
+  card: CardMapper;
 
   @Column()
   user_id: string;
 
-  @ManyToOne(() => User, { cascade: true })
+  @ManyToOne(() => UserMapper, { cascade: true })
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user: UserMapper;
 
   @Column()
   parcel: number;
@@ -76,5 +63,3 @@ class Expense {
   @UpdateDateColumn()
   updated_at: Date;
 }
-
-export default Expense;

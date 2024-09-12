@@ -7,19 +7,19 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import Expense from './Expense';
+import { ExpenseMapper } from './ExpenseMapper';
 
 @Entity('expenses-month')
-class ExpenseMonth {
+export class ExpenseMonthMapper {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   expense_id: string;
 
-  @ManyToOne(() => Expense, { onDelete: 'CASCADE' })
+  @ManyToOne(() => ExpenseMapper, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'expense_id' })
-  expense: Expense;
+  expense: ExpenseMapper;
 
   @Column()
   number_current_of_parcel: number;
@@ -49,5 +49,3 @@ class ExpenseMonth {
   @UpdateDateColumn()
   updated_at: Date;
 }
-
-export default ExpenseMonth;
