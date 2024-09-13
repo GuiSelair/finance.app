@@ -15,7 +15,7 @@ function throwIfIsNaN({ name, value }: { name: string; value: number }) {
 }
 
 function throwIfPropertyNotExists(body: object, property: string) {
-  if (!!body?.[property]) {
+  if (!body?.[property]) {
     throw new AppError(`Property (${property}) not exists`);
   }
 }

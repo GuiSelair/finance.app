@@ -47,6 +47,7 @@ export class InsertRecurringExpensesInNextMonthsService {
           value_of_parcel: expense.amount,
           month: nextMonth,
           year: nextYear,
+          is_paid: false,
         },
         'create',
       );

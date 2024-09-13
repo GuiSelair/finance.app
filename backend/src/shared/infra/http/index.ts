@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import AppError from '@errors/AppError';
 import routes from './routes';
+import { ZodError } from 'zod';
 
 const app = express();
 
@@ -20,6 +21,13 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
     return response.status(err.statusCode).json({
       status: 'error',
       message: err.message,
+    });
+  }
+
+  if (err instanceof ZodError) {
+    return response.status(400).json({
+      status: 'validation-error',
+      message: `${err?.issues?.[0].path} - ${err?.issues?.[0]?.message}` || err,
     });
   }
   console.log(err);

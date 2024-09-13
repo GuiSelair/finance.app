@@ -49,7 +49,11 @@ export class CreateExpenseService {
 
     try {
       const createExpenseMonthService = container.resolve(CreateExpenseMonthService);
-      createExpenseMonthService.execute(this.makeExpenseModel(newExpense));
+      createExpenseMonthService.execute(
+        new Expense({
+          ...newExpense,
+        }),
+      );
     } catch (err) {
       await this.expensesRepository.remove(newExpense.id);
       throw new AppError(err);

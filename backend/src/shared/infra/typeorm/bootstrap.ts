@@ -5,7 +5,7 @@ import { DataSource } from 'typeorm';
 const isProduction = process.env.NODE_ENV === 'production';
 
 export const DataSourceConfiguration = new DataSource({
-  type: (process.env.DB_TYPE as 'postgres' | 'mysql') ?? 'postgres',
+  type: (process.env.DB_TYPE as 'postgres' | 'mysql') ?? 'postgres23',
   host: process.env.DB_HOST ?? 'localhost',
   port: +(process.env.DB_PORT ?? 5432),
   username: process.env.DB_USER ?? 'root',
@@ -18,9 +18,5 @@ export const DataSourceConfiguration = new DataSource({
       ? 'dist/modules/**/infra/typeorm/entities/*{.ts,.js}'
       : 'src/modules/**/infra/typeorm/entities/*{.ts,.js}',
   ],
-  migrations: [
-    isProduction
-      ? '../dist/shared/infra/typeorm/migrations/*{.ts,.js}'
-      : '../src/shared/infra/typeorm/migrations/*{.ts,.js}',
-  ],
+  migrations: [__dirname + '/migrations/*.{js,ts}'],
 });

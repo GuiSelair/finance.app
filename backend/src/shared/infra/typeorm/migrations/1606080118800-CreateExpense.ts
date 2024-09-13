@@ -14,6 +14,11 @@ export default class CreateExpense1606080118800 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
+            name: 'name',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
             name: 'description',
             type: 'varchar',
             isNullable: true,

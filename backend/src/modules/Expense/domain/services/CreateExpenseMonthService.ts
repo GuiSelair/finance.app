@@ -60,6 +60,7 @@ export class CreateExpenseMonthService {
             value_of_parcel: valueOfParcel,
             month: currentMonth,
             year: currentYear,
+            is_paid: false,
           },
           'create',
         ),
