@@ -1,23 +1,17 @@
-import { Response, Request, NextFunction } from 'express';
+import type { Response, Request } from 'express';
 import { container } from 'tsyringe';
 
-import CreateUserService from '../../../services/CreateUserService';
+import { CreateUserService, ICreateUserDTO } from '@modules/User/domain/services/CreateUserService';
+import { requestValidations } from '@helpers/requestValidations';
 
-class UsersController {
-  public async create(
-    request: Request,
-    response: Response,
-    _: NextFunction,
-  ): Promise<Response> {
-    const { name, email, password } = request.body;
+export class UsersController {
+  public async create(request: Request, response: Response): Promise<Response> {
+    const body = request.body;
+    requestValidations.throwIfEmptyBody(body);
+
     const createUserService = container.resolve(CreateUserService);
-    const user = await createUserService.execute({
-      email,
-      name,
-      password,
-    });
-    return response.status(201).json(user);
+    const userCreated = await createUserService.execute(body as ICreateUserDTO);
+
+    return response.status(201).json(userCreated);
   }
 }
-
-export default UsersController;

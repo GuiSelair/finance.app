@@ -1,16 +1,16 @@
 import { Router } from 'express';
-import ensureAuthenticated from '@modules/User/infra/http/middlewares/ensureAuthenticated';
 
-import CardController from '../controllers/CardsController';
+import { ensureAuthenticated } from '@infra/http/middlewares/ensureAuthenticated';
+import { CardsController } from '../controllers/CardsController';
 
 const cardsRoutes = Router();
+const cardsController = new CardsController();
 
+/** Add auth middleware */
 cardsRoutes.use(ensureAuthenticated);
 
-const cardsController = new CardController();
-
 cardsRoutes.post('/', cardsController.create);
-cardsRoutes.get('/totalizers', cardsController.getTotalizers);
+cardsRoutes.get('/totalizers', cardsController.summary);
 cardsRoutes.get('/list', cardsController.show);
 
 export default cardsRoutes;

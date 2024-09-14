@@ -1,21 +1,24 @@
 import { Repository } from 'typeorm';
 
-import { ConnectionSource } from '@shared/infra/typeorm/bootstrap';
-import ICreateExpenseInMonth from '../../../dtos/ICreateExpenseInMonth';
-import IExpensesMonthRepository from '../../../repositories/IExpensesInMonthRepository';
-import ExpenseMonth from '../entities/ExpenseInMonth';
+import { DataSourceConfiguration } from '@shared/infra/typeorm/bootstrap';
+import { IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
+import { ExpenseMonthMapper } from '../entities/ExpenseMonthMapper';
+import { ExpenseMonth } from '@modules/Expense/domain/models/ExpenseMonth';
 
-class ExpensesMonthRepository implements IExpensesMonthRepository {
-  private repository: Repository<ExpenseMonth>;
+export class ExpensesMonthRepository implements IExpensesMonthRepository {
+  private repository: Repository<ExpenseMonthMapper>;
 
   constructor() {
-    this.repository = ConnectionSource.getRepository(ExpenseMonth);
+    this.repository = DataSourceConfiguration.getRepository(ExpenseMonthMapper);
   }
 
-  public async create(
-    expenseMonthList: ICreateExpenseInMonth[],
-  ): Promise<ExpenseMonth[]> {
-    const expenseMonth = this.repository.create(expenseMonthList);
+  private makeExpenseMonthMapper(input: ExpenseMonth) {
+    return Object.assign(new ExpenseMonthMapper(), input);
+  }
+
+  public async create(expenseMonthList: ExpenseMonth[]): Promise<ExpenseMonthMapper[]> {
+    const expensesMonth = expenseMonthList.map(eml => this.makeExpenseMonthMapper(eml));
+    const expenseMonth = this.repository.create(expensesMonth);
     await this.repository.save(expenseMonth);
 
     return expenseMonth;
@@ -25,7 +28,7 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
     month: number,
     year: number,
     userId?: string,
-  ): Promise<ExpenseMonth[]> {
+  ): Promise<ExpenseMonthMapper[]> {
     const expensesInMonth = await this.repository.find({
       where: {
         month,
@@ -42,5 +45,3 @@ class ExpensesMonthRepository implements IExpensesMonthRepository {
     return expensesInMonth;
   }
 }
-
-export default ExpensesMonthRepository;

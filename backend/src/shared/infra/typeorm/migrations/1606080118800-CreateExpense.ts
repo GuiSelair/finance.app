@@ -14,6 +14,11 @@ export default class CreateExpense1606080118800 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
+            name: 'name',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
             name: 'description',
             type: 'varchar',
             isNullable: true,
@@ -30,20 +35,6 @@ export default class CreateExpense1606080118800 implements MigrationInterface {
           {
             name: 'amount',
             type: 'float4',
-          },
-          {
-            name: 'split_expense',
-            type: 'boolean',
-          },
-          {
-            name: 'share_with',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'value_of_each',
-            type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'card_id',

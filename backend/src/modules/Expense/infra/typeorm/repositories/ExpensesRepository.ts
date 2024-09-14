@@ -1,30 +1,30 @@
 import { Repository } from 'typeorm';
 
-import { ConnectionSource } from '@shared/infra/typeorm/bootstrap';
-import ICreateExpense from '../../../dtos/ICreateExpense';
-import IExpensesRepository from '../../../repositories/IExpensesRepository';
-import Expense from '../entities/Expense';
+import { DataSourceConfiguration } from '@infra/typeorm/bootstrap';
+import { IExpensesRepository } from '@modules/Expense/domain/repositories/IExpensesRepository';
+import { ExpenseMapper } from '../entities/ExpenseMapper';
+import { Expense } from '@modules/Expense/domain/models/Expense';
 
-interface ICreateExpenseRepository extends ICreateExpense {
-  share_with: string;
-  value_of_each: string;
-}
-
-class ExpensesRepository implements IExpensesRepository {
-  private repository: Repository<Expense>;
+export class ExpensesRepository implements IExpensesRepository {
+  private repository: Repository<ExpenseMapper>;
 
   constructor() {
-    this.repository = ConnectionSource.getRepository(Expense);
+    this.repository = DataSourceConfiguration.getRepository(ExpenseMapper);
   }
 
-  public async create(data: ICreateExpenseRepository): Promise<Expense> {
-    const expense = this.repository.create(data);
+  private makeExpenseMapper(input: Expense) {
+    return Object.assign(new ExpenseMapper(), input);
+  }
+
+  public async create(data: Expense): Promise<ExpenseMapper> {
+    const expenseMapper = this.makeExpenseMapper(data);
+    const expense = this.repository.create(expenseMapper);
     await this.repository.save(expense);
 
     return expense;
   }
 
-  public async fetchAllExpenses(userId: string): Promise<Expense[] | null> {
+  public async fetch(userId: string): Promise<ExpenseMapper[] | null> {
     return this.repository.find({
       where: {
         user_id: userId,
@@ -32,10 +32,7 @@ class ExpensesRepository implements IExpensesRepository {
     });
   }
 
-  public async findByIdAndUserId(
-    id: string,
-    userId: string,
-  ): Promise<Expense | null> {
+  public async findById(id: string, userId: string): Promise<ExpenseMapper | null> {
     return this.repository.findOne({
       where: {
         id,
@@ -52,9 +49,7 @@ class ExpensesRepository implements IExpensesRepository {
     return !!result?.affected;
   }
 
-  public async fetchAllRecurringExpenses(
-    userId?: string,
-  ): Promise<Expense[] | undefined> {
+  public async fetchRecurringExpenses(userId?: string): Promise<ExpenseMapper[] | undefined> {
     return this.repository.find({
       where: {
         is_recurring: true,
@@ -63,5 +58,3 @@ class ExpensesRepository implements IExpensesRepository {
     });
   }
 }
-
-export default ExpensesRepository;

@@ -62,12 +62,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const onSignIn = useCallback(async ({ email, password }: SignInProps) => {
 		try {
-			const response = await httpClient.post<{ token: string }>('/login', {
-				body: {
-					email,
-					password,
+			const response = await httpClient.post<{ token: string }>(
+				'/auth/sign-in',
+				{
+					body: {
+						email,
+						password,
+					},
 				},
-			});
+			);
 
 			setToken(response.data.token);
 			cookies.setCookie(

@@ -5,6 +5,7 @@
     "esModuleInterop": true, // Permite interoperabilidade de módulo ES6 com CommonJS e outros módulos
     "isolatedModules": true, // Garante que cada arquivo pode ser transpilado com segurança sem depender de outras importações
     "strict": false, // Habilita uma ampla gama de verificações de tipo rigorosas
+    "strictNullChecks": true, // Habilita a verificação de nulos estritos
     "forceConsistentCasingInFileNames": true, // Garante que a capitalização seja correta nas importações
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -16,19 +17,29 @@
       "@modules/*": [
         "./modules/*"
       ],
-      "@config/*": [
-        "./config/*"
-      ],
       "@shared/*": [
         "./shared/*"
+      ],
+      "@helpers/*": [
+        "./shared/helpers/*"
+      ],
+      "@errors/*": [
+        "./shared/errors/*"
+      ],
+      "@infra/*": [
+        "./shared/infra/*"
+      ],
+      "@providers/*": [
+        "./shared/providers/*"
       ],
     }
   },
   "include": [
     "src"
-  ], // Os arquivos TypeScript a serem transpilados
+  ],
   "exclude": [
     "node_modules",
-    "src/**/*.spec.ts"
-  ] // Exclui a pasta node_modules
+    "src/**/*.spec.ts",
+    "src/**/fakes/**"
+  ]
 }

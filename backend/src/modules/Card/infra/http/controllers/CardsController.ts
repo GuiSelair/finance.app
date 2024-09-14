@@ -1,55 +1,59 @@
-import { Response, Request, NextFunction } from 'express';
+import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 
-import CreateCardService from '../../../services/CreateCardService';
-import CardTotalizerService from '../../../services/CardTotalizerService';
-import FetchCardsService from '../../../services/FetchCardsService';
+import { requestValidations } from '@helpers/requestValidations';
 
-class CardsController {
-  public async create(
-    request: Request,
-    response: Response,
-    _: NextFunction,
-  ): Promise<Response> {
+import { CreateCardService } from '@modules/Card/domain/services/CreateCardService';
+import { CardSummaryService } from '@modules/Card/domain/services/CardSummaryService';
+import { FetchCardsService } from '@modules/Card/domain/services/FetchCardsService';
+
+export class CardsController {
+  public async create(request: Request, response: Response) {
+    requestValidations.throwIfEmptyBody(request.body);
+
     const { due_day, name, flag, turning_day } = request.body;
     const { id } = request.user;
+
     const createCardService = container.resolve(CreateCardService);
     const card = await createCardService.execute({
       due_day,
       flag,
       name,
-      user_id: id,
       turning_day,
+      user_id: id,
     });
+
     return response.status(201).json(card);
   }
 
-  public async getTotalizers(request: Request, response: Response) {
+  public async summary(request: Request, response: Response) {
+    requestValidations.throwIfPropertyNotExists(request.query, 'month');
+    requestValidations.throwIfPropertyNotExists(request.query, 'year');
+
     const { month, year } = request.query;
     const { id } = request.user;
 
-    const cardTotalizerService = container.resolve(CardTotalizerService);
+    requestValidations.throwIfPropertyMonthIsNotValid(Number(month));
+    requestValidations.throwIfPropertyYearIsNotValid(Number(year));
 
-    const totalizers = await cardTotalizerService.execute({
+    const cardSummaryService = container.resolve(CardSummaryService);
+    const summary = await cardSummaryService.execute({
       month: Number(month),
       year: Number(year),
-      userId: id,
+      user_id: id,
     });
 
-    return response.status(200).json(totalizers);
+    return response.status(200).json(summary);
   }
 
   public async show(request: Request, response: Response) {
     const { id } = request.user;
 
     const fetchCardsService = container.resolve(FetchCardsService);
-
     const cardsList = await fetchCardsService.execute({
-      userId: id,
+      user_id: id,
     });
 
     return response.status(200).json(cardsList);
   }
 }
-
-export default CardsController;
