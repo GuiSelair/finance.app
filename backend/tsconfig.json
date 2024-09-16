@@ -38,8 +38,6 @@
     "src"
   ],
   "exclude": [
-    "node_modules",
-    "src/**/*.spec.ts",
-    "src/**/fakes/**"
+    "node_modules"
   ]
 }
