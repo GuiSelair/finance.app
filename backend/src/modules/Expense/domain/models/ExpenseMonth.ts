@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { Expense } from './Expense';
 
 export class ExpenseMonth {
   private static readonly schema = z.object({
@@ -9,7 +10,7 @@ export class ExpenseMonth {
     month: z.number().min(1).max(12),
     year: z.number().max(new Date().getFullYear()),
     value_of_parcel: z.number().positive(),
-    is_paid: z.boolean(),
+    is_paid: z.boolean().optional().default(false),
     created_at: z.date().optional(),
     updated_at: z.date().optional(),
   });
@@ -22,6 +23,7 @@ export class ExpenseMonth {
   public readonly year?: number;
   public readonly value_of_parcel?: number;
   public readonly is_paid?: boolean;
+  public readonly expense?: Expense;
   public readonly created_at?: Date;
   public readonly updated_at?: Date;
 

@@ -5,7 +5,7 @@ import { requestValidations } from '@helpers/requestValidations';
 
 import { CreateCardService } from '@modules/Card/domain/services/CreateCardService';
 import { CardSummaryService } from '@modules/Card/domain/services/CardSummaryService';
-import { FetchCardsService } from '@modules/Card/domain/services/FetchCardsService';
+import { FetchCardsService } from '@modules/Card/domain/services/FetchCardService';
 
 export class CardsController {
   public async create(request: Request, response: Response) {

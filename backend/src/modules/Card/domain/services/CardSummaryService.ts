@@ -5,6 +5,7 @@ import { ExpenseMonthMapper } from '@modules/Expense/infra/typeorm/entities/Expe
 import { Card } from '../models/Card';
 import { ICardsRepository } from '../repositories/ICardsRepository';
 import { CardMapper } from '@modules/Card/infra/typeorm/entities/CardMapper';
+import { ExpenseMonth } from '@modules/Expense/domain/models/ExpenseMonth';
 
 export interface ICardSummaryDTO {
   month: number;
@@ -29,7 +30,7 @@ export class CardSummaryService {
 
   public async execute({ month, user_id, year }: ICardSummaryDTO): Promise<Card[]> {
     const cardsMapper = await this.cardsRepository.fetch(user_id);
-    if (!cardsMapper) {
+    if (!cardsMapper || !cardsMapper?.length) {
       return [];
     }
     const cards = this.makeCardsModel(cardsMapper);
@@ -37,10 +38,8 @@ export class CardSummaryService {
     const expensesInSpecificMonth =
       (await this.expenseMonthRepository.findByMonthAndYear(month, year, user_id)) || [];
 
-    const expensesInMonthGroupByCard = this.getExpensesTotalGroupByCard(
-      expensesInSpecificMonth,
-      cards,
-    );
+    const expensesMonth = this.makeExpensesMonthModel(expensesInSpecificMonth);
+    const expensesInMonthGroupByCard = this.getExpensesTotalGroupByCard(expensesMonth, cards);
 
     return expensesInMonthGroupByCard;
   }
@@ -52,16 +51,13 @@ export class CardSummaryService {
    * @param cards - The list of cards.
    * @returns An array of objects containing the card ID, name, turning day, and total expenses.
    */
-  private getExpensesTotalGroupByCard(
-    expensesInMonth: ExpenseMonthMapper[],
-    cards: Card[],
-  ): Card[] {
+  private getExpensesTotalGroupByCard(expensesInMonth: ExpenseMonth[], cards: Card[]): Card[] {
     return cards.reduce<Card[]>((accumulator, card) => {
       const expensesInCard = expensesInMonth.filter(
         expenseInMonth => expenseInMonth?.expense?.card_id === card.id,
       );
       const cardSubtotal = expensesInCard.reduce((accumulator, expenseInCard) => {
-        return accumulator + expenseInCard.value_of_parcel;
+        return accumulator + (expenseInCard.value_of_parcel || 0);
       }, 0);
 
       card.setTotal(cardSubtotal);
@@ -73,5 +69,9 @@ export class CardSummaryService {
 
   private makeCardsModel(cardsMapper: CardMapper[]) {
     return cardsMapper.map(cardMapper => new Card(cardMapper, 'partial'));
+  }
+
+  private makeExpensesMonthModel(expensesMonth: ExpenseMonthMapper[]) {
+    return expensesMonth.map(expenseMonth => new ExpenseMonth(expenseMonth));
   }
 }

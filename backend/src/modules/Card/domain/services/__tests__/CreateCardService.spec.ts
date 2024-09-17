@@ -1,47 +1,51 @@
 import 'reflect-metadata';
 
-import CreateCardService from '../CreateCardService';
-import FakeCardRepository from '../../repositories/fakes/FakeCardRepository';
+import { CreateCardService } from '../CreateCardService';
+import { ICardsRepository } from '../../repositories/ICardsRepository';
+import { Card } from '../../models/Card';
+import AppError from '@shared/errors/AppError';
 
-import CreateUserService from '../../User/services/CreateUserService';
-import FakeUserRepository from '../../User/repositories/fakes/FakeUsersRepository';
-import FakeHashProvider from '../../User/providers/HashProvider/fakes/FakeHashProvider';
+const fakeUUID = 'e49de73f-f560-4c40-8542-06f78f1a542d';
+const cardRepositoryMocked = {
+  findByName: jest.fn(),
+  create: jest
+    .fn()
+    .mockResolvedValue(
+      new Card({ id: 'fake-uuid', name: 'fake-card-name', user_id: fakeUUID }, false),
+    ),
+};
+const createCardService = new CreateCardService(
+  cardRepositoryMocked as unknown as ICardsRepository,
+);
 
-let createCardService: CreateCardService;
-let fakeCardRepository: FakeCardRepository;
-let createUserService: CreateUserService;
-let fakeUserRepository: FakeUserRepository;
-let fakeHashProvider: FakeHashProvider;
-
-describe('CreateCard', () => {
+describe('CreateCardService use case - Unit test', () => {
   beforeEach(() => {
-    fakeHashProvider = new FakeHashProvider();
-    fakeUserRepository = new FakeUserRepository();
-    createUserService = new CreateUserService(fakeUserRepository, fakeHashProvider);
-
-    fakeCardRepository = new FakeCardRepository();
-    createCardService = new CreateCardService(fakeCardRepository);
+    jest.clearAllMocks();
   });
 
-  it('should be able to create card', async () => {
-    const user = await createUserService.execute({
-      email: 'johndoe@example.com',
-      name: 'John Doe',
-      password: '123',
-    });
-
-    const card = await createCardService.execute({
+  it('should be able to create a new card', async () => {
+    const cardServiceOutput = await createCardService.execute({
       due_day: 10,
-      flag: 'MASTERCARD',
+      flag: 'visa',
       turning_day: 6,
-      name: 'Nubank',
-      user_id: user.id,
+      name: 'fake-card-name',
+      user_id: fakeUUID,
     });
 
-    expect(card).toHaveProperty('id');
+    expect(cardServiceOutput).toHaveProperty('id');
   });
-  // it('should not be able to create card without name');
-  // it('should not be able to create card without flag');
-  // it('should not be able to create card without due date');
-  // it('should not be able to create two cards with same name');
+
+  it('should not be able to create two cards with same name', async () => {
+    cardRepositoryMocked.findByName.mockResolvedValueOnce(true);
+
+    await expect(
+      createCardService.execute({
+        due_day: 10,
+        flag: 'mastercard',
+        turning_day: 6,
+        name: 'fake-card-name',
+        user_id: fakeUUID,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });
