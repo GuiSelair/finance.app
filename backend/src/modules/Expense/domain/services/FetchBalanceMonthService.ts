@@ -8,20 +8,20 @@ interface IBalanceOutput {
   economy: number;
 }
 
-interface IGetBalanceDTO {
+interface IFetchBalanceDTO {
   month: number;
   year: number;
   user_id: string;
 }
 
 @injectable()
-export class GetBalanceOfMonthService {
+export class FetchBalanceMonthService {
   constructor(
     @inject('ExpensesMonthRepository')
     private readonly expensesMonthRepository: IExpensesMonthRepository,
   ) {}
 
-  async execute({ month, user_id, year }: IGetBalanceDTO): Promise<IBalanceOutput> {
+  async execute({ month, user_id, year }: IFetchBalanceDTO): Promise<IBalanceOutput> {
     const allExpensesInMonth =
       (await this.expensesMonthRepository.findByMonthAndYear(month, year, user_id)) || [];
 

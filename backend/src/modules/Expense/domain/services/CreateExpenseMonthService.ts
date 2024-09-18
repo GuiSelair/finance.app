@@ -33,7 +33,7 @@ export class CreateExpenseMonthService {
     const valueOfParcel = Number(expense.amount) / Number(expense.parcel);
 
     const firstMonth = await this.getFirstMonthOfExpense({
-      purchaseDate: expense.purchase_date!,
+      purchaseDate: new Date(expense.purchase_date!),
       cardId: expense.card_id!,
       userId: expense.user_id!,
     });

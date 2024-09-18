@@ -25,12 +25,12 @@ export class ExpenseMapper {
   description?: string;
 
   @CreateDateColumn()
-  purchase_date: Date;
+  purchase_date: string;
 
   @CreateDateColumn({
     nullable: true,
   })
-  due_date?: Date;
+  due_date?: string;
 
   @Column({
     type: 'float4',

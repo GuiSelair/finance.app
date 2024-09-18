@@ -13,9 +13,9 @@ export interface ICreateExpenseDTO {
   card_id: string;
   user_id: string;
   parcel: number;
-  purchase_date?: Date;
+  purchase_date?: string;
   description?: string;
-  due_date?: Date;
+  due_date?: string;
   is_recurring?: boolean;
 }
 
@@ -49,7 +49,7 @@ export class CreateExpenseService {
 
     try {
       const createExpenseMonthService = container.resolve(CreateExpenseMonthService);
-      createExpenseMonthService.execute(
+      await createExpenseMonthService.execute(
         new Expense({
           ...newExpense,
         }),
@@ -69,8 +69,8 @@ export class CreateExpenseService {
     due_date,
     card_id,
     user_id,
+    purchase_date,
     parcel = 1,
-    purchase_date = new Date(),
     is_recurring = false,
   }: ICreateExpenseDTO) {
     return new Expense(
