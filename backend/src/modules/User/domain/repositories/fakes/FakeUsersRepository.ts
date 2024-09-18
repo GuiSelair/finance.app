@@ -1,26 +1,24 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import IUsersRepository from '../IUsersRepository';
-import ICreateUserDTO from '../../../dtos/CreateUser.dto';
-import User from '../../../infra/typeorm/entities/UserMapper';
+import { IUsersRepository } from '../IUsersRepository';
+import { UserMapper } from '@modules/User/infra/typeorm/entities/UserMapper';
+import { User } from '../../models/User';
 
-class FakeUsersRepository implements IUsersRepository {
-  private users: User[] = [];
+export class FakeUsersRepository implements IUsersRepository {
+  private users: UserMapper[] = [];
 
-  public async create({ email, name, password }: ICreateUserDTO): Promise<User> {
-    const user = new User();
+  public async create({ email, name, password }: User): Promise<UserMapper> {
+    const user = new UserMapper();
     Object.assign(user, { id: uuidv4(), email, name, password });
     this.users.push(user);
     return user;
   }
 
-  public async findByEmail(email: string): Promise<User | null> {
+  public async findByEmail(email: string): Promise<UserMapper | null> {
     return this.users.find(registeredUser => registeredUser.email === email) || null;
   }
 
-  public async findById(id: string): Promise<User | null> {
+  public async findById(id: string): Promise<UserMapper | null> {
     return this.users.find(registeredUser => registeredUser.id === id) || null;
   }
 }
-
-export default FakeUsersRepository;

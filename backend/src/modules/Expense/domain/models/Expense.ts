@@ -50,6 +50,7 @@ export class Expense {
             card_id: true,
             user_id: true,
             purchase_date: true,
+            due_date: true,
             is_recurring: true,
             parcel: true,
           });

@@ -20,7 +20,7 @@ const mockExpensesMonth = [
       number_current_of_parcel: 1,
       number_total_of_parcel: 1,
       value_of_parcel: 200,
-      month: 12,
+      month: 11,
       year: 2022,
     },
     false,
@@ -33,7 +33,7 @@ const mockExpensesMonth = [
       number_current_of_parcel: 1,
       number_total_of_parcel: 3,
       value_of_parcel: 37.62,
-      month: 12,
+      month: 11,
       year: 2022,
     },
     false,
@@ -46,7 +46,7 @@ const mockExpensesMonth = [
       number_current_of_parcel: 1,
       number_total_of_parcel: 3,
       value_of_parcel: 37.62,
-      month: 11,
+      month: 10,
       year: 2022,
     },
     false,
@@ -76,7 +76,7 @@ describe('CardSummaryService use case - Unit Test', () => {
 
   it('should be able to list all card summary', async () => {
     const cardSummaryServiceOutput = await cardSummaryService.execute({
-      month: 12,
+      month: 11,
       year: 2022,
       user_id: 'fake-user-id',
     });
@@ -99,7 +99,7 @@ describe('CardSummaryService use case - Unit Test', () => {
     expenseMonthRepositoryMocked.findByMonthAndYear.mockResolvedValueOnce([]);
 
     const cardSummaryServiceOutput = await cardSummaryService.execute({
-      month: 12,
+      month: 11,
       year: 2022,
       user_id: 'fake-user-id',
     });
@@ -122,7 +122,7 @@ describe('CardSummaryService use case - Unit Test', () => {
     cardsRepositoryMocked.fetch.mockResolvedValueOnce([]);
 
     const cardSummaryServiceOutput = await cardSummaryService.execute({
-      month: 12,
+      month: 11,
       year: 2022,
       user_id: 'fake-user-id',
     });

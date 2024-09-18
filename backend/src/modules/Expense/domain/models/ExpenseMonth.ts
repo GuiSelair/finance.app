@@ -7,7 +7,7 @@ export class ExpenseMonth {
     expense_id: z.string().uuid(),
     number_current_of_parcel: z.number().positive(),
     number_total_of_parcel: z.number().positive(),
-    month: z.number().min(1).max(12),
+    month: z.number().min(0).max(11),
     year: z.number().max(new Date().getFullYear()),
     value_of_parcel: z.number().positive(),
     is_paid: z.boolean().optional().default(false),

@@ -1,27 +1,55 @@
 import 'reflect-metadata';
 
 import { CreateUserService } from '../CreateUserService';
-import FakeUsersRepository from '../../repositories/fakes/FakeUsersRepository';
-import FakeHashProvider from '../../../../../shared/providers/HashProvider/fakes/FakeHashProvider';
+import { IUsersRepository } from '../../repositories/IUsersRepository';
+import { IHashProvider } from '@shared/providers/HashProvider/interfaces/IHashProvider';
+import { User } from '../../models/User';
+import AppError from '@shared/errors/AppError';
 
-let createUserService: CreateUserService;
-let fakeUsersRepository: FakeUsersRepository;
-let fakeHashProvider: FakeHashProvider;
+const usersRepositoryMocked = {
+  findByEmail: jest.fn(),
+  create: jest.fn(),
+};
+const hashProviderMocked = {
+  generateHash: jest.fn().mockResolvedValue('fake-hashed-password'),
+};
+const createUserService = new CreateUserService(
+  usersRepositoryMocked as unknown as IUsersRepository,
+  hashProviderMocked as unknown as IHashProvider,
+);
 
-describe('CreateUser', () => {
+describe('CreateUserService use case - Unit test', () => {
   beforeEach(() => {
-    fakeUsersRepository = new FakeUsersRepository();
-    fakeHashProvider = new FakeHashProvider();
-    createUserService = new CreateUserService(fakeUsersRepository, fakeHashProvider);
+    jest.clearAllMocks();
   });
 
   it('should be able create a new user', async () => {
-    const user = await createUserService.execute({
+    await createUserService.execute({
       email: 'joeDoe@email.com',
       name: 'Jonh Doe',
       password: '123',
     });
 
-    expect(user).toHaveProperty('id');
+    expect(usersRepositoryMocked.create).toHaveBeenCalledWith(
+      new User(
+        {
+          email: 'joeDoe@email.com',
+          name: 'Jonh Doe',
+          password: 'fake-hashed-password',
+        },
+        'create',
+      ),
+    );
+  });
+
+  it('should not be able create a new user if user already exists', async () => {
+    usersRepositoryMocked.findByEmail.mockResolvedValueOnce(true);
+    await expect(
+      createUserService.execute({
+        email: 'joeDoe@email.com',
+        name: 'Jonh Doe',
+        password: '123',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
