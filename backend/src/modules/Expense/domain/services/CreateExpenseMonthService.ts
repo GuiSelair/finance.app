@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { setDay, getMonth, getYear, isBefore } from 'date-fns';
+import { getMonth, getYear, isBefore, setDate } from 'date-fns';
 
 import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository';
 import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthRepository';
@@ -33,7 +33,7 @@ export class CreateExpenseMonthService {
     const valueOfParcel = Number(expense.amount) / Number(expense.parcel);
 
     const firstMonth = await this.getFirstMonthOfExpense({
-      purchaseDate: expense.purchase_date!,
+      purchaseDate: new Date(expense.purchase_date!),
       cardId: expense.card_id!,
       userId: expense.user_id!,
     });
@@ -76,13 +76,10 @@ export class CreateExpenseMonthService {
     cardId,
     userId,
   }: IGetFirstMonthOfExpenseProps): Promise<number> {
-    let turningDate: Date;
-
     const cardFound = await this.cardsRepository.findById(cardId, userId);
     if (!cardFound) throw new AppError('Error in generate expenses parcels, card not found.');
 
-    turningDate = setDay(new Date(), cardFound.turning_day);
-
+    const turningDate = setDate(purchaseDate, cardFound.turning_day);
     if (isBefore(purchaseDate, turningDate)) {
       return getMonth(purchaseDate); // TODO: Vamos utilizar mes como mes atual + 1 para ter meses até 12?
     }

@@ -1,10 +1,9 @@
 import { inject, injectable } from 'tsyringe';
 import { sign } from 'jsonwebtoken';
 
-import IHashProvider from '@providers/HashProvider/models/IHashProvider';
+import { IHashProvider } from '@providers/HashProvider/interfaces/IHashProvider';
 import AppError from '@errors/AppError';
 import { IUsersRepository } from '@modules/User/domain/repositories/IUsersRepository';
-import { env } from 'process';
 
 interface ISignInDTO {
   email: string;

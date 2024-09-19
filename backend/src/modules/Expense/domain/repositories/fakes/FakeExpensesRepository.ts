@@ -1,12 +1,12 @@
 import { v4 as createUUID } from 'uuid';
 
-import ICreateExpense from '../../dtos/ICreateExpense';
-import Expense from '../../../infra/typeorm/entities/ExpenseMapper';
-import IExpensesRepository from '../IExpensesRepository';
-import FakeExpensesInMonthRepository from './FakeExpensesInMonthRepository';
+import { ExpenseMapper } from '@modules/Expense/infra/typeorm/entities/ExpenseMapper';
+import { IExpensesRepository } from '../IExpensesRepository';
+import { FakeExpensesMonthRepository } from './FakeExpensesMonthRepository';
+import { Expense } from '../../models/Expense';
 
-class FakeExpensesRepository implements IExpensesRepository {
-  public repository: Expense[] = [];
+export class FakeExpensesRepository implements IExpensesRepository {
+  public repository: ExpenseMapper[] = [];
 
   public async create({
     name,
@@ -17,11 +17,8 @@ class FakeExpensesRepository implements IExpensesRepository {
     card_id,
     user_id,
     parcel,
-    value_of_each,
-    share_with,
-    split_expense,
-  }: ICreateExpense): Promise<Expense> {
-    const expense = new Expense();
+  }: Expense): Promise<ExpenseMapper> {
+    const expense = new ExpenseMapper();
 
     Object.assign(expense, {
       id: createUUID(),
@@ -30,10 +27,7 @@ class FakeExpensesRepository implements IExpensesRepository {
       amount,
       purchase_date,
       due_date,
-      value_of_each,
       parcel,
-      share_with,
-      split_expense,
       card_id,
       user_id,
     });
@@ -43,11 +37,11 @@ class FakeExpensesRepository implements IExpensesRepository {
     return expense;
   }
 
-  public async fetchAllExpenses(userId: string): Promise<Expense[] | null> {
+  public async fetch(userId: string): Promise<ExpenseMapper[] | null> {
     return this.repository.filter(expense => expense.user_id === userId);
   }
 
-  public async findByIdAndUserId(id: string, userId: string): Promise<Expense | null> {
+  public async findById(id: string, userId: string): Promise<ExpenseMapper | null> {
     return this.repository.find(expense => expense.id === id && expense.user_id === userId) || null;
   }
 
@@ -56,7 +50,7 @@ class FakeExpensesRepository implements IExpensesRepository {
 
     if (expenseIndexToRemove < 0) return false;
 
-    const expensesInMonthRepository = new FakeExpensesInMonthRepository();
+    const expensesInMonthRepository = new FakeExpensesMonthRepository();
     this.repository.splice(expenseIndexToRemove);
 
     expensesInMonthRepository.repository = expensesInMonthRepository.repository.filter(
@@ -66,9 +60,7 @@ class FakeExpensesRepository implements IExpensesRepository {
     return true;
   }
 
-  public async fetchAllRecurringExpenses(userId?: string): Promise<Expense[] | undefined> {
+  public async fetchRecurringExpenses(): Promise<ExpenseMapper[] | undefined> {
     throw new Error('Method not implemented.');
   }
 }
-
-export default FakeExpensesRepository;

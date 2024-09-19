@@ -1,122 +1,82 @@
 import 'reflect-metadata';
+import { v4 } from 'uuid';
+import { container } from 'tsyringe';
 
-import CreateExpenseService from '../CreateExpenseService';
-import FakeExpensesRepository from '../../repositories/fakes/FakeExpensesRepository';
-import CreateCardService from '../../Card/services/CreateCardService';
-import FakeCardRepository from '../../Card/repositories/fakes/FakeCardRepository';
-import CreateUserService from '../../User/services/CreateUserService';
-import FakeHashProvider from '../../User/providers/HashProvider/fakes/FakeHashProvider';
-import FakeUsersRepository from '../../User/repositories/fakes/FakeUsersRepository';
-import User from '../../User/infra/typeorm/entities/User';
-import Card from '../../Card/infra/typeorm/entities/Card';
+import AppError from '@shared/errors/AppError';
+import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository';
+import { CreateExpenseMonthService } from '../CreateExpenseMonthService';
+import { IExpensesRepository } from '../../repositories/IExpensesRepository';
+import { CreateExpenseService } from '../CreateExpenseService';
 
-let createCardService: CreateCardService;
-let fakeCardRepository: FakeCardRepository;
-let createUserService: CreateUserService;
-let fakeUserRepository: FakeUsersRepository;
-let fakeHashProvider: FakeHashProvider;
-let fakeExpensesRepository: FakeExpensesRepository;
-let createExpenseService: CreateExpenseService;
+const expensesRepositoryMocked = {
+  create: jest.fn().mockResolvedValue({
+    id: v4(),
+    name: 'fake-expense-name',
+    amount: 1200,
+    parcel: 1,
+    user_id: v4(),
+    card_id: v4(),
+    purchase_date: '2024-09-17',
+    is_recurring: false,
+  }),
+  remove: jest.fn(),
+};
+const cardsRepositoryMocked = {
+  findById: jest.fn().mockResolvedValue({ turning_day: 25 }),
+};
+const createExpenseService = new CreateExpenseService(
+  expensesRepositoryMocked as unknown as IExpensesRepository,
+  cardsRepositoryMocked as unknown as ICardsRepository,
+);
 
-let user: User;
-let card: Card;
-
-describe('CreateCard', () => {
+describe('CreateExpenseService use case - Unit test', () => {
   beforeEach(async () => {
-    fakeHashProvider = new FakeHashProvider();
-    fakeUserRepository = new FakeUsersRepository();
-    createUserService = new CreateUserService(fakeUserRepository, fakeHashProvider);
-
-    fakeCardRepository = new FakeCardRepository();
-    createCardService = new CreateCardService(fakeCardRepository);
-
-    fakeExpensesRepository = new FakeExpensesRepository();
-    createExpenseService = new CreateExpenseService(fakeExpensesRepository);
-
-    user = await createUserService.execute({
-      email: 'johndoe@example.com',
-      name: 'John Doe',
-      password: '123',
-    });
-
-    card = await createCardService.execute({
-      turning_day: 6,
-      due_day: 10,
-      flag: 'MASTERCARD',
-      name: 'Nubank',
-      user_id: user.id,
-    });
+    jest.clearAllMocks();
+    container.clearInstances();
+    container.registerInstance('ExpensesMonthRepository', expensesRepositoryMocked);
+    container.registerInstance('CardsRepository', cardsRepositoryMocked);
   });
 
-  it('should be able to create expense that are not divided', async () => {
-    const expense = await createExpenseService.execute({
-      name: 'Férias',
-      description: 'Férias de Verão',
+  it('should be able to create expense', async () => {
+    const createExpenseServiceResponse = await createExpenseService.execute({
+      name: 'fake-expense-name',
       amount: 1200,
-      split_expense: false,
       parcel: 1,
-      user_id: user.id,
-      card_id: card.id,
+      user_id: v4(),
+      card_id: v4(),
+      purchase_date: '2024-09-17',
     });
 
-    expect(expense).toHaveProperty('id');
+    expect(createExpenseServiceResponse).toHaveProperty('id');
+    expect(expensesRepositoryMocked.create).toHaveBeenCalled();
   });
 
-  it('should be able to create expense that are divided', async () => {
-    const expense = await createExpenseService.execute({
-      name: 'Férias',
-      description: 'Férias de Verão',
-      amount: 1200,
-      split_expense: true,
-      share_with: ['Daniela', 'Pai'],
-      value_of_each: [500, 200],
-      parcel: 1,
-      user_id: user.id,
-      card_id: card.id,
-    });
-
-    expect(expense).toHaveProperty('id');
+  it('should not be able to create expense that not are linked to card', async () => {
+    cardsRepositoryMocked.findById.mockResolvedValueOnce(null);
+    await expect(
+      createExpenseService.execute({
+        name: 'fake-expense-name',
+        amount: 1200,
+        parcel: 1,
+        user_id: v4(),
+        card_id: v4(),
+        purchase_date: '2024-09-17',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should be able to create expense that are not linked to any card', async () => {
-    const expense = await createExpenseService.execute({
-      name: 'Férias',
-      description: 'Férias de Verão',
-      amount: 1200,
-      split_expense: false,
-      parcel: 1,
-      user_id: user.id,
-      due_date: new Date(2021, 4, 10),
-    });
-
-    expect(expense).toHaveProperty('id');
-  });
-
-  it('should be able to create expense that are linked to card', async () => {
-    const expense = await createExpenseService.execute({
-      name: 'Example name',
-      description: 'Example description',
-      amount: 1200,
-      split_expense: false,
-      parcel: 1,
-      user_id: user.id,
-      card_id: card.id,
-    });
-    expect(expense).toHaveProperty('id');
-  });
-
-  it('should be able to create expense that are linked to card and are divided', async () => {
-    const expense = await createExpenseService.execute({
-      name: 'Example name',
-      description: 'Example description',
-      amount: 1200,
-      split_expense: true,
-      share_with: ['user01'],
-      value_of_each: [300],
-      parcel: 1,
-      user_id: user.id,
-      card_id: card.id,
-    });
-    expect(expense).toHaveProperty('id');
+  it('should be able to remove expense if expenses month create is failed', async () => {
+    jest.spyOn(CreateExpenseMonthService.prototype, 'execute').mockRejectedValueOnce('fake-error');
+    await expect(
+      createExpenseService.execute({
+        name: 'fake-expense-name',
+        amount: 1200,
+        parcel: 1,
+        user_id: v4(),
+        card_id: v4(),
+        purchase_date: '2024-09-17',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+    expect(expensesRepositoryMocked.remove).toHaveBeenCalledWith(expect.any(String));
   });
 });

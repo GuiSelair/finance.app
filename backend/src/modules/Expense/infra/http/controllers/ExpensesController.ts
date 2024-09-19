@@ -3,8 +3,8 @@ import { container } from 'tsyringe';
 
 import { requestValidations } from '@helpers/requestValidations';
 import { CreateExpenseService } from '@modules/Expense/domain/services/CreateExpenseService';
-import { ListAllExpensesInMonthService } from '@modules/Expense/domain/services/ListAllExpensesInMonthService';
-import { GetBalanceOfMonthService } from '@modules/Expense/domain/services/GetBalanceOfMonthService';
+import { FetchExpensesMonthService } from '@modules/Expense/domain/services/FetchExpensesMonthService';
+import { FetchBalanceMonthService } from '@modules/Expense/domain/services/FetchBalanceMonthService';
 import { RemoveExpenseService } from '@modules/Expense/domain/services/RemoveExpenseService';
 
 export class ExpensesController {
@@ -32,7 +32,7 @@ export class ExpensesController {
     requestValidations.throwIfPropertyMonthIsNotValid(Number(month));
     requestValidations.throwIfPropertyYearIsNotValid(Number(year));
 
-    const listAllExpensesInMonth = container.resolve(ListAllExpensesInMonthService);
+    const listAllExpensesInMonth = container.resolve(FetchExpensesMonthService);
     const expensesInMonth = await listAllExpensesInMonth.execute({
       month: Number(month),
       year: Number(year),
@@ -51,8 +51,8 @@ export class ExpensesController {
     requestValidations.throwIfPropertyMonthIsNotValid(Number(month));
     requestValidations.throwIfPropertyYearIsNotValid(Number(year));
 
-    const getBalanceOfMonth = container.resolve(GetBalanceOfMonthService);
-    const balance = await getBalanceOfMonth.execute({
+    const fetchBalanceOfMonth = container.resolve(FetchBalanceMonthService);
+    const balance = await fetchBalanceOfMonth.execute({
       month: Number(month),
       year: Number(year),
       user_id: id,

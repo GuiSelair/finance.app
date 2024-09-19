@@ -1,12 +1,12 @@
 import { injectable, inject } from 'tsyringe';
-import { addMonths, addYears, getMonth, getYear } from 'date-fns';
+import { addMonths, getMonth, getYear } from 'date-fns';
 
 import { IExpensesRepository } from '../repositories/IExpensesRepository';
 import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthRepository';
 import { ExpenseMonth } from '../models/ExpenseMonth';
 
 @injectable()
-export class InsertRecurringExpensesInNextMonthsService {
+export class InsertRecurringExpensesService {
   private expensesRepository: IExpensesRepository;
   private expensesInMonthRepository: IExpensesMonthRepository;
 
@@ -36,6 +36,7 @@ export class InsertRecurringExpensesInNextMonthsService {
     const recurringExpensesToInsertAgain = recurringExpenses.filter(
       expense => !expensesInMonthIds.includes(expense.id),
     );
+
     if (!recurringExpensesToInsertAgain.length) return;
 
     const expensesInMonthToInsert = recurringExpensesToInsertAgain.map((expense): ExpenseMonth => {

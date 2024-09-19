@@ -22,9 +22,9 @@ export class Expense {
   public readonly parcel?: number;
   public readonly card_id?: string;
   public readonly user_id?: string;
-  public readonly purchase_date?: Date;
+  public readonly purchase_date?: string;
   public readonly is_recurring?: boolean;
-  public readonly due_date?: Date;
+  public readonly due_date?: string;
   public readonly description?: string;
   public readonly created_at?: Date;
   public readonly updated_at?: Date;
@@ -50,6 +50,7 @@ export class Expense {
             card_id: true,
             user_id: true,
             purchase_date: true,
+            due_date: true,
             is_recurring: true,
             parcel: true,
           });

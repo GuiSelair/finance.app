@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
 import AppError from '@errors/AppError';
-import IHashProvider from '@providers/HashProvider/models/IHashProvider';
+import { IHashProvider } from '@shared/providers/HashProvider/interfaces/IHashProvider';
 
 import { User } from '../models/User';
 import { IUsersRepository } from '../repositories/IUsersRepository';
@@ -31,12 +31,12 @@ export class CreateUserService {
   public async execute(userDTO: ICreateUserDTO): Promise<User> {
     const userToCreate = this.makeUserModel(userDTO);
 
-    const userExists = await this.userRepository.findByEmail(userToCreate.email);
+    const userExists = await this.userRepository.findByEmail(userToCreate.email!);
     if (userExists) {
       throw new AppError('User already exists');
     }
 
-    const hashedPassword = await this.hashProvider.generateHash(userToCreate.password);
+    const hashedPassword = await this.hashProvider.generateHash(userToCreate.password!);
     return await this.userRepository.create(
       Object.assign(userToCreate, { password: hashedPassword }),
     );
