@@ -1,0 +1,21 @@
+{
+  "name": "finance.app",
+  "packageManager": "npm@10.5.2",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "devDependencies": {
+    "turbo": "^2.1.2"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "dev": "turbo run dev --parallel",
+    "migration:run": "turbo run migration:run --parallel",
+    "container:db": "docker-compose up -d datasource",
+    "container:up": "docker-compose up -d datasource api web",
+    "container:down": "docker-compose stop"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "module": "commonjs", // Node.js usa o sistema de módulos CommonJS
+    "target": "es2018", // Node.js 10 e superior suportam ES2018
+    "esModuleInterop": true, // Permite interoperabilidade de módulo ES6 com CommonJS e outros módulos
+    "isolatedModules": true, // Garante que cada arquivo pode ser transpilado com segurança sem depender de outras importações
+    "strict": false, // Habilita uma ampla gama de verificações de tipo rigorosas
+    "strictNullChecks": true, // Habilita a verificação de nulos estritos
+    "forceConsistentCasingInFileNames": true, // Garante que a capitalização seja correta nas importações
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "outDir": "./dist", // Diretório onde os arquivos transpilados serão colocados
+    "rootDir": "./src", // Diretório onde estão os arquivos TypeScript
+    "strictPropertyInitialization": false, // Desabilita a verificação de inicialização estrita de propriedades
+    "baseUrl": "./src",
+    "paths": {
+      "@modules/*": [
+        "./modules/*"
+      ],
+      "@shared/*": [
+        "./shared/*"
+      ],
+      "@helpers/*": [
+        "./shared/helpers/*"
+      ],
+      "@errors/*": [
+        "./shared/errors/*"
+      ],
+      "@infra/*": [
+        "./shared/infra/*"
+      ],
+      "@providers/*": [
+        "./shared/providers/*"
+      ],
+    }
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

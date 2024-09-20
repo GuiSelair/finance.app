@@ -1,0 +1,53 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "private": true,
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "start": "NODE_ENV=production node ./dist/index.js",
+    "dev": "NODE_ENV=development ts-node-dev --inspect --transpile-only -r tsconfig-paths/register src/index.ts",
+    "typeorm": "ts-node-dev -r tsconfig-paths/register node_modules/.bin/typeorm -d ./src/shared/infra/typeorm/bootstrap.ts",
+    "migration:show": "ts-node-dev -r tsconfig-paths/register node_modules/.bin/typeorm migration:show -d ./src/shared/infra/typeorm/bootstrap.ts",
+    "migration:run": "ts-node-dev -r tsconfig-paths/register node_modules/.bin/typeorm migration:run -d ./src/shared/infra/typeorm/bootstrap.ts",
+    "migration:create": "ts-node-dev -r tsconfig-paths/register node_modules/.bin/typeorm migration:create ./src/shared/infra/typeorm/migrations/${npm_config_name}",
+    "test": "jest",
+    "production": "npm run migration:run && npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Guilherme Selair",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "node-schedule": "^2.1.1",
+    "pg": "^8.12.0",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.8.0",
+    "typeorm": "^0.3.20",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.14.2",
+    "@types/node-schedule": "^2.1.7",
+    "@types/uuid": "^10.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.4",
+    "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.10",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.4.5"
+  }
+}
