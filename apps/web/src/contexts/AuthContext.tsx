@@ -60,28 +60,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		return '';
 	});
 
-<<<<<<< HEAD:apps/web/src/contexts/AuthContext.tsx
 	const onSignIn = useCallback(async ({ email, password }: SignInProps) => {
 		try {
 			const response = await httpClient.post<{ token: string }>(
 				'/auth/sign-in',
 				{
-=======
-	const onSignIn = useCallback(
-		async ({ email, password }: SignInProps): Promise<boolean> => {
-			try {
-				const response = await httpClient.post<{ token: string }>('/login', {
->>>>>>> 946d0a4626230ff5a4bc28b9e866a900cc542915:frontend/src/contexts/AuthContext.tsx
 					body: {
 						email,
 						password,
 					},
-<<<<<<< HEAD:apps/web/src/contexts/AuthContext.tsx
 				},
 			);
-=======
-				});
->>>>>>> 946d0a4626230ff5a4bc28b9e866a900cc542915:frontend/src/contexts/AuthContext.tsx
 
 				if (!response?.data?.token) throw new Error();
 
