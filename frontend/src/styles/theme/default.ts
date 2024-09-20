@@ -30,6 +30,7 @@ export const defaultTheme = {
 		xs: '0.75rem',
 		small: '0.875rem',
 		regular: '1rem',
+		'semi-medium': '1.125rem',
 		medium: '1.5rem',
 		large: '2rem',
 		xl: '2.5rem',

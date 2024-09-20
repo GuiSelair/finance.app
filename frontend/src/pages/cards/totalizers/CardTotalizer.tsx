@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Button } from '@/components/Button';
 import { LayoutBox } from '@/components/LayoutBox';
 import { SEO } from '@/components/SEO';
-import Table from '@/components/Table';
+import { Table } from '@/components/Table';
 import { Spinner } from '@/components/Spinner';
 import { Box } from '@/components/Box';
 
