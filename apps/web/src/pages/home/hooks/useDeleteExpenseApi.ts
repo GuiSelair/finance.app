@@ -1,13 +1,14 @@
 import { UseMutationResult, useMutation, useQueryClient } from 'react-query';
-
-import { ExpenseService } from '@/services/http/expenseService';
 import { toast } from 'react-toastify';
+
+import { httpClient } from '@/providers/HTTPClient';
 
 export function useDeleteExpenseApi(expenseId: string): UseMutationResult {
 	const queryClient = useQueryClient();
 	return useMutation(
 		async () => {
-			await ExpenseService.deleteExpense(expenseId);
+			const { data } = await httpClient.delete(`/expenses/${expenseId}`);
+			if (!data) throw new Error('Erro ao deletar despesa.');
 		},
 		{
 			onError: () => {

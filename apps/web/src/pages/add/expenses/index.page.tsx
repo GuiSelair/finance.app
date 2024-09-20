@@ -1,1 +1,1 @@
-export { default } from './CreateExpensesPage'
+export { default } from './CreateExpense';

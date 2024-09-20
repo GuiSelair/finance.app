@@ -1,23 +1,25 @@
 import { useMemo } from 'react';
+import { useContextSelector } from 'use-context-selector';
 
 import { formatCurrency } from '@/helpers/formatCurrency';
-import { useFetchCardTotalizerApi } from './useFetchCardTotalizerApi';
+import { useCardTotalizerApi } from '@/hooks/api/useCardTotalizer.api';
+import { selectedMonthYearContext } from '@/contexts';
+
 import { CARD_TOTALIZER_TABLE_COLUMNS } from '../constants/cardTotalizerTableColumns';
 
-const currentMonth = new Date().getMonth();
-const currentYear = new Date().getFullYear();
-
 export function useCardTotalizer() {
-	const { data: cardTotalizer, isLoading } = useFetchCardTotalizerApi({
-		month: currentMonth,
-		year: currentYear,
+	const month = useContextSelector(selectedMonthYearContext, ctx => ctx.month);
+	const year = useContextSelector(selectedMonthYearContext, ctx => ctx.year);
+	const { data: cardTotalizer, isLoading } = useCardTotalizerApi({
+		month,
+		year,
 	});
 
 	function transformTuningDayToDate(tuningDay: number) {
-		const monthFormatted = String(currentMonth + 1).padStart(2, '0');
+		const monthFormatted = String(month + 1).padStart(2, '0');
 		const turningDayFormatted = String(tuningDay).padStart(2, '0');
 
-		return `${turningDayFormatted}/${monthFormatted}/${currentYear}`;
+		return `${turningDayFormatted}/${monthFormatted}/${year}`;
 	}
 
 	const tableDataMemoized = useMemo(() => {

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createContext } from 'use-context-selector';
 import { useRouter } from 'next/router';
-import jwtDecode from 'jwt-decode';
+import { JWT } from '@/helpers/JWT';
 import { toast } from 'react-toastify';
 
 import { httpClient } from '@/providers/HTTPClient';
@@ -22,7 +22,7 @@ export interface AuthContextProps {
 		createdAt: Date;
 	};
 	token: string;
-	onSignIn: ({ email, password }: SignInProps) => Promise<void>;
+	onSignIn: ({ email, password }: SignInProps) => Promise<boolean>;
 	onSignOut: () => void;
 }
 
@@ -60,50 +60,67 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		return '';
 	});
 
+<<<<<<< HEAD:apps/web/src/contexts/AuthContext.tsx
 	const onSignIn = useCallback(async ({ email, password }: SignInProps) => {
 		try {
 			const response = await httpClient.post<{ token: string }>(
 				'/auth/sign-in',
 				{
+=======
+	const onSignIn = useCallback(
+		async ({ email, password }: SignInProps): Promise<boolean> => {
+			try {
+				const response = await httpClient.post<{ token: string }>('/login', {
+>>>>>>> 946d0a4626230ff5a4bc28b9e866a900cc542915:frontend/src/contexts/AuthContext.tsx
 					body: {
 						email,
 						password,
 					},
+<<<<<<< HEAD:apps/web/src/contexts/AuthContext.tsx
 				},
 			);
+=======
+				});
+>>>>>>> 946d0a4626230ff5a4bc28b9e866a900cc542915:frontend/src/contexts/AuthContext.tsx
 
-			setToken(response.data.token);
-			cookies.setCookie(
-				undefined,
-				`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`,
-				response.data.token,
-				{
-					maxAge: 7 * 24 * 60 * 60, // 7 days
-				},
-			);
+				if (!response?.data?.token) throw new Error();
 
-			httpClient.applyAuthenticationToken(response.data.token);
-		} catch (error) {
-			if (error instanceof AxiosError) {
-				const errorFromServer = error.response?.data;
+				setToken(response.data.token);
+				cookies.setCookie(
+					undefined,
+					`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`,
+					response.data.token,
+					{
+						maxAge: 7 * 24 * 60 * 60, // 7 days
+					},
+				);
 
-				if (
-					errorFromServer.message === 'Incorrect email/password combination'
-				) {
-					toast.error(AuthenticateErrors.EmailOrPasswordIncorrect, {
-						position: 'bottom-left',
-						theme: 'colored',
-					});
-					return;
+				httpClient.applyAuthenticationToken(response.data.token);
+				return true;
+			} catch (error) {
+				if (error instanceof AxiosError) {
+					const errorFromServer = error.response?.data;
+
+					if (
+						errorFromServer?.message === 'Incorrect email/password combination'
+					) {
+						toast.error(AuthenticateErrors.EmailOrPasswordIncorrect, {
+							position: 'bottom-left',
+							theme: 'colored',
+						});
+						return false;
+					}
 				}
-			}
 
-			toast.error(AuthenticateErrors.UnexpectedError, {
-				position: 'bottom-left',
-				theme: 'colored',
-			});
-		}
-	}, []);
+				toast.error(AuthenticateErrors.UnexpectedError, {
+					position: 'bottom-left',
+					theme: 'colored',
+				});
+				return false;
+			}
+		},
+		[],
+	);
 
 	const onSignOut = useCallback(async () => {
 		cookies.destroyCookie(
@@ -119,9 +136,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	useEffect(() => {
 		if (token) {
 			try {
-				const tokenDecoded = jwtDecode<JWTAuthenticateTokenContentProps>(token);
-				const isTokenExpired = tokenDecoded.exp * 1000 < Date.now();
+				const tokenDecoded =
+					JWT.decode<JWTAuthenticateTokenContentProps>(token);
+				if (!tokenDecoded) throw new Error();
 
+				const isTokenExpired = tokenDecoded.exp * 1000 < Date.now();
 				if (isTokenExpired) throw new Error();
 
 				setUserData({

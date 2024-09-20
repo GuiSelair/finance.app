@@ -5,11 +5,11 @@ import { ToastContainer } from 'react-toastify';
 import { Fragment } from 'react';
 import { NextPage } from 'next/types';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 import { defaultTheme } from '@/styles/theme/default';
 import { GlobalStyles } from '@/styles/global';
-import { AuthProvider } from '@/contexts/AuthContext';
+import { AuthProvider, SelectedMonthYearProvider } from '@/contexts';
 import { BaseLayout } from '@/layouts/BaseLayout';
 
 const queryClient = new QueryClient();
@@ -35,11 +35,13 @@ export default function App({
 				<QueryClientProvider client={queryClient}>
 					<ReactQueryDevtools initialIsOpen={false} />
 					<LayoutOrNot>
-						<Component {...pageProps} />
+						<SelectedMonthYearProvider>
+							<Component {...pageProps} />
+						</SelectedMonthYearProvider>
 					</LayoutOrNot>
 				</QueryClientProvider>
 			</AuthProvider>
-			<ToastContainer />
+			<ToastContainer position="bottom-right" theme="light" />
 		</ThemeProvider>
 	);
 }

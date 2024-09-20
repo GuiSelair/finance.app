@@ -1,6 +1,5 @@
 import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller } from 'react-hook-form';
 
 import { LayoutBox } from '@/components/LayoutBox';
 import {
@@ -14,30 +13,23 @@ import {
 import { SEO } from '@/components/SEO';
 
 import { useCreateCards } from './hooks/useCreateCards';
-import {
-	createCardFormSchema,
-	ICreateCardFields,
-} from './constants/formSchema';
-import { RegisterCardsForm, CreditCardIcon } from './styles';
+import { RegisterCardsForm, CreditCardIcon } from './CreateCardsPage.styles';
 
 export default function CreateCardsPage() {
-	const {
-		register,
-		handleSubmit,
-		control,
-		formState: { isValid, errors },
-	} = useForm<ICreateCardFields>({
-		defaultValues: {
-			creditLimit: 0,
-		},
-		resolver: yupResolver(createCardFormSchema),
-	});
 	const {
 		availableCardsOptions,
 		handleCancel,
 		handleCreateCard,
 		isCreatingCard,
+		formSchema,
 	} = useCreateCards();
+
+	const {
+		register,
+		formState: { errors, isValid },
+		handleSubmit,
+		control,
+	} = formSchema;
 
 	return (
 		<>
@@ -122,8 +114,10 @@ export default function CreateCardsPage() {
 						<ActionButtons>
 							<ActionButtons.Cancel onClick={handleCancel} />
 							<ActionButtons.Submit
-								disabled={!isValid || isCreatingCard}
+								isDisabled={!isValid}
+								isLoading={isCreatingCard}
 								onClick={handleSubmit(handleCreateCard)}
+								spinnerConfig={{ mode: 'light', size: 'sm' }}
 							>
 								Criar cartão
 							</ActionButtons.Submit>
