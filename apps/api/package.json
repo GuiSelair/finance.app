@@ -1,8 +1,8 @@
 {
-  "name": "backend",
+  "name": "api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "private": true,
   "scripts": {
     "build": "tsc && tsc-alias",
     "start": "NODE_ENV=production node ./dist/index.js",
