@@ -29,6 +29,7 @@ export const Select = forwardRef<ElementRef<typeof ReactSelect>, SelectProps>(
 			<ReactSelect
 				ref={ref}
 				styles={{
+					// @ts-ignore
 					container(base, props) {
 						return {
 							...base,
@@ -40,6 +41,7 @@ export const Select = forwardRef<ElementRef<typeof ReactSelect>, SelectProps>(
 							display: 'none',
 						};
 					},
+					// @ts-ignore
 					control: (baseStyles, state) => ({
 						...baseStyles,
 						boxShadow: state.isFocused

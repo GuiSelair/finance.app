@@ -77,8 +77,8 @@ export const ButtonContainer = styled.button.withConfig({
 	transition: all 0.2s;
 	cursor: pointer;
 
-	${({ variant }) => BUTTON_VARIANT_MAPPER[variant ?? 'solid']};
-	${({ size }) => BUTTON_SIZE_MAPPER[size ?? 'md']};
+	${({ variant }: { variant: keyof typeof BUTTON_VARIANT_MAPPER }) => BUTTON_VARIANT_MAPPER[variant ?? 'solid']};
+	${({ size }: { size: keyof typeof BUTTON_SIZE_MAPPER }) => BUTTON_SIZE_MAPPER[size ?? 'md']};
 
 	&:focus {
 		box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.green500};
