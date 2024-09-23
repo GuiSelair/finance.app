@@ -1,42 +1,35 @@
-<h1 align="center">
-    Finance App
-</h1>
+# Finance App
 
-> Aplicação desenvolvida para facilitar sua vida, ajudando você a administrar seus gastos mensais.
+### Uma aplicação completa para gestão de finanças pessoais
 
-![](.github/welcome.jpg)
+O **Finance App** foi criado para ajudar pessoas a gerenciar suas finanças de forma eficiente e automatizada. Ele oferece uma solução moderna e prática para substituir as tradicionais planilhas de Excel, proporcionando mais controle sobre seus gastos e orçamento mensal.
 
+## Funcionalidades
 
-## Introdução
+Com o *Finance App*, você pode:
+- **Controlar gastos mensais** com base em sua renda, evitando extrapolar o orçamento.
+- **Acompanhar despesas de cartões de crédito** e controlar limites.
+- **Acessar o histórico de transações**, com detalhes de todas as movimentações.
+- **Dividir despesas** com outras pessoas e acompanhar o saldo de cada divisão.
+- **Visualizar gráficos de despesas mensais** para melhor análise financeira.
+- **Gerar tickets** para cobranças de divisão de contas, facilitando o compartilhamento de gastos.
 
-Todo mundo precisa administrar suas contas para que quando chegar o final do mês não tomem um susto. Com essa ideia o Finance App vem como uma alternativa para você controlar seus gastos e manter tudo sob controle. 
-Este é um projeto pessoal mas que estará disponivel para todos.
+## Tecnologias Utilizadas
 
-## Finance App
-Para sair de planilhas do Excel projetei e constroi o Finance App. A ideia é fazer tudo o que eu faço em planilhas Excel neste aplicativo porém de maneira super automatizada. Este projeto deve contar com o app mobile e uma pagina web realizando as mesmas operações.
+O *Finance App* foi desenvolvido utilizando um stack moderno, que inclui:
+- **NodeJS** (servidor backend)
+- **Express** (mini-framework para API)
+- **ReactJS** (frontend web)
+- **React Native** (aplicativo mobile)
+- **Axios** (requisições HTTP)
+- **TypeORM** (gerenciamento de banco de dados)
 
-Com o Finance App será possivel realizar/observar:
- - Controle de gastos mensais encima do que você pode gastar (exemplo: Seu salario) e não no limite de seu cartão de crédito.
- - Gastos de cartões de créditos
- - Histórico de gastos 
- - Divisão de gastos com uma ou mais pessoas
- - Visualização dos gastos do mês
- - Geração de Ticket para as pessoas que dividiram contas com você
- - Entre outros...
+## Status do Projeto
 
-Durante a execução deste projeto vale destacar a manipulação das seguintes tecnologias:
- - Mini-Framework Express
- - NodeJS
- - ReactJS
- - React Native
- - Axios
- - TypeORM
-
-
-## Status do projeto
-
- - **EM ANDAMENTO**
+🚧 **EM ANDAMENTO** 🚧  
+Este projeto está em constante desenvolvimento, com novos recursos sendo adicionados e melhorias contínuas.
 
 ## Autor
 
-Guilherme Selair – [@GuiSelair](https://github.com/GuiSelair)
+Desenvolvido por **Guilherme Selair** – [@GuiSelair](https://github.com/GuiSelair)
+
