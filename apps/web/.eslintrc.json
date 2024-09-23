@@ -6,7 +6,6 @@
 	},
 	"extends": [
 		"plugin:react/recommended",
-		"standard-with-typescript",
 		"plugin:@typescript-eslint/recommended",
 		"plugin:prettier/recommended",
 		"plugin:@next/next/recommended"
@@ -14,8 +13,7 @@
 	"overrides": [],
 	"parserOptions": {
 		"ecmaVersion": "latest",
-		"sourceType": "module",
-		"project": "tsconfig.json"
+		"sourceType": "module"
 	},
 	"plugins": ["react", "react-hooks", "prettier"],
 	"rules": {
@@ -42,7 +40,8 @@
 				"ts": "never",
 				"tsx": "never"
 			}
-		]
+		],
+		"@typescript-eslint/no-unused-vars": "warn"
 	},
 	"settings": {
 		"import/resolver": {

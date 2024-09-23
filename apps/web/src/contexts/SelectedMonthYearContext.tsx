@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { getYear, getMonth } from 'date-fns';
 import { createContext } from 'use-context-selector';
 
@@ -19,7 +19,7 @@ const defaultYear = getYear(new Date());
 
 export function SelectedMonthYearProvider({
 	children,
-}: Readonly<React.PropsWithChildren<{}>>) {
+}: Readonly<{ children: React.ReactNode }>) {
 	const isFirstRender = useRef(true);
 	const [selectedMonth, setSelectedMonth] = useState(defaultMonth);
 	const [selectedYear, setSelectedYear] = useState(defaultYear);

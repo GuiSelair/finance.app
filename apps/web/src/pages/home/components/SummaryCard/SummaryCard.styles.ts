@@ -37,13 +37,16 @@ export const SummaryCardContainer = styled.article.withConfig({
 	padding: 1rem;
 	border-radius: 8px;
 	position: relative;
-	color: ${props => summaryCardVariantsMapper[
-		props.variant as keyof typeof summaryCardVariantsMapper
-	].text};
+	color: ${props =>
+		summaryCardVariantsMapper[
+			props.variant as keyof typeof summaryCardVariantsMapper
+		].text};
 
 	${CircularIconContainer} {
 		background: ${props =>
-			summaryCardVariantsMapper[props.variant as keyof typeof summaryCardVariantsMapper].headerBackground};
+			summaryCardVariantsMapper[
+				props.variant as keyof typeof summaryCardVariantsMapper
+			].headerBackground};
 	}
 `;
 

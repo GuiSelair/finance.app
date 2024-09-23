@@ -50,7 +50,7 @@ const navigationMap = {
 				name: 'Totalizadores',
 				path: 'totalizers',
 				defaultActive: true,
-			}
+			},
 		],
 		visible: true,
 		name: 'Cartões',

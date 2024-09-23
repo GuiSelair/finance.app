@@ -72,44 +72,42 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 				},
 			);
 
-				if (!response?.data?.token) throw new Error();
+			if (!response?.data?.token) throw new Error();
 
-				setToken(response.data.token);
-				cookies.setCookie(
-					undefined,
-					`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`,
-					response.data.token,
-					{
-						maxAge: 7 * 24 * 60 * 60, // 7 days
-					},
-				);
+			setToken(response.data.token);
+			cookies.setCookie(
+				undefined,
+				`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`,
+				response.data.token,
+				{
+					maxAge: 7 * 24 * 60 * 60, // 7 days
+				},
+			);
 
-				httpClient.applyAuthenticationToken(response.data.token);
-				return true;
-			} catch (error) {
-				if (error instanceof AxiosError) {
-					const errorFromServer = error.response?.data;
+			httpClient.applyAuthenticationToken(response.data.token);
+			return true;
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				const errorFromServer = error.response?.data;
 
-					if (
-						errorFromServer?.message === 'Incorrect email/password combination'
-					) {
-						toast.error(AuthenticateErrors.EmailOrPasswordIncorrect, {
-							position: 'bottom-left',
-							theme: 'colored',
-						});
-						return false;
-					}
+				if (
+					errorFromServer?.message === 'Incorrect email/password combination'
+				) {
+					toast.error(AuthenticateErrors.EmailOrPasswordIncorrect, {
+						position: 'bottom-left',
+						theme: 'colored',
+					});
+					return false;
 				}
-
-				toast.error(AuthenticateErrors.UnexpectedError, {
-					position: 'bottom-left',
-					theme: 'colored',
-				});
-				return false;
 			}
-		},
-		[],
-	);
+
+			toast.error(AuthenticateErrors.UnexpectedError, {
+				position: 'bottom-left',
+				theme: 'colored',
+			});
+			return false;
+		}
+	}, []);
 
 	const onSignOut = useCallback(async () => {
 		cookies.destroyCookie(

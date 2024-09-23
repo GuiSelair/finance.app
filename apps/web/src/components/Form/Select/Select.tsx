@@ -29,19 +29,21 @@ export const Select = forwardRef<ElementRef<typeof ReactSelect>, SelectProps>(
 			<ReactSelect
 				ref={ref}
 				styles={{
-					// @ts-ignore
-					container(base, props) {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-expect-error
+					container(base) {
 						return {
 							...base,
 							width,
 						};
 					},
-					indicatorSeparator(base, props) {
+					indicatorSeparator() {
 						return {
 							display: 'none',
 						};
 					},
-					// @ts-ignore
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-expect-error
 					control: (baseStyles, state) => ({
 						...baseStyles,
 						boxShadow: state.isFocused
@@ -62,4 +64,4 @@ export const Select = forwardRef<ElementRef<typeof ReactSelect>, SelectProps>(
 			/>
 		);
 	},
-) 
+);

@@ -1,5 +1,5 @@
-import { CreditCard } from "phosphor-react";
-import styled from "styled-components";
+import { CreditCard } from 'phosphor-react';
+import styled from 'styled-components';
 
 export const RegisterCardsForm = styled.form`
 	display: flex;
@@ -14,4 +14,4 @@ export const CreditCardIcon = styled(CreditCard)`
 	color: ${({ theme }) => theme.colors.green800};
 	margin-top: 1rem;
 	margin-left: 0.5rem;
-`
+`;

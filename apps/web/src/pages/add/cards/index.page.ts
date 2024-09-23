@@ -1,1 +1,1 @@
-export { default } from './CreateCardsPage'
+export { default } from './CreateCardsPage';

@@ -31,22 +31,28 @@ export default function SummaryCard({
 	const shouldShowHeader = !!icon;
 
 	const BaseSummaryCard = useMemo(() => {
-		return ({ children }: React.PropsWithChildren<{}>) => (
-			<SummaryCardContainer variant={variant ?? 'info'}>
-				{shouldShowHeader && (
-					<SummaryCardHeader>
-						<CircularIconContainer>{icon}</CircularIconContainer>
-					</SummaryCardHeader>
-				)}
-				<SummaryCardContent>
-					<SummaryCardTitle>{title}</SummaryCardTitle>
-					<PriceContainer>
-						<span>R$</span>
-						{children}
-					</PriceContainer>
-				</SummaryCardContent>
-			</SummaryCardContainer>
-		);
+		return function BaseSummaryCard({
+			children,
+		}: {
+			children: React.ReactNode;
+		}) {
+			return (
+				<SummaryCardContainer variant={variant ?? 'info'}>
+					{shouldShowHeader && (
+						<SummaryCardHeader>
+							<CircularIconContainer>{icon}</CircularIconContainer>
+						</SummaryCardHeader>
+					)}
+					<SummaryCardContent>
+						<SummaryCardTitle>{title}</SummaryCardTitle>
+						<PriceContainer>
+							<span>R$</span>
+							{children}
+						</PriceContainer>
+					</SummaryCardContent>
+				</SummaryCardContainer>
+			);
+		};
 	}, [shouldShowHeader, variant, icon, title]);
 
 	if (isLoading) {

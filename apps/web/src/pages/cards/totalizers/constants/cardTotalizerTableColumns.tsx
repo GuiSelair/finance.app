@@ -37,7 +37,7 @@ export const CARD_TOTALIZER_TABLE_COLUMNS: TableColumnsProps = [
 	{
 		header: 'Ações',
 		accessorKey: 'actions',
-		cell: ({ row }) => (
+		cell: () => (
 			<Button size="sm" variant="outline" isDisabled>
 				Detalhes
 			</Button>

@@ -26,5 +26,5 @@ export const LinkToPage = styled(Link)<LinkToPageProps>`
 		!!props.active &&
 		css`
 			background-color: ${props => props.theme.colors.green500};
-		`}	
+		`}
 `;

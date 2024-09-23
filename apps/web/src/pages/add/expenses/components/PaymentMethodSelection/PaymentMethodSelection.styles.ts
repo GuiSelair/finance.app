@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { Column } from "@/components/Form";
+import { Column } from '@/components/Form';
 
 export const FieldDescription = styled.span`
 	display: block;
@@ -21,7 +21,8 @@ export const FieldDescription = styled.span`
 			display: inline-flex;
 			align-items: center;
 
-			&:hover,&:focus {
+			&:hover,
+			&:focus {
 				text-decoration: underline;
 			}
 		}

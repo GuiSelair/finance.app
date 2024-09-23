@@ -1,4 +1,3 @@
-import { PropsWithChildren } from 'react';
 import {
 	LayoutBoxContainer,
 	LayoutBoxContent,
@@ -10,7 +9,9 @@ import {
 	LayoutBoxTitle,
 } from './LayoutBox.styles';
 
-export function LayoutBox({ children }: Readonly<PropsWithChildren<{}>>) {
+export function LayoutBox({
+	children,
+}: Readonly<{ children: React.ReactNode }>) {
 	return <LayoutBoxContainer>{children}</LayoutBoxContainer>;
 }
 
