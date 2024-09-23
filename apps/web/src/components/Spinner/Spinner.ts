@@ -56,8 +56,8 @@ export const Spinner = styled.div.withConfig({
 	border-radius: 50%;
 	animation: ${spinAnimation} 0.5s linear infinite;
 
-	${({ mode }: { mode: keyof typeof spinnerColorMapper }) =>
+	${({ mode }: { mode?: keyof typeof spinnerColorMapper }) =>
 		spinnerColorMapper[mode ?? 'dark']};
-	${({ size }: { size: keyof typeof SPINNER_SIZE_MAPPER }) =>
+	${({ size }: { size?: keyof typeof SPINNER_SIZE_MAPPER }) =>
 		SPINNER_SIZE_MAPPER[size ?? 'md']};
 `;
