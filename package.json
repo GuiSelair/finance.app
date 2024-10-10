@@ -1,9 +1,10 @@
 {
-  "name": "finance.app",
+  "name": "finance-app",
   "packageManager": "npm@10.5.2",
   "private": true,
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "devDependencies": {
     "turbo": "^2.1.2"

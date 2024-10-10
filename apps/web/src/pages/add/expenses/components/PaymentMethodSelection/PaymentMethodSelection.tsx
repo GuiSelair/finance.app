@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import Link from 'next/link';
 import { ArrowSquareOut as ArrowSquareOutIcon } from 'phosphor-react';
 import { useFormContext, Controller } from 'react-hook-form';
-import { isBefore } from 'date-fns';
+import { calculateExpenseMonth } from '@finance-app/helpers';
 
 import { InputLabel, Select, Row, Column } from '@/components/Form';
 import { CardDetails, FieldDescription } from './PaymentMethodSelection.styles';
@@ -30,23 +30,24 @@ export default function PaymentMethodSelectionSection() {
 		if (!userPaymentMethodSelected) return;
 
 		const { turningDay } = userPaymentMethodSelected;
-		const currentMonth = new Date().getMonth();
-		const currentYear = new Date().getFullYear();
-
-		const turningDate = new Date(currentYear, currentMonth, turningDay);
 		const purchaseDate = new Date();
+		const { isInCurrentMonth, month } = calculateExpenseMonth(
+			purchaseDate,
+			turningDay,
+		);
+		const monthStartInOne = month + 1;
 
-		if (isBefore(purchaseDate, turningDate)) {
-			return `deste mês (${String(new Date().getMonth() + 1).padStart(
+		if (isInCurrentMonth) {
+			return `deste mês (${String(monthStartInOne).padStart(
 				2,
 				'0',
-			)}/${new Date().getFullYear()})`;
+			)}/${purchaseDate.getFullYear()})`;
 		}
 
-		return `do próximo mês (${String(new Date().getMonth() + 2).padStart(
+		return `do próximo mês (${String(monthStartInOne).padStart(
 			2,
 			'0',
-		)}/${new Date().getFullYear()})`;
+		)}/${purchaseDate.getFullYear()})`;
 	};
 
 	return (
