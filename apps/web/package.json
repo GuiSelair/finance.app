@@ -9,7 +9,7 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@finance-app/helpers": "*",
+		"@finance-app/helpers": "file:../../packages/helpers",
 		"@hookform/resolvers": "^2.9.10",
 		"@radix-ui/react-dialog": "^1.0.3",
 		"@tanstack/react-table": "^8.8.5",
