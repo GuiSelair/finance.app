@@ -1,5 +1,6 @@
 import { inject, injectable } from 'tsyringe';
-import { getMonth, getYear, isBefore, setDate } from 'date-fns';
+import { getYear } from 'date-fns';
+import { calculateExpenseMonth } from '@finance-app/helpers'
 
 import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository';
 import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthRepository';
@@ -8,9 +9,9 @@ import { Expense } from '../models/Expense';
 import { ExpenseMonth } from '../models/ExpenseMonth';
 
 interface IGetFirstMonthOfExpenseProps {
-  purchaseDate: Date;
-  cardId: string;
-  userId: string;
+  purchase_date: Date;
+  card_id: string;
+  user_id: string;
 }
 
 @injectable()
@@ -33,9 +34,9 @@ export class CreateExpenseMonthService {
     const valueOfParcel = Number(expense.amount) / Number(expense.parcel);
 
     const firstMonth = await this.getFirstMonthOfExpense({
-      purchaseDate: new Date(expense.purchase_date!),
-      cardId: expense.card_id!,
-      userId: expense.user_id!,
+      purchase_date: new Date(expense.purchase_date!),
+      card_id: expense.card_id!,
+      user_id: expense.user_id!,
     });
 
     let currentYear = getYear(expense.purchase_date!);
@@ -70,36 +71,15 @@ export class CreateExpenseMonthService {
     await this.expenseMonthRepository.create(expensesMonthList);
   }
 
-  // TODO: Revisar lógica
   private async getFirstMonthOfExpense({
-    purchaseDate,
-    cardId,
-    userId,
+    purchase_date,
+    card_id,
+    user_id,
   }: IGetFirstMonthOfExpenseProps): Promise<number> {
-    const cardFound = await this.cardsRepository.findById(cardId, userId);
+    const cardFound = await this.cardsRepository.findById(card_id, user_id);
     if (!cardFound) throw new AppError('Error in generate expenses parcels, card not found.');
 
-    const turningDate = setDate(purchaseDate, cardFound.turning_day);
-    if (isBefore(purchaseDate, turningDate)) {
-      return getMonth(purchaseDate); // TODO: Vamos utilizar mes como mes atual + 1 para ter meses até 12?
-    }
-
-    return getMonth(purchaseDate) + 1;
+    const { month } = calculateExpenseMonth(purchase_date, cardFound.turning_day)
+    return month
   }
 }
-
-/**
- * Regra de negócio:
- * 1. Caso uma nova despesa seja adiciona:
- *    - Caso o cartão não esteja virado, adicionar despesa para ser cobrada no mês atual
- *    - Caso o cartão esteja virado, adicionar despesa para o próximo mês
- *
- * Exemplo:
- * - Cartão com virada para dia 25:
- *    - Data de virada: 25/09
- *    --------------------------
- *    1. Comprei hoje (12/09): Deve ser inserida com o mês atual (09)
- *    2. Comprei no dia de vencimento (25/09): Deve ser inserida para o próximo mês (10)
- *    3. Comprei depois do vencimento (01/10): Deve ser inserida com o mês atual (10)
- *    4. Comprei hoje (12/09) mas lancei no sistema dia (02/10): Deve ser inserida no mês anterior (09) --- ESSE PONTO FALHA
- */
