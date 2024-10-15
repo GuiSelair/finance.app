@@ -36,7 +36,6 @@ export const FieldDescription = styled.span`
 `;
 
 export const CardDetails = styled(Column)`
-	margin-left: 1.5rem;
 	align-self: flex-start;
 	gap: 1rem;
 

@@ -3,6 +3,7 @@ import type { InferType } from 'yup';
 
 export const createExpenseFormSchema = Yup.object().shape({
 	name: Yup.string().required('Campo obrigatório'),
+	purchaseDate: Yup.string().required('Campo obrigatório'),
 	category: Yup.string(),
 	totalValue: Yup.number().required('Campo obrigatório'),
 	parcelQuantity: Yup.number().required('Campo obrigatório'),

@@ -4,7 +4,6 @@ exports.calculateExpenseMonth = calculateExpenseMonth;
 var date_fns_1 = require("date-fns");
 function calculateExpenseMonth(purchaseDate, turningDay) {
     var turningDate = (0, date_fns_1.setDate)(purchaseDate, turningDay);
-    console.log(purchaseDate, turningDate, turningDay);
     if ((0, date_fns_1.isBefore)(purchaseDate, turningDate)) {
         return {
             isInCurrentMonth: true,

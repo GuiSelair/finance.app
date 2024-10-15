@@ -4,15 +4,18 @@ import { ArrowSquareOut as ArrowSquareOutIcon } from 'phosphor-react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { calculateExpenseMonth } from '@finance-app/helpers';
 
-import { InputLabel, Select, Row, Column } from '@/components/Form';
+import { InputLabel, Select, GridColumn, TextInput } from '@/components/Form';
+import { Box } from '@/components';
 import { CardDetails, FieldDescription } from './PaymentMethodSelection.styles';
 import { useListCardsApi } from '@/hooks/api/useListCards.api';
 import { CreateExpenseFieldsType } from '../../constants/formSchema';
 
 export default function PaymentMethodSelectionSection() {
-	const { data: userAllPaymentMethods } = useListCardsApi();
-	const { control, watch } = useFormContext<CreateExpenseFieldsType>();
+	const { data: userAllPaymentMethods, isLoading } = useListCardsApi();
+	const { control, watch, register } =
+		useFormContext<CreateExpenseFieldsType>();
 	const paymentMethodOptionSelected = watch('paymentMethod') ?? undefined;
+	const purchaseDateSelected = watch('purchaseDate') || new Date();
 
 	const paymentMethodsOptions = useMemo(() => {
 		if (!userAllPaymentMethods?.length) return;
@@ -23,68 +26,74 @@ export default function PaymentMethodSelectionSection() {
 		}));
 	}, [userAllPaymentMethods]);
 
-	const makeMessageOfWitchMonthWillBeTheExpense = (paymentMethodId: string) => {
+	function makeMessageOfWitchMonthWillBeTheExpense(paymentMethodId: string) {
 		const userPaymentMethodSelected = userAllPaymentMethods?.find(
 			card => card.id === paymentMethodId,
 		);
 		if (!userPaymentMethodSelected) return;
 
 		const { turningDay } = userPaymentMethodSelected;
-		const purchaseDate = new Date();
+		const purchaseDate = new Date(purchaseDateSelected);
 		const { isInCurrentMonth, month } = calculateExpenseMonth(
 			purchaseDate,
 			turningDay,
 		);
-		const monthStartInOne = month + 1;
-
-		if (isInCurrentMonth) {
-			return `deste mês (${String(monthStartInOne).padStart(
-				2,
-				'0',
-			)}/${purchaseDate.getFullYear()})`;
-		}
-
-		return `do próximo mês (${String(monthStartInOne).padStart(
+		const monthStartInOne = month + 2;
+		const monthWithYearFormatted = `${String(monthStartInOne).padStart(
 			2,
 			'0',
-		)}/${purchaseDate.getFullYear()})`;
-	};
+		)}/${purchaseDate.getFullYear()}`;
+
+		return isInCurrentMonth
+			? `deste mês (${monthWithYearFormatted})`
+			: `do próximo mês (${monthWithYearFormatted})`;
+	}
 
 	return (
-		<Row margin="0.5rem 0 0 0">
-			<Column width="418px">
-				<InputLabel>
-					Meio de pagamento:
-					<div>
-						<Controller
-							name="paymentMethod"
-							control={control}
-							render={({ field }) => (
-								<Select
-									isLoading={!paymentMethodsOptions}
-									placeholder="Selecione o meio de pagamento"
-									options={paymentMethodsOptions ?? []}
-									{...field}
-								/>
-							)}
-						/>
-						<FieldDescription>
-							Não encontrou o meio de pagamento?{' '}
-							<strong>
-								<Link href={'/add/cards'} prefetch={false}>
-									Crie um aqui!
-									<ArrowSquareOutIcon />
-								</Link>
-							</strong>
-						</FieldDescription>
-					</div>
-				</InputLabel>
-			</Column>
+		<GridColumn
+			gridTemplateColumns="200px 418px 1fr"
+			margin="0.5rem 0 0 0"
+			gap="1.5rem"
+		>
+			<InputLabel>
+				Data de compra:
+				<TextInput
+					type="date"
+					{...register('purchaseDate')}
+					max={new Date().toISOString().split('T')[0]}
+				/>
+			</InputLabel>
+			<InputLabel>
+				Meio de pagamento:
+				<div>
+					<Controller
+						name="paymentMethod"
+						control={control}
+						render={({ field }) => (
+							<Select
+								isLoading={isLoading}
+								placeholder="Selecione o meio de pagamento"
+								options={paymentMethodsOptions ?? []}
+								{...field}
+							/>
+						)}
+					/>
+					<FieldDescription>
+						Não encontrou o meio de pagamento?{' '}
+						<strong>
+							<Link href={'/add/cards'} prefetch={false}>
+								Crie um aqui!
+								<ArrowSquareOutIcon />
+							</Link>
+						</strong>
+					</FieldDescription>
+				</div>
+			</InputLabel>
 
 			{paymentMethodOptionSelected && (
 				<CardDetails>
 					<span>Detalhes sobre o meio de pagamento:</span>
-					<Row>
+					<Box>
 						<p>
 							Cartão: <strong>{paymentMethodOptionSelected.label}</strong> |
 							Esta despesa entrará na fatura{' '}
@@ -94,9 +103,9 @@ export default function PaymentMethodSelectionSection() {
 								)}
 							</strong>
 						</p>
-					</Row>
+					</Box>
 				</CardDetails>
 			)}
-		</Row>
+		</GridColumn>
 	);
 }
