@@ -31,9 +31,10 @@ export function useCreateExpense() {
 		await mutateAsync({
 			name: data.name,
 			amount: data.totalValue,
-			card_id: data.paymentMethod.value,
+			cardId: data.paymentMethod.value,
 			parcel: data.parcelQuantity,
-			is_recurring: data.isRecurring,
+			isRecurring: data.isRecurring,
+			purchaseDate: data.purchaseDate,
 		});
 		toast.success('Despesa criada com sucesso!');
 		router.push('/');

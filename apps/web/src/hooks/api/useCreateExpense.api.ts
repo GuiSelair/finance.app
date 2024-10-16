@@ -5,17 +5,25 @@ import { toast } from 'react-toastify';
 interface ICreateExpenseParams {
 	name: string;
 	amount: number;
-	card_id: string;
+	cardId: string;
 	parcel: number;
-	is_recurring?: boolean;
+	isRecurring?: boolean;
+	purchaseDate: string;
 }
 
 export function useCreateExpenseApi() {
 	return useMutation(
 		['expenses'],
-		async (newUser: ICreateExpenseParams) => {
+		async (newExpense: ICreateExpenseParams) => {
 			const response = await httpClient.post('/expenses', {
-				body: newUser,
+				body: {
+					name: newExpense.name,
+					amount: newExpense.amount,
+					card_id: newExpense.cardId,
+					parcel: newExpense.parcel,
+					is_recurring: newExpense.isRecurring,
+					purchase_date: newExpense.purchaseDate,
+				},
 			});
 
 			return response.data;
