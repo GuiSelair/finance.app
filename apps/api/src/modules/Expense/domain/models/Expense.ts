@@ -10,7 +10,7 @@ export class Expense {
     user_id: z.string().uuid(),
     purchase_date: z.coerce.date().max(new Date()),
     is_recurring: z.boolean(),
-    due_date: z.coerce.date().optional(),
+    due_date: z.coerce.date().optional().nullable(),
     description: z.string().max(120).optional().nullable(),
     created_at: z.date().optional(),
     updated_at: z.date().optional(),

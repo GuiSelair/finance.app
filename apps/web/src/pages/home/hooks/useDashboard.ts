@@ -3,7 +3,7 @@ import { useContextSelector } from 'use-context-selector';
 
 import { selectedMonthYearContext } from '@/contexts';
 import { useFetchExpensesSummaryApi } from '@/hooks/api/useFetchExpensesSummary.api';
-import { useFetchExpensesApi } from '@/hooks/api/useFetchExpenses.api';
+import { useFetchExpensesMonthApi } from '@/hooks/api/useFetchExpensesMonth.api';
 import { useDeleteExpenseApi } from '@/hooks/api/useDeleteExpense.api';
 
 import type { IFetchSummaryResponse } from '../components/Summary';
@@ -31,7 +31,7 @@ export function useDashboard() {
 	}
 
 	function fetchExpenses(): IFetchExpensesResponse {
-		const { data, isLoading } = useFetchExpensesApi();
+		const { data, isLoading } = useFetchExpensesMonthApi();
 
 		return {
 			expensesInMonth: data,

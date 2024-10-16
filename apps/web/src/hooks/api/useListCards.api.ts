@@ -5,6 +5,17 @@ import { Card, CardProps } from '@/models/Card';
 import { httpClient } from '@/providers/HTTPClient';
 import { toast } from 'react-toastify';
 
+export interface RawCard {
+	id: string;
+	user_id: string;
+	name: string;
+	flag: string;
+	due_day: number;
+	turning_day: number;
+	created_at: string;
+	updated_at: string;
+}
+
 export function useListCardsApi() {
 	return useQuery(
 		'payment-methods',
