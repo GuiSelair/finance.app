@@ -11,7 +11,7 @@ export class Expense {
     purchase_date: z.coerce.date().max(new Date()),
     is_recurring: z.boolean(),
     due_date: z.coerce.date().optional(),
-    description: z.string().max(120).optional(),
+    description: z.string().max(120).optional().nullable(),
     created_at: z.date().optional(),
     updated_at: z.date().optional(),
   });
