@@ -20,22 +20,12 @@ interface ISummaryCardProps {
 	isLoading?: boolean;
 }
 
-export default function SummaryCard({
-	title,
-	value,
-	icon,
-	variant,
-	isLoading = false,
-}: Readonly<ISummaryCardProps>) {
+export default function SummaryCard({ title, value, icon, variant, isLoading = false }: Readonly<ISummaryCardProps>) {
 	const priceFormatted = formatCurrency(value)?.replace('R$', '');
 	const shouldShowHeader = !!icon;
 
 	const BaseSummaryCard = useMemo(() => {
-		return function BaseSummaryCard({
-			children,
-		}: {
-			children: React.ReactNode;
-		}) {
+		return function BaseSummaryCard({ children }: { children: React.ReactNode }) {
 			return (
 				<SummaryCardContainer variant={variant ?? 'info'}>
 					{shouldShowHeader && (

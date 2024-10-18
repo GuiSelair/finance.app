@@ -10,11 +10,7 @@ import { Box } from '@/components/Box';
 import { useCardTotalizer } from './hooks/useCardTotalizer';
 
 export default function CardTotalizerPage() {
-	const {
-		cardTotalizerTableColumns,
-		cardTotalizerTableData,
-		isLoadingTableContent,
-	} = useCardTotalizer();
+	const { cardTotalizerTableColumns, cardTotalizerTableData, isLoadingTableContent } = useCardTotalizer();
 
 	return (
 		<>
@@ -32,21 +28,12 @@ export default function CardTotalizerPage() {
 				</LayoutBox.Header>
 				<LayoutBox.Content>
 					{isLoadingTableContent ? (
-						<Box
-							height="200px"
-							flexDirection="column"
-							alignItems="center"
-							justifyContent="center"
-							gap="32px"
-						>
+						<Box height="200px" flexDirection="column" alignItems="center" justifyContent="center" gap="32px">
 							<Spinner />
 							<span>Buscando resumo...</span>
 						</Box>
 					) : (
-						<Table
-							columns={cardTotalizerTableColumns}
-							data={cardTotalizerTableData}
-						/>
+						<Table columns={cardTotalizerTableColumns} data={cardTotalizerTableData} />
 					)}
 				</LayoutBox.Content>
 			</LayoutBox>

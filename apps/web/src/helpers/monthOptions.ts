@@ -25,9 +25,7 @@ export function getMonthOptions(short = false) {
 }
 
 export function getMonthOption(month: number) {
-	const monthFound = monthOptions.find(
-		monthItem => Number(monthItem.value) === month,
-	);
+	const monthFound = monthOptions.find(monthItem => Number(monthItem.value) === month);
 
 	return monthFound;
 }

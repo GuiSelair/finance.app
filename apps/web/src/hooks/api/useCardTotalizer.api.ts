@@ -15,31 +15,23 @@ interface IFetchCardTotalizerReturn {
 	total: number;
 }
 
-export const useCardTotalizerApi = ({
-	month,
-	year,
-}: IFetchCardTotalizerParams) =>
+export const useCardTotalizerApi = ({ month, year }: IFetchCardTotalizerParams) =>
 	useQuery(
 		['cardTotalizer', month, year],
 		async () => {
-			const apiResponse = await httpClient.get<IFetchCardTotalizerReturn[]>(
-				'/cards/totalizers',
-				{
-					params: {
-						month,
-						year,
-					},
+			const apiResponse = await httpClient.get<IFetchCardTotalizerReturn[]>('/cards/totalizers', {
+				params: {
+					month,
+					year,
 				},
-			);
+			});
 
 			const data = apiResponse.data;
 			return data;
 		},
 		{
 			onError: () => {
-				toast.error(
-					'Erro ao buscar resumo por cartões. Atualize a página e tente novamente.',
-				);
+				toast.error('Erro ao buscar resumo por cartões. Atualize a página e tente novamente.');
 			},
 			refetchOnWindowFocus: false,
 			retryDelay: 5000,

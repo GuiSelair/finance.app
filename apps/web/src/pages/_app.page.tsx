@@ -22,10 +22,7 @@ type CustomAppProps = AppProps & {
 	Component: CustomComponentProps;
 };
 
-export default function App({
-	Component,
-	pageProps,
-}: CustomAppProps): JSX.Element {
+export default function App({ Component, pageProps }: CustomAppProps): JSX.Element {
 	const LayoutOrNot = Component.notUseLayout ? Fragment : BaseLayout;
 
 	return (

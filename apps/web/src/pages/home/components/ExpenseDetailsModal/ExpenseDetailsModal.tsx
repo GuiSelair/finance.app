@@ -42,22 +42,12 @@ export default function ExpenseDetailsModal({
 	if (!expenseInMonth) return null;
 
 	const { expense } = expenseInMonth;
-	const { executeDelete, isDeleting } = deleteExpense(
-		expenseInMonth?.expenseId,
-	);
+	const { executeDelete, isDeleting } = deleteExpense(expenseInMonth?.expenseId);
 
 	const expenseTotalAmountFormatted = formatCurrency(expense?.amount);
-	const expenseParcelAmountFormatted = formatCurrency(
-		expenseInMonth?.valueParcel,
-	);
-	const parcelsFormatted = formatParcel(
-		expenseInMonth?.currentParcel,
-		expenseInMonth?.quantityParcel,
-	);
-	const expenseCreatedAtFormatted = dateFormat(
-		new Date(expense?.createdAt ?? new Date()),
-		'dd/MM/yyyy',
-	);
+	const expenseParcelAmountFormatted = formatCurrency(expenseInMonth?.valueParcel);
+	const parcelsFormatted = formatParcel(expenseInMonth?.currentParcel, expenseInMonth?.quantityParcel);
+	const expenseCreatedAtFormatted = dateFormat(new Date(expense?.createdAt ?? new Date()), 'dd/MM/yyyy');
 	const expenseIdCut = `${expenseInMonth?.expenseId?.slice(0, 20)}...`;
 
 	async function handleDeleteExpense() {
@@ -85,11 +75,7 @@ export default function ExpenseDetailsModal({
 	}
 
 	return (
-		<BaseModal
-			open={isOpenModal}
-			onClose={onClose}
-			title="Mais detalhes da despesa"
-		>
+		<BaseModal open={isOpenModal} onClose={onClose} title="Mais detalhes da despesa">
 			<ExpenseBaseDetails>
 				<div>
 					<span>Chave ID</span>
@@ -107,11 +93,7 @@ export default function ExpenseDetailsModal({
 				</div>
 				<div>
 					<span>Remover?</span>
-					<RemoveExpenseButton
-						size="xs"
-						onClick={handleDeleteExpense}
-						isLoading={isDeleting}
-					>
+					<RemoveExpenseButton size="xs" onClick={handleDeleteExpense} isLoading={isDeleting}>
 						<DeleteExpenseIcon />
 					</RemoveExpenseButton>
 				</div>
