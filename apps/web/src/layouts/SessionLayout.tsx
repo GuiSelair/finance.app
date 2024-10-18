@@ -9,7 +9,7 @@ import { useNavigation } from '@/hooks/useNavigation';
 import { NavLink } from '@/components/NavLink';
 
 export const SessionLayout = ({ children }: PropsWithChildren) => {
-	const { primaryPageSelected, sessionNavigationMap, sessionPageSelected } =
+	const { primaryPageSelected, sessionNavigationMapper: sessionNavigationMap, sessionPageSelected } =
 		useNavigation();
 
 	const getDayMoment = () => {

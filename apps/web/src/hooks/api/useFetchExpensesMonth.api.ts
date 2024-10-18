@@ -48,15 +48,12 @@ export function useFetchExpensesMonthApi() {
 
 	return useQuery(['month-expenses', month, year], async () => {
 		try {
-			const response = await httpClient.get<RawExpensesMonth[]>(
-				'/expenses/list',
-				{
-					params: {
-						month,
-						year,
-					},
+			const response = await httpClient.get<RawExpensesMonth[]>('/expenses/list', {
+				params: {
+					month,
+					year,
 				},
-			);
+			});
 
 			return response.data.map(
 				rawExpenseMonth =>
@@ -100,13 +97,10 @@ export function useFetchExpensesMonthApi() {
 			if (error instanceof AxiosError) {
 				const errorFromServer = error.response?.data;
 
-				toast.error(
-					'Aconteceu um erro inesperado. Por favor, tente novamente...',
-					{
-						position: 'bottom-left',
-						theme: 'colored',
-					},
-				);
+				toast.error('Aconteceu um erro inesperado. Por favor, tente novamente...', {
+					position: 'bottom-left',
+					theme: 'colored',
+				});
 				throw new Error(errorFromServer.error);
 			}
 		}

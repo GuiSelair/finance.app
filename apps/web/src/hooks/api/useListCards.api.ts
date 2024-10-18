@@ -20,13 +20,9 @@ export function useListCardsApi() {
 	return useQuery(
 		'payment-methods',
 		async () => {
-			const apiResponse = await httpClient.get<{ cards: CardProps[] }>(
-				'/cards/list',
-			);
+			const apiResponse = await httpClient.get<{ cards: CardProps[] }>('/cards/list');
 			return apiResponse.data.cards.map(card => {
-				const cardToCamelCase = transformToCamelCase<CardProps>(
-					card,
-				) as CardProps;
+				const cardToCamelCase = transformToCamelCase<CardProps>(card) as CardProps;
 				return new Card({
 					...cardToCamelCase,
 				});
@@ -34,9 +30,7 @@ export function useListCardsApi() {
 		},
 		{
 			onError: () => {
-				toast.error(
-					'Ocorreu um erro ao carregar os meios de pagamento. Tente novamente mais tarde.',
-				);
+				toast.error('Ocorreu um erro ao carregar os meios de pagamento. Tente novamente mais tarde.');
 			},
 		},
 	);
