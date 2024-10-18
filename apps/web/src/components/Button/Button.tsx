@@ -22,9 +22,7 @@ export interface ButtonContainerProps {
 	fullWidth?: boolean;
 }
 
-export interface ButtonProps
-	extends ButtonContainerProps,
-		React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonContainerProps, React.ButtonHTMLAttributes<HTMLButtonElement> {
 	/**
 	 * Indica se o botão esta em estado de carregamento. Quando esta ativo, desabilita o botão
 	 * e exibe um spinner no centro.

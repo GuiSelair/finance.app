@@ -34,9 +34,7 @@ export default function LoginPage() {
 						</HeaderLogo>
 						<LoginFormContent onSubmit={handleSubmit}>
 							<LoginTitle>Faça seu login!</LoginTitle>
-							<LoginSubtitle>
-								Faça sua autenticação para começar a gerenciar suas despesas.
-							</LoginSubtitle>
+							<LoginSubtitle>Faça sua autenticação para começar a gerenciar suas despesas.</LoginSubtitle>
 
 							<InputLabel>
 								Email:

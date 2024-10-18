@@ -13,11 +13,7 @@ export const CARD_TOTALIZER_TABLE_COLUMNS: TableColumnsProps = [
 		header: 'Apelido',
 		accessorKey: 'name',
 		size: 500,
-		cell: ({ row }) => (
-			<CardTotalizerHighlightValue>
-				{row.original.name}
-			</CardTotalizerHighlightValue>
-		),
+		cell: ({ row }) => <CardTotalizerHighlightValue>{row.original.name}</CardTotalizerHighlightValue>,
 	},
 	{
 		header: 'Dia da melhor compra',
@@ -28,11 +24,7 @@ export const CARD_TOTALIZER_TABLE_COLUMNS: TableColumnsProps = [
 		header: 'Total',
 		accessorKey: 'total',
 		size: 300,
-		cell: ({ row }) => (
-			<CardTotalizerHighlightValue>
-				{row.original.total}
-			</CardTotalizerHighlightValue>
-		),
+		cell: ({ row }) => <CardTotalizerHighlightValue>{row.original.total}</CardTotalizerHighlightValue>,
 	},
 	{
 		header: 'Ações',

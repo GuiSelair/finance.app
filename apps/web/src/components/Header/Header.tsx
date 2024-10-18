@@ -4,22 +4,13 @@ import { Gear } from 'phosphor-react';
 
 import { useNavigation } from '@/hooks/useNavigation';
 import { NavLink } from '@/components/NavLink';
-import {
-	HeaderContainer,
-	Logo,
-	AddExpenseLink,
-	SystemOptions,
-} from './Header.styles';
+import { HeaderContainer, Logo, AddExpenseLink, SystemOptions } from './Header.styles';
 import { useContextSelector } from 'use-context-selector';
 import { AuthContext } from '@/contexts/AuthContext';
 
 export function Header(): JSX.Element {
-	const { primaryPageSelected, primaryNavigationMap, makePath } =
-		useNavigation();
-	const onSignOut = useContextSelector(
-		AuthContext,
-		context => context.onSignOut,
-	);
+	const { primaryPageSelected, primaryNavigationMapper, makePath } = useNavigation();
+	const onSignOut = useContextSelector(AuthContext, context => context.onSignOut);
 
 	return (
 		<HeaderContainer>
@@ -28,17 +19,17 @@ export function Header(): JSX.Element {
 					<strong>Finance</strong>.app
 				</Logo>
 				<nav>
-					{Object.entries(primaryNavigationMap).map(
-						([key, value]) =>
-							value.visible && (
+					{Object.entries(primaryNavigationMapper).map(
+						([primaryPagesKey, value]) =>
+							(value?.visible ?? true) && (
 								<NavLink
-									key={key}
+									key={primaryPagesKey}
 									href={makePath({
-										primaryPageToSelect: key,
+										primaryPageToSelect: primaryPagesKey,
 										navigationToSelect: value,
 									})}
 									prefetch={false}
-									isActive={primaryPageSelected === key}
+									isActive={primaryPageSelected === primaryPagesKey}
 								>
 									{value.name ?? value.title.toLowerCase()}
 								</NavLink>
@@ -47,7 +38,7 @@ export function Header(): JSX.Element {
 				</nav>
 			</div>
 			<div>
-				<AddExpenseLink href="/add/expenses" prefetch={false}>
+				<AddExpenseLink href="/registrations/expenses" prefetch={false}>
 					Adicionar despesa
 				</AddExpenseLink>
 				<SystemOptions>
@@ -55,12 +46,7 @@ export function Header(): JSX.Element {
 						<Gear size={24} />
 					</Link>
 					<button type="button" onClick={onSignOut}>
-						<Image
-							src="http://www.github.com/guiselair.png"
-							alt=""
-							width={48}
-							height={48}
-						/>
+						<Image src="http://www.github.com/guiselair.png" alt="" width={48} height={48} />
 					</button>
 				</SystemOptions>
 			</div>

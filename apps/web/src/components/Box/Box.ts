@@ -5,13 +5,7 @@ interface BoxProps {
 	padding?: string;
 	flexDirection?: 'row' | 'column';
 	alignItems?: 'center' | 'flex-start' | 'flex-end' | 'baseline' | 'stretch';
-	justifyContent?:
-		| 'center'
-		| 'flex-start'
-		| 'flex-end'
-		| 'space-between'
-		| 'space-around'
-		| 'space-evenly';
+	justifyContent?: 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly';
 	width?: string;
 	height?: string;
 	gap?: string;
@@ -20,17 +14,9 @@ interface BoxProps {
 
 export const Box = styled.div.withConfig({
 	shouldForwardProp: props =>
-		![
-			'margin',
-			'padding',
-			'flexDirection',
-			'alignItems',
-			'justifyContent',
-			'width',
-			'height',
-			'gap',
-			'flex',
-		].includes(props),
+		!['margin', 'padding', 'flexDirection', 'alignItems', 'justifyContent', 'width', 'height', 'gap', 'flex'].includes(
+			props,
+		),
 })<BoxProps>`
 	display: flex;
 	margin: ${({ margin }) => margin};

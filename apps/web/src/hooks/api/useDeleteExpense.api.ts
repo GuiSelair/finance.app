@@ -12,9 +12,7 @@ export function useDeleteExpenseApi(expenseId: string): UseMutationResult {
 		},
 		{
 			onError: () => {
-				toast.error(
-					'Erro ao deletar despesa. Atualize a página e tente novamente.',
-				);
+				toast.error('Erro ao deletar despesa. Atualize a página e tente novamente.');
 			},
 			onSuccess: async () => {
 				await queryClient.invalidateQueries();

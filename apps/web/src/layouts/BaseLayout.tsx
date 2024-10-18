@@ -1,11 +1,7 @@
 import { Header } from '@/components/Header';
 import { SessionLayout } from '@/layouts/SessionLayout';
 
-import {
-	BaseContainer,
-	BaseContent,
-	BackgroundHero,
-} from '@/styles/layouts/base.style';
+import { BaseContainer, BaseContent, BackgroundHero } from '@/styles/layouts/base.style';
 
 interface BaseLayoutProps {
 	children: React.ReactNode;

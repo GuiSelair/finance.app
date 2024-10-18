@@ -19,6 +19,5 @@ export const GridColumn = styled(Box).withConfig({
 	shouldForwardProp: prop => !['gridTemplateColumns'].includes(prop),
 })<GridColumnProps>`
 	display: grid;
-	grid-template-columns: ${({ gridTemplateColumns }) =>
-		gridTemplateColumns ?? 'unset'};
+	grid-template-columns: ${({ gridTemplateColumns }) => gridTemplateColumns ?? 'unset'};
 `;

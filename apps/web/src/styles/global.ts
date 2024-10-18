@@ -15,8 +15,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body, input, textarea, button {
-    font: ${props =>
-			`400 ${props.theme.fontSizes.regular} 'Work Sans', 'Roboto', sans-serif`}
+    font: ${props => `400 ${props.theme.fontSizes.regular} 'Work Sans', 'Roboto', sans-serif`}
   }
 
 	button {

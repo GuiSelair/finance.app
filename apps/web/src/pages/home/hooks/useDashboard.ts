@@ -15,10 +15,7 @@ export function useDashboard() {
 		selectedMonthYearContext,
 		ctx => ctx.handleRestoreToCurrentMonthAndYear,
 	);
-	const handleSelectMonthAndYear = useContextSelector(
-		selectedMonthYearContext,
-		ctx => ctx.handleSelectMonthAndYear,
-	);
+	const handleSelectMonthAndYear = useContextSelector(selectedMonthYearContext, ctx => ctx.handleSelectMonthAndYear);
 
 	function fetchSummaryExpenses(): IFetchSummaryResponse {
 		const { data, isLoading, isError } = useFetchExpensesSummaryApi();

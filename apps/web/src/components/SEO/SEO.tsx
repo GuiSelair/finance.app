@@ -17,9 +17,7 @@ export function SEO({
 	shouldIndexPage = true,
 	children,
 }: Readonly<ISEOProps>) {
-	const pageTitle = `${title} ${
-		!shouldExcludeTitleSuffix ? '| FinanceAPP' : ''
-	}`;
+	const pageTitle = `${title} ${!shouldExcludeTitleSuffix ? '| finance.app' : ''}`;
 	const pageImage = image ? `${image}` : null;
 
 	return (

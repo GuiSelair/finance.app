@@ -2,13 +2,7 @@ import { PropsWithChildren } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'phosphor-react';
 
-import {
-	ModalCloseButton,
-	ModalContainer,
-	ModalContent,
-	ModalHeader,
-	ModalOverlay,
-} from './BaseModal.styles';
+import { ModalCloseButton, ModalContainer, ModalContent, ModalHeader, ModalOverlay } from './BaseModal.styles';
 
 interface BaseModalProps {
 	title: string;
@@ -16,12 +10,7 @@ interface BaseModalProps {
 	onClose: () => void;
 }
 
-export const BaseModal = ({
-	open,
-	title,
-	onClose,
-	children,
-}: PropsWithChildren<BaseModalProps>) => {
+export const BaseModal = ({ open, title, onClose, children }: PropsWithChildren<BaseModalProps>) => {
 	return (
 		<Dialog.Root open={open}>
 			<Dialog.Portal>

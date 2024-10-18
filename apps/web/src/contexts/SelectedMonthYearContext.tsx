@@ -9,17 +9,14 @@ export interface ISelectedMonthYearContextData {
 	handleRestoreToCurrentMonthAndYear: () => void;
 }
 
-export const selectedMonthYearContext =
-	createContext<ISelectedMonthYearContextData>(
-		{} as ISelectedMonthYearContextData,
-	);
+export const selectedMonthYearContext = createContext<ISelectedMonthYearContextData>(
+	{} as ISelectedMonthYearContextData,
+);
 
 const defaultMonth = getMonth(new Date());
 const defaultYear = getYear(new Date());
 
-export function SelectedMonthYearProvider({
-	children,
-}: Readonly<{ children: React.ReactNode }>) {
+export function SelectedMonthYearProvider({ children }: Readonly<{ children: React.ReactNode }>) {
 	const isFirstRender = useRef(true);
 	const [selectedMonth, setSelectedMonth] = useState(defaultMonth);
 	const [selectedYear, setSelectedYear] = useState(defaultYear);
@@ -33,15 +30,11 @@ export function SelectedMonthYearProvider({
 		if (!window?.localStorage) return;
 
 		localStorage.setItem(
-			`${
-				process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''
-			}-last-selected-month`,
+			`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-last-selected-month`,
 			String(selectedMonth),
 		);
 		localStorage.setItem(
-			`${
-				process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''
-			}-last-selected-year`,
+			`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-last-selected-year`,
 			String(selectedYear),
 		);
 	}
@@ -53,15 +46,11 @@ export function SelectedMonthYearProvider({
 
 	function retrieveLastSelectedMonthAndYear() {
 		const lastSelectedMonth = localStorage.getItem(
-			`${
-				process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''
-			}-last-selected-month`,
+			`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-last-selected-month`,
 		);
 
 		const lastSelectedYear = localStorage.getItem(
-			`${
-				process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''
-			}-last-selected-year`,
+			`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-last-selected-year`,
 		);
 
 		if (lastSelectedMonth && lastSelectedYear) {
@@ -96,8 +85,6 @@ export function SelectedMonthYearProvider({
 	);
 
 	return (
-		<selectedMonthYearContext.Provider value={providerValueMemoized}>
-			{children}
-		</selectedMonthYearContext.Provider>
+		<selectedMonthYearContext.Provider value={providerValueMemoized}>{children}</selectedMonthYearContext.Provider>
 	);
 }

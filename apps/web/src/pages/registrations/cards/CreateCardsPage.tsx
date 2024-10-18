@@ -2,27 +2,14 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 
 import { LayoutBox } from '@/components/LayoutBox';
-import {
-	ActionButtons,
-	Column,
-	InputLabel,
-	Row,
-	Select,
-	TextInput,
-} from '@/components/Form';
+import { ActionButtons, Column, InputLabel, Row, Select, TextInput } from '@/components/Form';
 import { SEO } from '@/components/SEO';
 
 import { useCreateCards } from './hooks/useCreateCards';
 import { RegisterCardsForm, CreditCardIcon } from './CreateCardsPage.styles';
 
 export default function CreateCardsPage() {
-	const {
-		availableCardsOptions,
-		handleCancel,
-		handleCreateCard,
-		isCreatingCard,
-		formSchema,
-	} = useCreateCards();
+	const { availableCardsOptions, handleCancel, handleCreateCard, isCreatingCard, formSchema } = useCreateCards();
 
 	const {
 		register,

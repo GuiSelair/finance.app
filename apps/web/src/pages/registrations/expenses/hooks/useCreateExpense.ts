@@ -3,10 +3,7 @@ import { useRouter } from 'next/router';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import {
-	CreateExpenseFieldsType,
-	createExpenseFormSchema,
-} from '../constants/formSchema';
+import { CreateExpenseFieldsType, createExpenseFormSchema } from '../constants/formSchema';
 import { useCreateExpenseApi } from '@/hooks/api/useCreateExpense.api';
 
 export function useCreateExpense() {
@@ -25,9 +22,7 @@ export function useCreateExpense() {
 		return (value / parcels).toFixed(2);
 	}
 
-	async function createExpenseSubmit(
-		data: CreateExpenseFieldsType,
-	): Promise<void> {
+	async function createExpenseSubmit(data: CreateExpenseFieldsType): Promise<void> {
 		await mutateAsync({
 			name: data.name,
 			amount: data.totalValue,
@@ -45,10 +40,7 @@ export function useCreateExpense() {
 	}
 
 	const parcelValue =
-		calculateParcelValue(
-			Number(formSchema.watch('totalValue')),
-			formSchema.watch('parcelQuantity'),
-		) ?? 0;
+		calculateParcelValue(Number(formSchema.watch('totalValue')), formSchema.watch('parcelQuantity')) ?? 0;
 
 	return {
 		parcelValue,

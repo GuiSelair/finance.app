@@ -28,25 +28,19 @@ export const expensesTableColumns = [
 	columnBuilder.display({
 		id: 'is-shared',
 		header: 'Compra dividida?',
-		cell: ({ row }) =>
-			row.original.isShared && (
-				<CheckSquareIcon weight="fill" size={24} color="#248277" />
-			),
+		cell: ({ row }) => row.original.isShared && <CheckSquareIcon weight="fill" size={24} color="#248277" />,
 		size: 500,
 	}),
 	columnBuilder.display({
 		id: 'is-recurring',
 		header: 'Despesa fixa?',
-		cell: ({ row }) =>
-			row.original.isRecurring && (
-				<CheckSquareIcon weight="fill" size={24} color="#248277" />
-			),
+		cell: ({ row }) => row.original.isRecurring && <CheckSquareIcon weight="fill" size={24} color="#248277" />,
 		size: 400,
 	}),
 	columnBuilder.display({
 		id: 'options',
 		header: 'Opções',
 		cell: ({ row }) => row.original.options,
-		size: 100,
+		size: 160,
 	}),
 ];
