@@ -7,14 +7,20 @@ import { calculateExpenseMonth } from '@finance-app/helpers';
 import { InputLabel, Select, GridColumn, TextInput } from '@/components/Form';
 import { Box } from '@/components';
 import { CardDetails, FieldDescription } from './PaymentMethodSelection.styles';
-import { useListCardsApi } from '@/hooks/api/useListCards.api';
-import { CreateExpenseFieldsType } from '../../constants/formSchema';
+import { useListCardsApi } from '@/hooks/api/cards/useListCards.api';
+import { FormExpenseFieldsType } from '../../constants/formSchema';
 
-export default function PaymentMethodSelectionSection() {
+interface PaymentMethodSelectionSectionProps {
+	isEditMode?: boolean;
+}
+
+export default function PaymentMethodSelectionSection({ isEditMode }: PaymentMethodSelectionSectionProps) {
 	const { data: userAllPaymentMethods, isLoading } = useListCardsApi();
-	const { control, watch, register } = useFormContext<CreateExpenseFieldsType>();
+	const { control, watch, register } = useFormContext<FormExpenseFieldsType>();
+
 	const paymentMethodOptionSelected = watch('paymentMethod') ?? undefined;
 	const purchaseDateSelected = watch('purchaseDate') || new Date();
+	const maxDateLimit = new Date().toISOString().split('T')[0];
 
 	const paymentMethodsOptions = useMemo(() => {
 		if (!userAllPaymentMethods?.length) return;
@@ -44,7 +50,7 @@ export default function PaymentMethodSelectionSection() {
 		<GridColumn gridTemplateColumns="200px 418px 1fr" margin="0.5rem 0 0 0" gap="1.5rem">
 			<InputLabel>
 				Data de compra:
-				<TextInput type="date" {...register('purchaseDate')} max={new Date().toISOString().split('T')[0]} />
+				<TextInput type="date" max={maxDateLimit} {...register('purchaseDate')} disabled={isEditMode} />
 			</InputLabel>
 			<InputLabel>
 				Meio de pagamento:

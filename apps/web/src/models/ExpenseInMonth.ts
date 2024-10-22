@@ -12,7 +12,6 @@ export interface ExpenseInMonthProps {
 	month: number;
 	year: number;
 	isPaid?: boolean;
-
 	createdAt: string;
 }
 

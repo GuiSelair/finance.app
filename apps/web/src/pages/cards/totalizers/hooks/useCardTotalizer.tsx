@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useContextSelector } from 'use-context-selector';
 
 import { formatCurrency } from '@/helpers/formatCurrency';
-import { useCardTotalizerApi } from '@/hooks/api/useCardTotalizer.api';
+import { useCardTotalizerApi } from '@/hooks/api/cards/useCardTotalizer.api';
 import { selectedMonthYearContext } from '@/contexts';
 
 import { CARD_TOTALIZER_TABLE_COLUMNS } from '../constants/cardTotalizerTableColumns';

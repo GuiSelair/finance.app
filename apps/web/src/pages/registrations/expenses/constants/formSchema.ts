@@ -1,19 +1,23 @@
 import * as Yup from 'yup';
 import type { InferType } from 'yup';
 
-export const createExpenseFormSchema = Yup.object().shape({
-	name: Yup.string().required('Campo obrigatório'),
-	purchaseDate: Yup.string().required('Campo obrigatório'),
-	category: Yup.string(),
-	totalValue: Yup.number().required('Campo obrigatório'),
-	parcelQuantity: Yup.number().required('Campo obrigatório'),
-	paymentMethod: Yup.object()
-		.shape({
-			label: Yup.string().required(),
-			value: Yup.string().required(),
-		})
-		.required('Campo obrigatório'),
-	isRecurring: Yup.boolean(),
-});
+const requiredFieldMessage = 'Campo obrigatório';
+export const createFormExpenseFormSchema = (isEditMode = false) => {
+	return Yup.object().shape({
+		name: Yup.string().required(requiredFieldMessage),
+		purchaseDate: Yup.string().required(requiredFieldMessage),
+		category: Yup.string(),
+		totalValue: Yup.number().required(requiredFieldMessage),
+		parcelQuantity: Yup.number().required(requiredFieldMessage),
+		paymentMethod: Yup.object()
+			.shape({
+				label: Yup.string().required(),
+				value: Yup.string().required(),
+			})
+			.required(requiredFieldMessage),
+		isRecurring: Yup.boolean(),
+		parcelValue: isEditMode ? Yup.number().required(requiredFieldMessage) : Yup.number(),
+	});
+};
 
-export type CreateExpenseFieldsType = InferType<typeof createExpenseFormSchema>;
+export type FormExpenseFieldsType = InferType<ReturnType<typeof createFormExpenseFormSchema>>;

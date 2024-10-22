@@ -75,7 +75,7 @@ export default function ExpensesTable({ fetchExpenses, deleteExpense }: Readonly
 							<MagnifyingGlassIcon />
 						</Button>
 						<Link
-							href={`/expenses/edit/${expense.id}`}
+							href={`/registrations/expenses/${expense.id}`}
 							tabIndex={-1}
 							aria-label="Editar despesa"
 							title="Editar despesa"

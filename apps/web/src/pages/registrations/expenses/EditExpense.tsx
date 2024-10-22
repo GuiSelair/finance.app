@@ -6,11 +6,11 @@ import { TextInput, InputLabel, ActionButtons, Row, Column } from '@/components/
 import { SEO } from '@/components/SEO';
 
 import { PaymentMethodSelectionSection } from './components/PaymentMethodSelection';
-import { useCreateExpense } from './hooks/useCreateExpense';
+import { useEditExpense } from './hooks/useEditExpense';
 import { RegisterExpenseForm, Divider, ValueInput } from './ExpenseForm.styles';
 
-export function EditExpensePage() {
-	const { createExpenseSubmit, goBack, isCreatingExpense, formSchema, parcelValue } = useCreateExpense();
+export default function EditExpensePage() {
+	const { editExpenseSubmit, goBack, isEditing, formSchema, parcelValue } = useEditExpense();
 
 	const {
 		register,
@@ -20,7 +20,7 @@ export function EditExpensePage() {
 
 	return (
 		<FormProvider {...formSchema}>
-			<SEO title="Adicionar despesa" />
+			<SEO title="Edição de despesa" />
 			<LayoutBox>
 				<LayoutBox.Header>
 					<LayoutBox.HeaderTitle>Editar despesa</LayoutBox.HeaderTitle>
@@ -37,20 +37,10 @@ export function EditExpensePage() {
 								/>
 							</InputLabel>
 						</Row>
+						<PaymentMethodSelectionSection isEditMode />
 
-						<PaymentMethodSelectionSection />
-
-						<Row margin="1rem 0 0 0">
-							<InputLabel>
-								Categoria:
-								<TextInput
-									placeholder="Insira a categoria de sua despesa aqui..."
-									error={errors.category?.message}
-									{...register('category')}
-								/>
-							</InputLabel>
-						</Row>
 						<Divider />
+
 						<Row margin="0 0 100px 0">
 							<Column width="600px">
 								<Row gap="0.5rem">
@@ -59,6 +49,7 @@ export function EditExpensePage() {
 										<ValueInput
 											prefix="R$"
 											error={errors.totalValue?.message}
+											disabled
 											{...register('totalValue', {
 												valueAsNumber: true,
 											})}
@@ -68,6 +59,7 @@ export function EditExpensePage() {
 										Parcelas:
 										<ValueInput
 											error={errors.parcelQuantity?.message}
+											disabled
 											{...register('parcelQuantity', {
 												valueAsNumber: true,
 											})}
@@ -75,7 +67,7 @@ export function EditExpensePage() {
 									</InputLabel>
 									<InputLabel>
 										Valor por parcela:
-										<ValueInput prefix="R$" disabled value={parcelValue} />
+										<ValueInput prefix="R$" {...register('parcelValue')} />
 									</InputLabel>
 									<InputLabel>
 										Despesa fixa:
@@ -91,11 +83,11 @@ export function EditExpensePage() {
 						<ActionButtons>
 							<ActionButtons.Cancel onClick={goBack} />
 							<ActionButtons.Submit
-								onClick={handleSubmit(createExpenseSubmit)}
-								isLoading={isCreatingExpense}
+								onClick={handleSubmit(editExpenseSubmit)}
+								isLoading={isEditing}
 								spinnerConfig={{ mode: 'light', size: 'sm' }}
 							>
-								Criar despesa
+								Editar despesa
 							</ActionButtons.Submit>
 						</ActionButtons>
 					</LayoutBox.FooterRightSide>

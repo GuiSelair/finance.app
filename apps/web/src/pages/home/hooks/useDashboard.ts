@@ -2,9 +2,9 @@
 import { useContextSelector } from 'use-context-selector';
 
 import { selectedMonthYearContext } from '@/contexts';
-import { useFetchExpensesSummaryApi } from '@/hooks/api/useFetchExpensesSummary.api';
-import { useFetchExpensesMonthApi } from '@/hooks/api/useFetchExpensesMonth.api';
-import { useDeleteExpenseApi } from '@/hooks/api/useDeleteExpense.api';
+import { useFetchExpensesSummaryApi } from '@/hooks/api/expenses/useFetchExpensesSummary.api';
+import { useFetchExpensesMonthApi } from '@/hooks/api/expenses/useFetchExpensesMonth.api';
+import { useDeleteExpenseApi } from '@/hooks/api/expenses/useDeleteExpense.api';
 
 import type { IFetchSummaryResponse } from '../components/Summary';
 import type { IFetchExpensesResponse } from '../components/ExpensesTable';

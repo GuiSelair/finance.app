@@ -1,37 +1,47 @@
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { CreateExpenseFieldsType, createExpenseFormSchema } from '../constants/formSchema';
-import { useCreateExpenseApi } from '@/hooks/api/useCreateExpense.api';
+import { FormExpenseFieldsType, createFormExpenseFormSchema } from '../constants/formSchema';
+import { useEditExpenseApi } from '@/hooks/api/expenses/useEditExpense.api';
+import { useCalculateParcel } from './useCalculateParcel';
+import { useFindExpenseApi } from '@/hooks/api/expenses/useFindExpense.api';
+import { useEffect } from 'react';
 
-export function useCreateExpense() {
+export function useEditExpense() {
 	const router = useRouter();
-	const formSchema = useForm<CreateExpenseFieldsType>({
-		resolver: yupResolver(createExpenseFormSchema),
-		defaultValues: {
-			parcelQuantity: 1,
+	const params = useParams<{ id: string }>();
+	const expenseId = params?.id;
+	const { calculateParcelValue } = useCalculateParcel();
+	const { refetch } = useFindExpenseApi(expenseId, { ignoreInitialFetch: true });
+	const formSchema = useForm<FormExpenseFieldsType>({
+		resolver: yupResolver(createFormExpenseFormSchema(true)),
+		defaultValues: async () => {
+			const { data } = await refetch();
+			console.log(data);
+			return {
+				parcelQuantity: data?.quantityParcel || 1,
+				name: data?.expense.name || '',
+				paymentMethod: { label: data?.expense.card.name || '', value: data?.expense.card.id || '' },
+				purchaseDate: data?.expense.purchaseDate?.toISOString().split('T')[0] || '',
+				totalValue: data?.expense.amount || 0,
+				isRecurring: data?.expense.isRecurring || false,
+				parcelValue: calculateParcelValue(data?.expense?.amount || 0, data?.quantityParcel || 1),
+			};
 		},
 	});
-	const { mutateAsync, isLoading: isCreating } = useCreateExpenseApi();
+	const { mutateAsync, isLoading: isEditing } = useEditExpenseApi(expenseId);
 
-	function calculateParcelValue(value: number, parcels: number) {
-		if (!value || !parcels) return 0;
-
-		return (value / parcels).toFixed(2);
-	}
-
-	async function createExpenseSubmit(data: CreateExpenseFieldsType): Promise<void> {
+	async function editExpenseSubmit(data: FormExpenseFieldsType): Promise<void> {
 		await mutateAsync({
 			name: data.name,
-			amount: data.totalValue,
+			parcelValue: data.parcelValue!,
 			cardId: data.paymentMethod.value,
-			parcel: data.parcelQuantity,
 			isRecurring: data.isRecurring,
-			purchaseDate: data.purchaseDate,
 		});
-		toast.success('Despesa criada com sucesso!');
+		toast.success('Despesa editada com sucesso!');
 		router.push('/');
 	}
 
@@ -42,10 +52,16 @@ export function useCreateExpense() {
 	const parcelValue =
 		calculateParcelValue(Number(formSchema.watch('totalValue')), formSchema.watch('parcelQuantity')) ?? 0;
 
+	useEffect(() => {
+		if (!expenseId) {
+			router.push('/');
+		}
+	}, [expenseId]);
+
 	return {
 		parcelValue,
-		createExpenseSubmit,
-		isCreatingExpense: isCreating,
+		editExpenseSubmit,
+		isEditing,
 		goBack,
 		formSchema,
 	};

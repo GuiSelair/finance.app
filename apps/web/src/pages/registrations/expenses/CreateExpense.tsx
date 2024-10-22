@@ -9,13 +9,14 @@ import { PaymentMethodSelectionSection } from './components/PaymentMethodSelecti
 import { useCreateExpense } from './hooks/useCreateExpense';
 import { RegisterExpenseForm, Divider, ValueInput } from './ExpenseForm.styles';
 
-export function CreateExpensePage() {
-	const { createExpenseSubmit, goBack, isCreatingExpense, formSchema, parcelValue } = useCreateExpense();
+export default function CreateExpensePage() {
+	const { createExpenseSubmit, isCreatingExpense, formSchema, parcelValue } = useCreateExpense();
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
+		reset,
 	} = formSchema;
 
 	return (
@@ -89,7 +90,7 @@ export function CreateExpensePage() {
 				<LayoutBox.Footer>
 					<LayoutBox.FooterRightSide>
 						<ActionButtons>
-							<ActionButtons.Cancel onClick={goBack} />
+							<ActionButtons.Cancel onClick={() => reset()} />
 							<ActionButtons.Submit
 								onClick={handleSubmit(createExpenseSubmit)}
 								isLoading={isCreatingExpense}
