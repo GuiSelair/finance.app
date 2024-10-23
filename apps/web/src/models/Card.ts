@@ -7,8 +7,8 @@ export interface CardProps {
 	flag: string;
 	dueDay: number;
 	turningDay: number;
-	createdAt: string;
-	updatedAt: string;
+	createdAt?: string;
+	updatedAt?: string;
 }
 
 export class Card {
@@ -18,8 +18,8 @@ export class Card {
 	userId: string;
 	dueDay: number;
 	turningDay: number;
-	createdAt: Date;
-	updatedAt: Date;
+	createdAt?: Date;
+	updatedAt?: Date;
 
 	constructor(data: CardProps) {
 		this.id = data.id;
@@ -28,7 +28,7 @@ export class Card {
 		this.userId = data.userId;
 		this.dueDay = data.dueDay;
 		this.turningDay = data.turningDay;
-		this.createdAt = parseISO(data.createdAt);
-		this.updatedAt = parseISO(data.updatedAt);
+		this.createdAt = data.createdAt ? parseISO(data.createdAt) : undefined;
+		this.updatedAt = data.updatedAt ? parseISO(data.updatedAt) : undefined;
 	}
 }

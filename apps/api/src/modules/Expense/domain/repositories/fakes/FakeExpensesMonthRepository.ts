@@ -24,7 +24,7 @@ export class FakeExpensesMonthRepository implements IExpensesMonthRepository {
     return this.repository;
   }
 
-  public async findByMonthAndYear(
+  public async fetchByMonthAndYear(
     month: number,
     year: number,
     user_id?: string,

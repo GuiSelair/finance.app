@@ -36,7 +36,7 @@ export class CardSummaryService {
     const cards = this.makeCardsModel(cardsMapper);
 
     const expensesInSpecificMonth =
-      (await this.expenseMonthRepository.findByMonthAndYear(month, year, user_id)) || [];
+      (await this.expenseMonthRepository.fetchByMonthAndYear(month, year, user_id)) || [];
 
     const expensesMonth = this.makeExpensesMonthModel(expensesInSpecificMonth);
     const expensesInMonthGroupByCard = this.getExpensesTotalGroupByCard(expensesMonth, cards);

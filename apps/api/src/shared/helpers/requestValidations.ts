@@ -21,10 +21,10 @@ function throwIfPropertyNotExists(body: object, property: string) {
 }
 
 function throwIfPropertyMonthIsNotValid(month: number) {
-  const monthSchema = z.number().min(1).max(12);
+  const monthSchema = z.number().min(0).max(11);
 
   if (!monthSchema.safeParse(month).success) {
-    throw new AppError('Month number invalid, try a number between 1 and 12');
+    throw new AppError('Month number invalid, try a number between 0 and 11');
   }
 }
 

@@ -1,9 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import {
-	HTTPConfigProps,
-	HTTPClientProps,
-	HTTPClientResponse,
-} from '../interface';
+import { HTTPConfigProps, HTTPClientProps, HTTPClientResponse } from '../interface';
 
 const api = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -17,10 +13,7 @@ class AxiosHTTPClient implements HTTPClientProps {
 		this.api.defaults.headers.Authorization = `Bearer ${authenticationToken}`;
 	}
 
-	async get<T>(
-		url: string,
-		config: Omit<HTTPConfigProps, 'body'> = {},
-	): Promise<HTTPClientResponse<T>> {
+	async get<T>(url: string, config: Omit<HTTPConfigProps, 'body'> = {}): Promise<HTTPClientResponse<T>> {
 		const response = await this.api.get<T>(url, {
 			params: config.params,
 			headers: config.headers,
@@ -32,10 +25,7 @@ class AxiosHTTPClient implements HTTPClientProps {
 		};
 	}
 
-	async post<T>(
-		url: string,
-		config: HTTPConfigProps,
-	): Promise<HTTPClientResponse<T>> {
+	async post<T>(url: string, config: HTTPConfigProps): Promise<HTTPClientResponse<T>> {
 		const response = await this.api.post<T>(url, config.body, {
 			headers: config.headers,
 			params: config.params,
@@ -47,10 +37,7 @@ class AxiosHTTPClient implements HTTPClientProps {
 		};
 	}
 
-	async put<T>(
-		url: string,
-		config: HTTPConfigProps,
-	): Promise<HTTPClientResponse<T>> {
+	async put<T>(url: string, config: HTTPConfigProps): Promise<HTTPClientResponse<T>> {
 		const response = await this.api.put(url, config.body, {
 			params: config.params,
 			headers: config.headers,
@@ -62,10 +49,7 @@ class AxiosHTTPClient implements HTTPClientProps {
 		};
 	}
 
-	async delete<T>(
-		url: string,
-		config: Omit<HTTPConfigProps, 'body'> = {},
-	): Promise<HTTPClientResponse<T>> {
+	async delete<T>(url: string, config: Omit<HTTPConfigProps, 'body'> = {}): Promise<HTTPClientResponse<T>> {
 		const response = await this.api.delete(url, {
 			params: config.params,
 			headers: config.headers,

@@ -11,20 +11,8 @@ export interface HTTPClientResponse<R> {
 
 export interface HTTPClientProps {
 	applyAuthenticationToken: (authenticationToken: string) => void;
-	get: <T>(
-		url: string,
-		config: Omit<HTTPConfigProps, 'body'>,
-	) => Promise<HTTPClientResponse<T>>;
-	post: <T>(
-		url: string,
-		config: HTTPConfigProps,
-	) => Promise<HTTPClientResponse<T>>;
-	put: <T>(
-		url: string,
-		config: HTTPConfigProps,
-	) => Promise<HTTPClientResponse<T>>;
-	delete: <T>(
-		url: string,
-		config: HTTPConfigProps,
-	) => Promise<HTTPClientResponse<T>>;
+	get: <T>(url: string, config: Omit<HTTPConfigProps, 'body'>) => Promise<HTTPClientResponse<T>>;
+	post: <T>(url: string, config: HTTPConfigProps) => Promise<HTTPClientResponse<T>>;
+	put: <T>(url: string, config: HTTPConfigProps) => Promise<HTTPClientResponse<T>>;
+	delete: <T>(url: string, config: HTTPConfigProps) => Promise<HTTPClientResponse<T>>;
 }

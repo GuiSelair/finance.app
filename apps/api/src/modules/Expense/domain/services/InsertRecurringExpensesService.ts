@@ -27,7 +27,7 @@ export class InsertRecurringExpensesService {
     const recurringExpenses = await this.expensesRepository.fetchRecurringExpenses();
     if (!recurringExpenses?.length) return;
 
-    const expensesInMonth = await this.expensesInMonthRepository.findByMonthAndYear(
+    const expensesInMonth = await this.expensesInMonthRepository.fetchByMonthAndYear(
       nextMonth,
       nextYear,
     );

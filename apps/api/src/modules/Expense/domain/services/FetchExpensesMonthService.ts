@@ -25,7 +25,7 @@ export class FetchExpensesMonthService {
     year,
     user_id,
   }: IFetchExpensesMonthServiceDTO): Promise<ExpenseMonthMapper[] | undefined> {
-    const expenses = await this.expensesMonthRepository.findByMonthAndYear(month, year, user_id);
+    const expenses = await this.expensesMonthRepository.fetchByMonthAndYear(month, year, user_id);
     return expenses;
   }
 }

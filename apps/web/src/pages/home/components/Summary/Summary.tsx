@@ -1,8 +1,4 @@
-import {
-	Coins as CoinsIcon,
-	CoinVertical as CoinVerticalIcon,
-	Wallet as WalletIcon,
-} from 'phosphor-react';
+import { Coins as CoinsIcon, CoinVertical as CoinVerticalIcon, Wallet as WalletIcon } from 'phosphor-react';
 
 import { SummaryCard } from '../SummaryCard';
 

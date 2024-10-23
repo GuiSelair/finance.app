@@ -3,7 +3,7 @@ import { FetchBalanceMonthService } from '../FetchBalanceMonthService';
 import { IExpensesMonthRepository } from '../../repositories/IExpensesInMonthRepository';
 
 const expensesMonthRepositoryMocked = {
-  findByMonthAndYear: jest
+  fetchByMonthAndYear: jest
     .fn()
     .mockResolvedValue([
       { value_of_parcel: 10 },

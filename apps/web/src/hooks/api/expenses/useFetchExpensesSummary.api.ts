@@ -13,23 +13,18 @@ export function useFetchExpensesSummaryApi() {
 	return useQuery(
 		['summary', month, year],
 		async () => {
-			const response = await httpClient.get<IExpensesSummary>(
-				'/expenses/balance',
-				{
-					params: {
-						month,
-						year,
-					},
+			const response = await httpClient.get<IExpensesSummary>('/expenses/balance', {
+				params: {
+					month,
+					year,
 				},
-			);
+			});
 
 			return response.data;
 		},
 		{
 			onError: () => {
-				toast.error(
-					'Não foi possível carregar o resumo de despesas do mês. Tente novamente mais tarde.',
-				);
+				toast.error('Não foi possível carregar o resumo de despesas do mês. Tente novamente mais tarde.');
 			},
 		},
 	);

@@ -2,36 +2,21 @@ import React from 'react';
 import { FormProvider } from 'react-hook-form';
 
 import { LayoutBox } from '@/components/LayoutBox';
-import {
-	TextInput,
-	InputLabel,
-	ActionButtons,
-	Row,
-	Column,
-} from '@/components/Form';
+import { TextInput, InputLabel, ActionButtons, Row, Column } from '@/components/Form';
 import { SEO } from '@/components/SEO';
 
 import { PaymentMethodSelectionSection } from './components/PaymentMethodSelection';
 import { useCreateExpense } from './hooks/useCreateExpense';
-import {
-	RegisterExpenseForm,
-	Divider,
-	ValueInput,
-} from './CreateExpense.styles';
+import { RegisterExpenseForm, Divider, ValueInput } from './ExpenseForm.styles';
 
 export default function CreateExpensePage() {
-	const {
-		createExpenseSubmit,
-		goBack,
-		isCreatingExpense,
-		formSchema,
-		parcelValue,
-	} = useCreateExpense();
+	const { createExpenseSubmit, isCreatingExpense, formSchema, parcelValue } = useCreateExpense();
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
+		reset,
 	} = formSchema;
 
 	return (
@@ -105,7 +90,7 @@ export default function CreateExpensePage() {
 				<LayoutBox.Footer>
 					<LayoutBox.FooterRightSide>
 						<ActionButtons>
-							<ActionButtons.Cancel onClick={goBack} />
+							<ActionButtons.Cancel onClick={() => reset()} />
 							<ActionButtons.Submit
 								onClick={handleSubmit(createExpenseSubmit)}
 								isLoading={isCreatingExpense}

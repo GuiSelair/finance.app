@@ -11,7 +11,7 @@ const expensesRepositoryMocked = {
 };
 
 const expensesMonthRepositoryMocked = {
-  findByMonthAndYear: jest.fn(),
+  fetchByMonthAndYear: jest.fn(),
   create: jest.fn(),
 };
 
@@ -42,7 +42,7 @@ describe('InsertRecurringExpensesInNextMonthsService use case - Unit Test', () =
     ];
 
     expensesRepositoryMocked.fetchRecurringExpenses.mockResolvedValueOnce(recurringExpensesMocked);
-    expensesMonthRepositoryMocked.findByMonthAndYear.mockResolvedValueOnce(expensesInMonthMocked);
+    expensesMonthRepositoryMocked.fetchByMonthAndYear.mockResolvedValueOnce(expensesInMonthMocked);
 
     const sut = new InsertRecurringExpensesService(
       expensesRepositoryMocked as unknown as IExpensesRepository,
@@ -84,7 +84,7 @@ describe('InsertRecurringExpensesInNextMonthsService use case - Unit Test', () =
     ];
 
     expensesRepositoryMocked.fetchRecurringExpenses.mockResolvedValueOnce(recurringExpensesMocked);
-    expensesMonthRepositoryMocked.findByMonthAndYear.mockResolvedValueOnce(expensesInMonthMocked);
+    expensesMonthRepositoryMocked.fetchByMonthAndYear.mockResolvedValueOnce(expensesInMonthMocked);
 
     const sut = new InsertRecurringExpensesService(
       expensesRepositoryMocked as unknown as IExpensesRepository,
@@ -109,7 +109,7 @@ describe('InsertRecurringExpensesInNextMonthsService use case - Unit Test', () =
     ];
 
     expensesRepositoryMocked.fetchRecurringExpenses.mockResolvedValueOnce(recurringExpensesMocked);
-    expensesMonthRepositoryMocked.findByMonthAndYear.mockResolvedValueOnce(expensesInMonthMocked);
+    expensesMonthRepositoryMocked.fetchByMonthAndYear.mockResolvedValueOnce(expensesInMonthMocked);
 
     const sut = new InsertRecurringExpensesService(
       expensesRepositoryMocked as unknown as IExpensesRepository,
