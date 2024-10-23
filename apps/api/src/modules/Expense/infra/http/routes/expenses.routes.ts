@@ -9,8 +9,10 @@ const expensesController = new ExpensesController();
 expensesRouter.use(ensureAuthenticated);
 
 expensesRouter.post('/', expensesController.create);
-expensesRouter.get('/list', expensesController.show);
-expensesRouter.get('/balance', expensesController.balance);
+expensesRouter.get('/:id', expensesController.find);
+expensesRouter.get('/list', expensesController.fetch);
+expensesRouter.put('/:id/edit', expensesController.edit);
 expensesRouter.delete('/:id', expensesController.delete);
+expensesRouter.get('/balance', expensesController.balance);
 
 export default expensesRouter;

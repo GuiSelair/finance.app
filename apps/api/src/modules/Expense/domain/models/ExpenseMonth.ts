@@ -47,6 +47,11 @@ export class ExpenseMonth {
           const partialExpense = schema.partial({
             is_paid: true,
             expense_id: true,
+            number_current_of_parcel: true,
+            number_total_of_parcel: true,
+            month: true,
+            year: true,
+            value_of_parcel: true,
           });
           partialExpense.parse(input);
           break;

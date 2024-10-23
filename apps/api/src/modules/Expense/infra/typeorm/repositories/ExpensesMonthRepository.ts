@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 
 import { DataSourceConfiguration } from '@shared/infra/typeorm/bootstrap';
-import { IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
+import { FindByIdInput, FindByIdOutput, IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
 import { ExpenseMonthMapper } from '../entities/ExpenseMonthMapper';
 import { ExpenseMonth } from '@modules/Expense/domain/models/ExpenseMonth';
 
@@ -24,7 +24,7 @@ export class ExpensesMonthRepository implements IExpensesMonthRepository {
     return expenseMonth;
   }
 
-  public async findByMonthAndYear(
+  public async fetchByMonthAndYear(
     month: number,
     year: number,
     userId?: string,
@@ -43,5 +43,18 @@ export class ExpensesMonthRepository implements IExpensesMonthRepository {
     });
 
     return expensesInMonth;
+  }
+
+  public async findById({ id, user_id }: FindByIdInput): Promise<FindByIdOutput> {
+    const expense = await this.repository.findOne({
+      where: {
+        id,
+        expense: {
+          user_id
+        }
+       },
+    });
+
+    return expense || undefined
   }
 }

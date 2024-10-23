@@ -13,7 +13,7 @@ export function useEditExpenseApi(expenseId: string) {
 	return useMutation(
 		['expenses', expenseId],
 		async (expenseToEdit: IEditExpenseParams) => {
-			await httpClient.post('/expenses/', {
+			await httpClient.put(`/expenses/${expenseId}/edit`, {
 				body: {
 					name: expenseToEdit.name,
 					parcel_value: expenseToEdit.parcelValue,

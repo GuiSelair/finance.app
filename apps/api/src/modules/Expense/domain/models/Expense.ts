@@ -53,6 +53,9 @@ export class Expense {
             due_date: true,
             is_recurring: true,
             parcel: true,
+            name: true,
+            amount: true,
+            id: true,
           });
           partialExpense.parse(input);
           break;

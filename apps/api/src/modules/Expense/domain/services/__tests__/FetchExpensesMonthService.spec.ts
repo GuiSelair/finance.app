@@ -4,7 +4,7 @@ import { IExpensesMonthRepository } from '../../repositories/IExpensesInMonthRep
 import { FetchExpensesMonthService } from '../FetchExpensesMonthService';
 
 const expensesMonthRepositoryMocked = {
-  findByMonthAndYear: jest
+  fetchByMonthAndYear: jest
     .fn()
     .mockResolvedValue([
       { id: 'fake-expense-id-1' },
@@ -18,7 +18,7 @@ const listAllExpensesInMonthService = new FetchExpensesMonthService(
 
 describe('FetchExpensesMonthService use case - Unit Test', () => {
   it('should be able to return empty array if not existing expenses in month', async () => {
-    expensesMonthRepositoryMocked.findByMonthAndYear.mockResolvedValueOnce([]);
+    expensesMonthRepositoryMocked.fetchByMonthAndYear.mockResolvedValueOnce([]);
     const response = await listAllExpensesInMonthService.execute({
       month: 12,
       year: 2022,
