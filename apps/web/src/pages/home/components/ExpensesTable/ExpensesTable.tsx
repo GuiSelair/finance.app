@@ -53,7 +53,7 @@ export default function ExpensesTable({ fetchExpenses, deleteExpense }: Readonly
 		if (!expensesInMonth) return [];
 
 		return expensesInMonth.map(expenseInMonth => {
-			const { expense, quantityParcel, currentParcel, valueParcel } = expenseInMonth;
+			const { expense, quantityParcel, currentParcel, valueParcel, id } = expenseInMonth;
 
 			return {
 				name: expense?.name,
@@ -75,7 +75,7 @@ export default function ExpensesTable({ fetchExpenses, deleteExpense }: Readonly
 							<MagnifyingGlassIcon />
 						</Button>
 						<Link
-							href={`/registrations/expenses/${expense.id}`}
+							href={`/registrations/expenses/${id}`}
 							tabIndex={-1}
 							aria-label="Editar despesa"
 							title="Editar despesa"

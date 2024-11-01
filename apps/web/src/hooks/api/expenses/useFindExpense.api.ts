@@ -15,11 +15,9 @@ export type UseFindExpenseApiOutput = UseQueryResult<ExpenseInMonth, unknown>;
 export function useFindExpenseApi(expenseId: string, { ignoreInitialFetch = false }: UseFindExpenseApiOptionsInput) {
 	return useQuery(
 		['expense', expenseId],
-		async () => {
-			if (!expenseId) {
-				throw new Error('No expense id provided');
-			}
-			const response = await httpClient.get<FindExpenseResponse>(`/expenses/${expenseId}/details`);
+		async ({ queryKey }) => {
+			const [, id] = queryKey;
+			const response = await httpClient.get<FindExpenseResponse>(`/expenses/${id}/details`);
 
 			const rawExpenseMonth = response?.data?.expense;
 

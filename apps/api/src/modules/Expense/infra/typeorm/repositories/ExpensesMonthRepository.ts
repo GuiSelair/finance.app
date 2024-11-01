@@ -55,7 +55,6 @@ export class ExpensesMonthRepository implements IExpensesMonthRepository {
        },
        relations: ['expense', 'expense.card'],
     });
-
     return expense || undefined
   }
 }

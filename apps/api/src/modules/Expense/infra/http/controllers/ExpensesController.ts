@@ -78,6 +78,7 @@ export class ExpensesController {
 
   public async find(request: Request, response: Response): Promise<Response> {
     requestValidations.throwIfPropertyNotExists(request.params, 'id')
+    requestValidations.throwIfPropertyIsNotUUID(request.params.id)
 
     const { id: expense_id } = request.params
     const { id: user_id } = request.user
@@ -90,6 +91,9 @@ export class ExpensesController {
 
   public async edit(request: Request, response: Response): Promise<Response> {
     requestValidations.throwIfEmptyBody(request.body)
+    requestValidations.throwIfPropertyNotExists(request.params, 'id')
+    requestValidations.throwIfPropertyIsNotUUID(request.params.id)
+
     const { id: expense_id } = request.params
     const { id: user_id } = request.user
     const expenseEditedToSave = request.body

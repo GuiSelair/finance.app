@@ -38,10 +38,21 @@ function throwIfPropertyYearIsNotValid(year: number) {
   }
 }
 
+function throwIfPropertyIsNotUUID(uuid: string | null) {
+  const uuidSchema = z.string().uuid();
+
+  if (!uuid || !uuidSchema.safeParse(uuid).success) {
+    throw new AppError('Invalid UUID', 400);
+  }
+
+  return false;
+}
+
 export const requestValidations = {
   throwIfEmptyBody,
   throwIfIsNaN,
   throwIfPropertyNotExists,
   throwIfPropertyMonthIsNotValid,
   throwIfPropertyYearIsNotValid,
+  throwIfPropertyIsNotUUID,
 };
