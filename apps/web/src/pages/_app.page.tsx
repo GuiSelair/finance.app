@@ -12,7 +12,14 @@ import { GlobalStyles } from '@/styles/global';
 import { AuthProvider, SelectedMonthYearProvider } from '@/contexts';
 import { BaseLayout } from '@/layouts/BaseLayout';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false,
+			retry: 1,
+		},
+	},
+});
 
 type CustomComponentProps<P = Record<string, never>> = NextPage<P> & {
 	notUseLayout?: boolean;

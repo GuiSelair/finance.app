@@ -16,7 +16,7 @@ export function useFetchExpensesMonthApi() {
 
 	return useQuery(['month-expenses', month, year], async () => {
 		try {
-			const response = await httpClient.get<RawExpensesMonth[]>('/expenses/list', {
+			const response = await httpClient.get<RawExpensesMonth[]>('/expenses/fetch', {
 				params: {
 					month,
 					year,

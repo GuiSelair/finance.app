@@ -19,7 +19,7 @@ export function useFindExpenseApi(expenseId: string, { ignoreInitialFetch = fals
 			if (!expenseId) {
 				throw new Error('No expense id provided');
 			}
-			const response = await httpClient.get<FindExpenseResponse>(`/expenses/${expenseId}`);
+			const response = await httpClient.get<FindExpenseResponse>(`/expenses/${expenseId}/details`);
 
 			const rawExpenseMonth = response?.data?.expense;
 

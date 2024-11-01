@@ -3,7 +3,7 @@ import { HTTPConfigProps, HTTPClientProps, HTTPClientResponse } from '../interfa
 
 const api = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-	timeout: 4000,
+	timeout: 55 * 1000, // 55s
 });
 
 class AxiosHTTPClient implements HTTPClientProps {

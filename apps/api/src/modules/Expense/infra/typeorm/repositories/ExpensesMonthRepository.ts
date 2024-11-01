@@ -53,6 +53,7 @@ export class ExpensesMonthRepository implements IExpensesMonthRepository {
           user_id
         }
        },
+       relations: ['expense', 'expense.card'],
     });
 
     return expense || undefined
