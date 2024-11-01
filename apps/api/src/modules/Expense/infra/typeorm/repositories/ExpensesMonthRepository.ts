@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 
 import { DataSourceConfiguration } from '@shared/infra/typeorm/bootstrap';
-import { FindByIdInput, FindByIdOutput, IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
+import { FindByIdInput, FindByIdOutput, IExpensesMonthRepository, UpdateExpenseMonthInput } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
 import { ExpenseMonthMapper } from '../entities/ExpenseMonthMapper';
 import { ExpenseMonth } from '@modules/Expense/domain/models/ExpenseMonth';
 
@@ -56,5 +56,9 @@ export class ExpensesMonthRepository implements IExpensesMonthRepository {
        relations: ['expense', 'expense.card'],
     });
     return expense || undefined
+  }
+
+  public async update({ id, data }: UpdateExpenseMonthInput): Promise<void> {
+    await this.repository.save({ ...data, id });
   }
 }

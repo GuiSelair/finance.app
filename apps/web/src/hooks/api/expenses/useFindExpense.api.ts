@@ -17,6 +17,10 @@ export function useFindExpenseApi(expenseId: string, { ignoreInitialFetch = fals
 		['expense', expenseId],
 		async ({ queryKey }) => {
 			const [, id] = queryKey;
+
+			if (!id) {
+				return;
+			}
 			const response = await httpClient.get<FindExpenseResponse>(`/expenses/${id}/details`);
 
 			const rawExpenseMonth = response?.data?.expense;

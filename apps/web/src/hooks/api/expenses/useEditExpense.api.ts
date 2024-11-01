@@ -3,10 +3,10 @@ import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 
 interface IEditExpenseParams {
-	name: string;
-	cardId: string;
+	name?: string;
+	cardId?: string;
 	isRecurring?: boolean;
-	parcelValue: number;
+	parcelValue?: number;
 }
 
 export function useEditExpenseApi(expenseId: string) {
@@ -16,7 +16,7 @@ export function useEditExpenseApi(expenseId: string) {
 			await httpClient.put(`/expenses/${expenseId}/edit`, {
 				body: {
 					name: expenseToEdit.name,
-					parcel_value: expenseToEdit.parcelValue,
+					value_of_parcel: expenseToEdit.parcelValue,
 					card_id: expenseToEdit.cardId,
 					is_recurring: expenseToEdit.isRecurring,
 				},

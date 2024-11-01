@@ -10,12 +10,12 @@ import { useEditExpense } from './hooks/useEditExpense';
 import { RegisterExpenseForm, Divider, ValueInput } from './ExpenseForm.styles';
 
 export default function EditExpensePage() {
-	const { editExpenseSubmit, goBack, isEditing, formSchema, parcelValue } = useEditExpense();
+	const { editExpenseSubmit, goBack, isEditing, formSchema } = useEditExpense();
 
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors, isDirty },
 	} = formSchema;
 
 	return (
@@ -85,6 +85,7 @@ export default function EditExpensePage() {
 							<ActionButtons.Submit
 								onClick={handleSubmit(editExpenseSubmit)}
 								isLoading={isEditing}
+								isDisabled={!isDirty}
 								spinnerConfig={{ mode: 'light', size: 'sm' }}
 							>
 								Editar despesa

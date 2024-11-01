@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 
@@ -5,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { FormExpenseFieldsType, createFormExpenseFormSchema } from '../constants/formSchema';
 import { useCreateExpenseApi } from '@/hooks/api/expenses/useCreateExpense.api';
-import { useCalculateParcel } from './useCalculateParcel';
 
 export function useCreateExpense() {
 	const router = useRouter();
@@ -16,7 +16,12 @@ export function useCreateExpense() {
 		},
 	});
 	const { mutateAsync, isLoading: isCreating } = useCreateExpenseApi();
-	const { calculateParcelValue } = useCalculateParcel();
+
+	const calculateParcelValue = useCallback((value: number, parcels: number) => {
+		if (!value || !parcels) return 0;
+
+		return Number((value / parcels).toFixed(2));
+	}, []);
 
 	async function createExpenseSubmit(data: FormExpenseFieldsType): Promise<void> {
 		await mutateAsync({

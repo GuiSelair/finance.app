@@ -5,6 +5,7 @@ import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthReposi
 import { ExpenseMonth } from '../models/ExpenseMonth';
 import { Expense } from '../models/Expense';
 import AppError from '@shared/errors/AppError';
+import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository';
 
 interface EditExpenseMonthDTO {
   id: string;
@@ -24,23 +25,35 @@ export class EditExpenseMonthService {
   constructor(
     @inject('ExpensesRepository') private expensesRepository: IExpensesRepository,
     @inject('ExpensesMonthRepository') private expensesMonthRepository: IExpensesMonthRepository,
+    @inject('CardsRepository') private cardsRepository: ICardsRepository,
   ){}
 
-  async execute(params: EditExpenseMonthDTO): Promise<ExpenseMonth | null> {
+  async execute(params: EditExpenseMonthDTO): Promise<void> {
     const { id, user_id, valuesToChange } = params;
-    const expenseMonthModel = this.makeExpenseMonthModel(params);
 
     const expenseMonthFound = await this.expensesMonthRepository.findById({ id, user_id });
     if (!expenseMonthFound) {
       throw new AppError('This expense month does not exist');
     }
 
+    const expenseMonthModel = this.makeExpenseMonthModel(params);
+
     if (valuesToChange.card_id) {
-      // TODO: Validar se cartão existe
+      const cardFound = await this.cardsRepository.findById(valuesToChange.card_id, user_id);
+      if (!cardFound) {
+        throw new AppError('This card does not exist');
+      }
     }
 
-    // TODO: Editar despesa e despesa mês
-    return null;
+    if ('name' in valuesToChange || 'description' in valuesToChange || 'card_id' in valuesToChange ) {
+      await this.expensesRepository.update({ id: expenseMonthFound.expense_id, data: expenseMonthModel.expense! });
+    }
+
+    if ('value_of_parcel' in valuesToChange || 'is_paid' in valuesToChange) {
+      await this.expensesMonthRepository.update({ id, data: expenseMonthModel });
+    }
+
+    return;
   }
 
   private makeExpenseMonthModel(data: EditExpenseMonthDTO) {

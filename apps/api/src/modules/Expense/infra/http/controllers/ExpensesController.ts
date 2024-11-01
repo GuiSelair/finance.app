@@ -99,9 +99,9 @@ export class ExpensesController {
     const expenseEditedToSave = request.body
 
     const editExpenseMonthService = container.resolve(EditExpenseMonthService);
-    const expenseMonth = await editExpenseMonthService.execute({ id: expense_id, user_id, valuesToChange: expenseEditedToSave });
+    await editExpenseMonthService.execute({ id: expense_id, user_id, valuesToChange: expenseEditedToSave });
 
-    return response.status(200).json({ expense: expenseMonth })
+    return response.status(200).send();
   }
 
 }

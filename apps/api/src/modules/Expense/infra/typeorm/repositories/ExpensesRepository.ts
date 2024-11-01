@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 
 import { DataSourceConfiguration } from '@infra/typeorm/bootstrap';
-import { IExpensesRepository } from '@modules/Expense/domain/repositories/IExpensesRepository';
+import { IExpensesRepository, UpdateExpenseInput } from '@modules/Expense/domain/repositories/IExpensesRepository';
 import { ExpenseMapper } from '../entities/ExpenseMapper';
 import { Expense } from '@modules/Expense/domain/models/Expense';
 
@@ -56,5 +56,9 @@ export class ExpensesRepository implements IExpensesRepository {
         ...(!!userId && { user_id: userId }),
       },
     });
+  }
+
+  public async update({ id, data }: UpdateExpenseInput): Promise<void> {
+    await this.repository.save({ ...data, id});
   }
 }
