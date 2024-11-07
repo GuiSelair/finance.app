@@ -23,7 +23,7 @@ export class FetchBalanceMonthService {
 
   async execute({ month, user_id, year }: IFetchBalanceDTO): Promise<IBalanceOutput> {
     const allExpensesInMonth =
-      (await this.expensesMonthRepository.findByMonthAndYear(month, year, user_id)) || [];
+      (await this.expensesMonthRepository.fetchByMonthAndYear(month, year, user_id)) || [];
 
     const { totalOfExpenses, totalPayable } = allExpensesInMonth.reduce(
       (accumulator, expense) => {

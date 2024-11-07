@@ -8,11 +8,7 @@ interface NavLinkProps extends LinkProps {
 	isActive: boolean;
 }
 
-export function NavLink({
-	href,
-	isActive,
-	children,
-}: PropsWithChildren<NavLinkProps>) {
+export function NavLink({ href, isActive, children }: PropsWithChildren<NavLinkProps>) {
 	return (
 		<LinkToPage href={href} prefetch={false} active={isActive ? 1 : 0}>
 			{children}

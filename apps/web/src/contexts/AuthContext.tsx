@@ -47,10 +47,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		if (typeof window === 'undefined') return '';
 
 		const allCookies = cookies.parseCookies();
-		const authenticationToken =
-			allCookies[
-				`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`
-			];
+		const authenticationToken = allCookies[`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`];
 
 		if (authenticationToken) {
 			httpClient.applyAuthenticationToken(authenticationToken);
@@ -62,15 +59,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const onSignIn = useCallback(async ({ email, password }: SignInProps) => {
 		try {
-			const response = await httpClient.post<{ token: string }>(
-				'/auth/sign-in',
-				{
-					body: {
-						email,
-						password,
-					},
+			const response = await httpClient.post<{ token: string }>('/auth/sign-in', {
+				body: {
+					email,
+					password,
 				},
-			);
+			});
 
 			if (!response?.data?.token) throw new Error();
 
@@ -90,9 +84,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			if (error instanceof AxiosError) {
 				const errorFromServer = error.response?.data;
 
-				if (
-					errorFromServer?.message === 'Incorrect email/password combination'
-				) {
+				if (errorFromServer?.message === 'Incorrect email/password combination') {
 					toast.error(AuthenticateErrors.EmailOrPasswordIncorrect, {
 						position: 'bottom-left',
 						theme: 'colored',
@@ -110,10 +102,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	}, []);
 
 	const onSignOut = useCallback(async () => {
-		cookies.destroyCookie(
-			undefined,
-			`${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`,
-		);
+		cookies.destroyCookie(undefined, `${process.env.NEXT_PUBLIC_LOCALSTORAGE_PREFIX_KEY ?? ''}-token`);
 
 		setToken('');
 		setUserData({} as AuthContextProps['user']);
@@ -123,8 +112,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	useEffect(() => {
 		if (token) {
 			try {
-				const tokenDecoded =
-					JWT.decode<JWTAuthenticateTokenContentProps>(token);
+				const tokenDecoded = JWT.decode<JWTAuthenticateTokenContentProps>(token);
 				if (!tokenDecoded) throw new Error();
 
 				const isTokenExpired = tokenDecoded.exp * 1000 < Date.now();

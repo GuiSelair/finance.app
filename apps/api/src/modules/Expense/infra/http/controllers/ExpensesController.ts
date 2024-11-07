@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import { requestValidations } from '@helpers/requestValidations';
@@ -6,6 +6,8 @@ import { CreateExpenseService } from '@modules/Expense/domain/services/CreateExp
 import { FetchExpensesMonthService } from '@modules/Expense/domain/services/FetchExpensesMonthService';
 import { FetchBalanceMonthService } from '@modules/Expense/domain/services/FetchBalanceMonthService';
 import { RemoveExpenseService } from '@modules/Expense/domain/services/RemoveExpenseService';
+import { FindExpenseMonthService } from '@modules/Expense/domain/services/FindExpenseMonthService';
+import { EditExpenseMonthService } from '@modules/Expense/domain/services/EditExpenseMonthService';
 
 export class ExpensesController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -22,7 +24,7 @@ export class ExpensesController {
     return response.status(201).json(expense);
   }
 
-  public async show(request: Request, response: Response): Promise<Response> {
+  public async fetch(request: Request, response: Response): Promise<Response> {
     requestValidations.throwIfPropertyNotExists(request.query, 'month');
     requestValidations.throwIfPropertyNotExists(request.query, 'year');
 
@@ -73,4 +75,33 @@ export class ExpensesController {
 
     return response.status(200).json(result);
   }
+
+  public async find(request: Request, response: Response): Promise<Response> {
+    requestValidations.throwIfPropertyNotExists(request.params, 'id')
+    requestValidations.throwIfPropertyIsNotUUID(request.params.id)
+
+    const { id: expense_id } = request.params
+    const { id: user_id } = request.user
+
+    const findExpenseMonthService = container.resolve(FindExpenseMonthService);
+    const expenseMonth = await findExpenseMonthService.execute({ expense_id, user_id });
+
+    return response.status(200).json({ expense: expenseMonth })
+  }
+
+  public async edit(request: Request, response: Response): Promise<Response> {
+    requestValidations.throwIfEmptyBody(request.body)
+    requestValidations.throwIfPropertyNotExists(request.params, 'id')
+    requestValidations.throwIfPropertyIsNotUUID(request.params.id)
+
+    const { id: expense_id } = request.params
+    const { id: user_id } = request.user
+    const expenseEditedToSave = request.body
+
+    const editExpenseMonthService = container.resolve(EditExpenseMonthService);
+    await editExpenseMonthService.execute({ id: expense_id, user_id, valuesToChange: expenseEditedToSave });
+
+    return response.status(200).send();
+  }
+
 }

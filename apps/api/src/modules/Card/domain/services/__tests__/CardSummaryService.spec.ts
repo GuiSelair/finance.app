@@ -62,7 +62,7 @@ const cardsRepositoryMocked = {
     ]),
 };
 const expenseMonthRepositoryMocked = {
-  findByMonthAndYear: jest.fn().mockResolvedValue(mockExpensesMonth),
+  fetchByMonthAndYear: jest.fn().mockResolvedValue(mockExpensesMonth),
 };
 const cardSummaryService = new CardSummaryService(
   expenseMonthRepositoryMocked as unknown as IExpensesMonthRepository,
@@ -96,7 +96,7 @@ describe('CardSummaryService use case - Unit Test', () => {
   });
 
   it('should be able to return card summary list with zero if not exists expenses in month', async () => {
-    expenseMonthRepositoryMocked.findByMonthAndYear.mockResolvedValueOnce([]);
+    expenseMonthRepositoryMocked.fetchByMonthAndYear.mockResolvedValueOnce([]);
 
     const cardSummaryServiceOutput = await cardSummaryService.execute({
       month: 11,

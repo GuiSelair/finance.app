@@ -3,8 +3,10 @@ import {
 	MagnifyingGlass as MagnifyingGlassIcon,
 	Funnel as FunnelIcon,
 	ArrowCircleDown as ArrowCircleDownIcon,
-	DotsThreeOutlineVertical as DotsThreeOutlineVerticalIcon,
+	TrashSimple as TrashIcon,
+	PencilSimple as PencilSimpleIcon,
 } from 'phosphor-react';
+import Link from 'next/link';
 
 import { TextInput } from '@/components/Form/TextInput';
 import { Table, Spinner, Box, Button } from '@/components';
@@ -12,13 +14,10 @@ import { ExpenseInMonth } from '@/models/ExpenseInMonth';
 import { formatCurrency } from '@/helpers/formatCurrency';
 import { formatParcel } from '@/helpers/formatParcel';
 
-import {
-	ExpenseDetailsModal,
-	IDeleteExpenseResponse,
-} from '../ExpenseDetailsModal';
+import { ExpenseDetailsModal, IDeleteExpenseResponse } from '../ExpenseDetailsModal';
 import { expensesTableColumns } from '../../constants/tableColumns';
 
-import { FilterButton, FilterContainer } from './ExpensesTable.styles';
+import { DeleteOptionButton, FilterButton, FilterContainer, OptionButtonsContainer } from './ExpensesTable.styles';
 
 export interface IExpensesTableData {
 	name: string;
@@ -39,27 +38,22 @@ interface IExpensesTableProps {
 	deleteExpense: (expenseId: string) => IDeleteExpenseResponse;
 }
 
-export default function ExpensesTable({
-	fetchExpenses,
-	deleteExpense,
-}: Readonly<IExpensesTableProps>) {
-	const [isOpenExpenseModal, setIsOpenExpenseModal] = useState(false);
-	const [selectedExpense, setSelectedExpense] = useState<ExpenseInMonth | null>(
-		null,
-	);
+export default function ExpensesTable({ fetchExpenses, deleteExpense }: Readonly<IExpensesTableProps>) {
+	const [isOpenExpenseDetailsModal, setIsOpenExpenseDetailsModal] = useState(false);
+	const [selectedExpense, setSelectedExpense] = useState<ExpenseInMonth | null>(null);
+
 	const { isFetchingExpenses, expensesInMonth } = fetchExpenses();
 
 	function handleSelectExpense(expenseInMonth: ExpenseInMonth) {
 		setSelectedExpense(expenseInMonth);
-		setIsOpenExpenseModal(true);
+		setIsOpenExpenseDetailsModal(true);
 	}
 
 	const expensesTableData = useMemo<IExpensesTableData[]>(() => {
 		if (!expensesInMonth) return [];
 
 		return expensesInMonth.map(expenseInMonth => {
-			const { expense, quantityParcel, currentParcel, valueParcel } =
-				expenseInMonth;
+			const { expense, quantityParcel, currentParcel, valueParcel, id } = expenseInMonth;
 
 			return {
 				name: expense?.name,
@@ -69,15 +63,38 @@ export default function ExpensesTable({
 				isShared: expense?.isSplitedExpense,
 				isRecurring: expense?.isRecurring,
 				options: (
-					<Button
-						type="button"
-						variant="outline"
-						size="sm"
-						onClick={() => handleSelectExpense(expenseInMonth)}
-					>
-						<DotsThreeOutlineVerticalIcon weight="fill" />
-						Detalhes
-					</Button>
+					<OptionButtonsContainer>
+						<Button
+							aria-label="Ver detalhes da despesa"
+							title="Ver detalhes da despesa"
+							type="button"
+							variant="ghost"
+							size="sm"
+							onClick={() => handleSelectExpense(expenseInMonth)}
+						>
+							<MagnifyingGlassIcon />
+						</Button>
+						<Link
+							href={`/registrations/expenses/${id}`}
+							tabIndex={-1}
+							aria-label="Editar despesa"
+							title="Editar despesa"
+						>
+							<Button type="button" variant="ghost" size="sm">
+								<PencilSimpleIcon />
+							</Button>
+						</Link>
+						<DeleteOptionButton
+							aria-label="Remover despesa"
+							title="Remover despesa"
+							type="button"
+							variant="ghost"
+							size="sm"
+							onClick={() => handleSelectExpense(expenseInMonth)}
+						>
+							<TrashIcon />
+						</DeleteOptionButton>
+					</OptionButtonsContainer>
 				),
 			};
 		});
@@ -94,10 +111,7 @@ export default function ExpensesTable({
 	return (
 		<>
 			<FilterContainer>
-				<TextInput
-					icon={() => <MagnifyingGlassIcon size={24} />}
-					placeholder="Pesquise pelo nome da despesa"
-				/>
+				<TextInput icon={() => <MagnifyingGlassIcon size={24} />} placeholder="Pesquise pelo nome da despesa" />
 				<FilterButton>
 					<FunnelIcon size={24} />
 					Filtros
@@ -109,8 +123,8 @@ export default function ExpensesTable({
 			</FilterContainer>
 			<Table columns={expensesTableColumns} data={expensesTableData} />
 			<ExpenseDetailsModal
-				isOpenModal={isOpenExpenseModal}
-				onClose={() => setIsOpenExpenseModal(false)}
+				isOpenModal={isOpenExpenseDetailsModal}
+				onClose={() => setIsOpenExpenseDetailsModal(false)}
 				expenseInMonth={selectedExpense}
 				deleteExpense={deleteExpense}
 			/>

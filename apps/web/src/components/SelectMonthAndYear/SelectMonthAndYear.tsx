@@ -9,10 +9,7 @@ import { selectedMonthYearContext, AuthContext } from '@/contexts';
 import { SelectMonthAndYearContainer } from './SelectMonthAndYear.styles';
 
 export function SelectMonthAndYear() {
-	const userCreatedAt = useContextSelector(
-		AuthContext,
-		ctx => ctx.user.createdAt,
-	);
+	const userCreatedAt = useContextSelector(AuthContext, ctx => ctx.user.createdAt);
 	const {
 		month: selectedMonth,
 		year: selectedYear,
@@ -25,9 +22,7 @@ export function SelectMonthAndYear() {
 	const currentMonthOption = getMonthOption(selectedMonth);
 
 	const yearOptions = getYearOptions(getYear(userCreatedAt) ?? 2022);
-	const currentYearOption = yearOptions.find(
-		yearOption => Number(yearOption.value) === selectedYear,
-	);
+	const currentYearOption = yearOptions.find(yearOption => Number(yearOption.value) === selectedYear);
 
 	function handleSelectMonth(option: SelectOptionProps) {
 		handleSelectMonthAndYear(Number(option.value));

@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-	ColumnDef,
-	flexRender,
-	getCoreRowModel,
-	useReactTable,
-} from '@tanstack/react-table';
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
 import { TableContainer } from './Table.styles';
 
@@ -34,12 +29,7 @@ export function Table({ columns, data }: Readonly<TableProps>) {
 									width: header.getSize(),
 								}}
 							>
-								{header.isPlaceholder
-									? null
-									: flexRender(
-											header.column.columnDef.header,
-											header.getContext(),
-									  )}
+								{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
 							</th>
 						))}
 					</tr>

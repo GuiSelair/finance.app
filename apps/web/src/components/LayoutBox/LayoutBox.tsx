@@ -9,9 +9,7 @@ import {
 	LayoutBoxTitle,
 } from './LayoutBox.styles';
 
-export function LayoutBox({
-	children,
-}: Readonly<{ children: React.ReactNode }>) {
+export function LayoutBox({ children }: Readonly<{ children: React.ReactNode }>) {
 	return <LayoutBoxContainer>{children}</LayoutBoxContainer>;
 }
 

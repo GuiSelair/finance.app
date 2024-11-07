@@ -153,8 +153,7 @@ export const RemoveExpenseButton = styled(Button).attrs({
 export const ExpensePaidIcon = styled(CheckCircle).attrs({
 	fill: 'fill',
 })<IExpensePaidIconProps>`
-	color: ${props =>
-		props.isPaid ? props.theme.colors.green800 : props.theme.colors.gray200};
+	color: ${props => (props.isPaid ? props.theme.colors.green800 : props.theme.colors.gray200)};
 `;
 
 export const DeleteExpenseIcon = styled(Trash).attrs({
