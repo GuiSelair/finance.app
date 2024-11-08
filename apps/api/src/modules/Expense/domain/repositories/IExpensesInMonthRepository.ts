@@ -3,11 +3,11 @@ import { ExpenseMonth } from '../models/ExpenseMonth';
 
 export type FindByIdInput = { id: string, user_id: string };
 export type FindByIdOutput = ExpenseMonthMapper | undefined;
-
 export type UpdateExpenseMonthInput = {
   id: string;
   data: Partial<ExpenseMonth>;
 }
+export type RemoveExpenseMonthInput = { id: string, user_id: string };
 
 export interface IExpensesMonthRepository {
   create(args: ExpenseMonth[]): Promise<ExpenseMonthMapper[]>;
@@ -18,4 +18,5 @@ export interface IExpensesMonthRepository {
   ): Promise<ExpenseMonthMapper[] | undefined>;
   findById(args: FindByIdInput): Promise<FindByIdOutput>;
   update(args: UpdateExpenseMonthInput): Promise<void>;
+  remove(args: RemoveExpenseMonthInput): Promise<boolean>;
 }
