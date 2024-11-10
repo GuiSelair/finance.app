@@ -79,6 +79,6 @@ describe('CreateExpenseService use case - Unit test', () => {
         purchase_date: '2024-09-17',
       }),
     ).rejects.toBeInstanceOf(AppError);
-    expect(expensesRepositoryMocked.remove).toHaveBeenCalledWith({ id: expect.any(String), user_id: userIdMock });
+    expect(expensesRepositoryMocked.remove).toHaveBeenCalledWith({ id: expect.any(String) });
   });
 });

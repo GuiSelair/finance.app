@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 
 import { DataSourceConfiguration } from '@shared/infra/typeorm/bootstrap';
-import { FindByIdInput, FindByIdOutput, IExpensesMonthRepository, RemoveExpenseMonthInput, UpdateExpenseMonthInput } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
+import { FetchByExpenseIdInput, FetchByExpenseIdOutput, FindByIdInput, FindByIdOutput, IExpensesMonthRepository, RemoveExpenseMonthInput, UpdateExpenseMonthInput } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
 import { ExpenseMonthMapper } from '../entities/ExpenseMonthMapper';
 import { ExpenseMonth } from '@modules/Expense/domain/models/ExpenseMonth';
 
@@ -62,14 +62,19 @@ export class ExpensesMonthRepository implements IExpensesMonthRepository {
     await this.repository.save({ ...data, id });
   }
 
-  public async remove({ id, user_id }: RemoveExpenseMonthInput): Promise<boolean> {
+  public async remove({ id }: RemoveExpenseMonthInput): Promise<boolean> {
     const result = await this.repository.delete({
       id,
-      expense: {
-        user_id
-      }
     });
 
     return !!result?.affected;
+  }
+
+  public async fetchByExpenseId({ expense_id }: FetchByExpenseIdInput): Promise<FetchByExpenseIdOutput> {
+    return await this.repository.findAndCount({
+      where: {
+        expense_id,
+       },
+    })
   }
 }

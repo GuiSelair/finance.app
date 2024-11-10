@@ -4,11 +4,15 @@ import { useContextSelector } from 'use-context-selector';
 import { selectedMonthYearContext } from '@/contexts';
 import { useFetchExpensesSummaryApi } from '@/hooks/api/expenses/useFetchExpensesSummary.api';
 import { useFetchExpensesMonthApi } from '@/hooks/api/expenses/useFetchExpensesMonth.api';
-import { useDeleteExpenseApi } from '@/hooks/api/expenses/useDeleteExpense.api';
+import { useDeleteExpenseApi, UseDeleteExpenseApiInput } from '@/hooks/api/expenses/useDeleteExpense.api';
 
 import type { IFetchSummaryResponse } from '../components/Summary';
 import type { IFetchExpensesResponse } from '../components/ExpensesTable';
-import type { IDeleteExpenseResponse } from '../components/ExpenseDetailsModal';
+
+export type DeleteExpenseFunction = () => {
+	isDeleting: boolean;
+	executeDelete: (args: UseDeleteExpenseApiInput) => Promise<void>;
+};
 
 export function useDashboard() {
 	const handleRestoreToCurrentMonthAndYear = useContextSelector(
@@ -36,14 +40,14 @@ export function useDashboard() {
 		};
 	}
 
-	function deleteExpense(expenseId: string): IDeleteExpenseResponse {
-		const { mutateAsync, isLoading } = useDeleteExpenseApi(expenseId);
+	const deleteExpense: DeleteExpenseFunction = () => {
+		const { mutateAsync, isLoading } = useDeleteExpenseApi();
 
 		return {
 			isDeleting: isLoading,
-			executeDelete: mutateAsync as () => Promise<void>,
+			executeDelete: mutateAsync as (args: UseDeleteExpenseApiInput) => Promise<void>,
 		};
-	}
+	};
 
 	return {
 		handleRestoreToCurrentMonthAndYear,

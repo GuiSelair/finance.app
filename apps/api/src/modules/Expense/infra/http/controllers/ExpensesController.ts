@@ -73,7 +73,7 @@ export class ExpensesController {
     const result = await removeExpenseService.execute({
       expense_id,
       user_id,
-      is_only_one: Boolean(is_only_one),
+      is_only_one: Boolean(Number(is_only_one)),
     });
 
     return response.status(200).json(result);

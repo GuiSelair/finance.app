@@ -55,7 +55,7 @@ export class CreateExpenseService {
         }),
       );
     } catch (err) {
-      await this.expensesRepository.remove({ id: newExpense.id, user_id: expenseDTO.user_id });
+      await this.expensesRepository.remove({ id: newExpense.id });
       throw new AppError(err);
     }
 

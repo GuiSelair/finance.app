@@ -1,8 +1,6 @@
 import { CheckCircle, Trash } from 'phosphor-react';
 import styled from 'styled-components';
 
-import { Button } from '@/components/Button';
-
 interface IExpensePaidIconProps {
 	isPaid: boolean;
 }
@@ -142,12 +140,6 @@ export const Divider = styled.hr`
 	border-top: 1px solid ${props => props.theme.colors.gray100};
 	margin: 1rem 0;
 	padding: 0;
-`;
-
-export const RemoveExpenseButton = styled(Button).attrs({
-	variant: 'ghost',
-})`
-	background-color: ${props => props.theme.colors.red100};
 `;
 
 export const ExpensePaidIcon = styled(CheckCircle).attrs({

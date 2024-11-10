@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 
 import { DataSourceConfiguration } from '@infra/typeorm/bootstrap';
-import { IExpensesRepository, RemoveExpenseInput, UpdateExpenseInput } from '@modules/Expense/domain/repositories/IExpensesRepository';
+import { FindByIdInput, IExpensesRepository, RemoveExpenseInput, UpdateExpenseInput } from '@modules/Expense/domain/repositories/IExpensesRepository';
 import { ExpenseMapper } from '../entities/ExpenseMapper';
 import { Expense } from '@modules/Expense/domain/models/Expense';
 
@@ -32,19 +32,18 @@ export class ExpensesRepository implements IExpensesRepository {
     });
   }
 
-  public async findById(id: string, userId: string): Promise<ExpenseMapper | null> {
+  public async findById({ id, user_id }: FindByIdInput): Promise<ExpenseMapper | null> {
     return this.repository.findOne({
       where: {
         id,
-        user_id: userId,
+        user_id,
       },
     });
   }
 
-  public async remove({ id, user_id }: RemoveExpenseInput): Promise<boolean> {
+  public async remove({ id }: RemoveExpenseInput): Promise<boolean> {
     const result = await this.repository.delete({
       id,
-      user_id,
     });
 
     return !!result?.affected;
