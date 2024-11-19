@@ -64,13 +64,16 @@ export class ExpensesController {
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
-    const { id } = request.user;
+    const { id: user_id } = request.user;
     const { id: expense_id } = request.params;
+    requestValidations.throwIfPropertyNotExists(request.query, 'is_only_one')
 
+    const { is_only_one } = request.query;
     const removeExpenseService = container.resolve(RemoveExpenseService);
     const result = await removeExpenseService.execute({
       expense_id,
-      user_id: id,
+      user_id,
+      is_only_one: Boolean(Number(is_only_one)),
     });
 
     return response.status(200).json(result);

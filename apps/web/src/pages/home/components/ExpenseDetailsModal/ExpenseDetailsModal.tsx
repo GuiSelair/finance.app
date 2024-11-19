@@ -9,7 +9,6 @@ import { dateFormat } from '@/helpers/dateFormat';
 import { formatParcel } from '@/helpers/formatParcel';
 
 import {
-	DeleteExpenseIcon,
 	Divider,
 	ExpenseAmountDetails,
 	ExpenseAmountDetailsItem,
@@ -18,43 +17,28 @@ import {
 	ExpenseDescription,
 	ExpenseDescriptionAndCardDetails,
 	ExpensePaidIcon,
-	RemoveExpenseButton,
 } from './ExpenseDetailsModal.styles';
-
-export interface IDeleteExpenseResponse {
-	isDeleting: boolean;
-	executeDelete: () => Promise<void>;
-}
 
 interface IExpenseDetailsModalProps {
 	isOpenModal: boolean;
 	onClose: () => void;
 	expenseInMonth: ExpenseInMonth | null;
-	deleteExpense: (expenseId: string) => IDeleteExpenseResponse;
 }
 
 export default function ExpenseDetailsModal({
 	expenseInMonth,
 	isOpenModal,
 	onClose,
-	deleteExpense,
 }: Readonly<IExpenseDetailsModalProps>) {
 	if (!expenseInMonth) return null;
 
 	const { expense } = expenseInMonth;
-	const { executeDelete, isDeleting } = deleteExpense(expenseInMonth?.expenseId);
 
 	const expenseTotalAmountFormatted = formatCurrency(expense?.amount);
 	const expenseParcelAmountFormatted = formatCurrency(expenseInMonth?.valueParcel);
 	const parcelsFormatted = formatParcel(expenseInMonth?.currentParcel, expenseInMonth?.quantityParcel);
 	const expenseCreatedAtFormatted = dateFormat(new Date(expense?.createdAt ?? new Date()), 'dd/MM/yyyy');
 	const expenseIdCut = `${expenseInMonth?.expenseId?.slice(0, 20)}...`;
-
-	async function handleDeleteExpense() {
-		if (!expenseInMonth?.expenseId) return null;
-		executeDelete();
-		onClose();
-	}
 
 	function makeParcelSection() {
 		if (expense?.isRecurring) {
@@ -90,12 +74,6 @@ export default function ExpenseDetailsModal({
 					<p>
 						<ExpensePaidIcon isPaid={expenseInMonth?.isPaid ?? false} />
 					</p>
-				</div>
-				<div>
-					<span>Remover?</span>
-					<RemoveExpenseButton size="xs" onClick={handleDeleteExpense} isLoading={isDeleting}>
-						<DeleteExpenseIcon />
-					</RemoveExpenseButton>
 				</div>
 			</ExpenseBaseDetails>
 			<ExpenseAmountDetails>

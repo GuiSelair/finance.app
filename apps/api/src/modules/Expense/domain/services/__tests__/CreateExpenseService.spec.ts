@@ -67,16 +67,18 @@ describe('CreateExpenseService use case - Unit test', () => {
 
   it('should be able to remove expense if expenses month create is failed', async () => {
     jest.spyOn(CreateExpenseMonthService.prototype, 'execute').mockRejectedValueOnce('fake-error');
+
+    const userIdMock = v4()
     await expect(
       createExpenseService.execute({
         name: 'fake-expense-name',
         amount: 1200,
         parcel: 1,
-        user_id: v4(),
+        user_id: userIdMock,
         card_id: v4(),
         purchase_date: '2024-09-17',
       }),
     ).rejects.toBeInstanceOf(AppError);
-    expect(expensesRepositoryMocked.remove).toHaveBeenCalledWith(expect.any(String));
+    expect(expensesRepositoryMocked.remove).toHaveBeenCalledWith({ id: expect.any(String) });
   });
 });

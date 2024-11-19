@@ -14,10 +14,13 @@ import { ExpenseInMonth } from '@/models/ExpenseInMonth';
 import { formatCurrency } from '@/helpers/formatCurrency';
 import { formatParcel } from '@/helpers/formatParcel';
 
-import { ExpenseDetailsModal, IDeleteExpenseResponse } from '../ExpenseDetailsModal';
+import { ExpenseDetailsModal } from '../ExpenseDetailsModal';
 import { expensesTableColumns } from '../../constants/tableColumns';
 
 import { DeleteOptionButton, FilterButton, FilterContainer, OptionButtonsContainer } from './ExpensesTable.styles';
+import { DeleteExpenseFunction } from '../../hooks/useDashboard';
+import { useModal } from '@/hooks/useModal';
+import { ConfirmDeleteExpenseModal } from '../ConfirmDeleteExpenseModal/ConfirmDeleteExpenseModal';
 
 export interface IExpensesTableData {
 	name: string;
@@ -35,13 +38,14 @@ export interface IFetchExpensesResponse {
 }
 interface IExpensesTableProps {
 	fetchExpenses: () => IFetchExpensesResponse;
-	deleteExpense: (expenseId: string) => IDeleteExpenseResponse;
+	deleteExpense: DeleteExpenseFunction;
 }
 
 export default function ExpensesTable({ fetchExpenses, deleteExpense }: Readonly<IExpensesTableProps>) {
 	const [isOpenExpenseDetailsModal, setIsOpenExpenseDetailsModal] = useState(false);
 	const [selectedExpense, setSelectedExpense] = useState<ExpenseInMonth | null>(null);
 
+	const confirmDeleteExpenseModal = useModal(false);
 	const { isFetchingExpenses, expensesInMonth } = fetchExpenses();
 
 	function handleSelectExpense(expenseInMonth: ExpenseInMonth) {
@@ -90,7 +94,10 @@ export default function ExpensesTable({ fetchExpenses, deleteExpense }: Readonly
 							type="button"
 							variant="ghost"
 							size="sm"
-							onClick={() => handleSelectExpense(expenseInMonth)}
+							onClick={() => {
+								setSelectedExpense(expenseInMonth);
+								confirmDeleteExpenseModal.open();
+							}}
 						>
 							<TrashIcon />
 						</DeleteOptionButton>
@@ -126,7 +133,12 @@ export default function ExpensesTable({ fetchExpenses, deleteExpense }: Readonly
 				isOpenModal={isOpenExpenseDetailsModal}
 				onClose={() => setIsOpenExpenseDetailsModal(false)}
 				expenseInMonth={selectedExpense}
-				deleteExpense={deleteExpense}
+			/>
+			<ConfirmDeleteExpenseModal
+				isOpen={confirmDeleteExpenseModal.isOpen}
+				onClose={confirmDeleteExpenseModal.close}
+				onDeleteExpense={deleteExpense}
+				expense={selectedExpense}
 			/>
 		</>
 	);

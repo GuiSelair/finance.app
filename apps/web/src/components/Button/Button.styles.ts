@@ -41,6 +41,15 @@ const BUTTON_VARIANT_MAPPER = {
 			background-color: ${({ theme }) => theme.colors.green100};
 		}
 	`,
+	danger: css`
+		background-color: ${({ theme }) => theme.colors.red700};
+		color: ${({ theme }) => theme.colors.white};
+		font-weight: 600;
+
+		&:not(:disabled):hover {
+			background-color: ${({ theme }) => theme.colors.red900};
+		}
+	`,
 };
 
 const BUTTON_SIZE_MAPPER = {
