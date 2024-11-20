@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateConfigurationsTable1731979180804 implements MigrationInterface {
+export class CreateSettingsMonthTable1731979180804 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
       await queryRunner.createTable(new Table({
-        name: "configurations",
+        name: "settings-month",
         columns: [
           {
             name: "id",
@@ -50,7 +50,7 @@ export class CreateConfigurationsTable1731979180804 implements MigrationInterfac
         ],
         foreignKeys: [
           {
-            name: "configUser",
+            name: "config_user_fk",
             columnNames: ["user_id"],
             referencedTableName: "users",
             referencedColumnNames: ["id"],
@@ -68,7 +68,7 @@ export class CreateConfigurationsTable1731979180804 implements MigrationInterfac
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.dropTable("configurations")
+      await queryRunner.dropTable("settings-month")
     }
 
 }
