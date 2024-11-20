@@ -4,13 +4,13 @@ export class CreateSettingsMonthTable1731979180804 implements MigrationInterface
 
     public async up(queryRunner: QueryRunner): Promise<void> {
       await queryRunner.createTable(new Table({
-        name: "settings-month",
+        name: "settings",
         columns: [
           {
             name: "id",
-            type: "int",
+            type: "serial4",
             isPrimary: true,
-            generationStrategy: "increment"
+            generationStrategy: "increment",
           },
           {
             name: "key",
@@ -39,7 +39,7 @@ export class CreateSettingsMonthTable1731979180804 implements MigrationInterface
           {
             name: "default",
             type: "boolean",
-            default: true,
+            default: false,
             isNullable: true
           },
           {
@@ -50,7 +50,7 @@ export class CreateSettingsMonthTable1731979180804 implements MigrationInterface
         ],
         foreignKeys: [
           {
-            name: "config_user_fk",
+            name: "fk_config_user",
             columnNames: ["user_id"],
             referencedTableName: "users",
             referencedColumnNames: ["id"],
@@ -68,7 +68,7 @@ export class CreateSettingsMonthTable1731979180804 implements MigrationInterface
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.dropTable("settings-month")
+      await queryRunner.dropTable("settings")
     }
 
 }

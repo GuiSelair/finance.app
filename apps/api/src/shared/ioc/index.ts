@@ -14,7 +14,7 @@ import type { IExpensesMonthRepository } from '@modules/Expense/domain/repositor
 import { ExpensesMonthRepository } from '@modules/Expense/infra/typeorm/repositories/ExpensesMonthRepository';
 
 import type { IIncomesRepository } from '@modules/Settings/domain/repositories/IIncomeRepository';
-import { IncomesRepository } from '@modules/Settings/infra/typeorm/repositories/IncomesRepository'; //TODO: Create this repository
+import { IncomesRepository } from '@modules/Settings/infra/typeorm/repositories/IncomesRepository';
 
 container.registerSingleton<IUsersRepository>('UsersRepository', UsersRepository);
 container.registerSingleton<ICardsRepository>('CardsRepository', CardsRepository);

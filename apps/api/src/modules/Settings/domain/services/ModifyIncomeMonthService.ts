@@ -1,6 +1,7 @@
+import { injectable, inject } from "tsyringe";
+
 import { IUsersRepository } from "@modules/User/domain/repositories/IUsersRepository";
 import AppError from "@shared/errors/AppError";
-import { injectable, inject } from "tsyringe";
 import { IIncomesRepository } from "../repositories/IIncomeRepository";
 import { Income } from "../models/Income";
 
@@ -14,19 +15,15 @@ interface IModifyIncomeMonthDTO{
 @injectable()
 export class ModifyIncomeMonthService {
   constructor(
-    @inject('InvoiceRepository') private readonly incomesRepository: IIncomesRepository,
-    @inject('UsersRepository') private readonly usersRepository: IUsersRepository,
+    @inject('IncomesRepository') private readonly incomesRepository: IIncomesRepository,
   ){}
 
   async execute(args: IModifyIncomeMonthDTO){
-    const userFound = await this.usersRepository.findById(args.user_id);
-    if(!userFound) { throw new AppError('User not found', 404) }
-
     const invoiceModel = this.makeInvoiceModel(args)
-
     const setting = await this.incomesRepository.createOrUpdate(invoiceModel);
-
-    return setting;
+    return {
+      income: setting
+    };
   }
 
   private makeInvoiceModel(args: IModifyIncomeMonthDTO){

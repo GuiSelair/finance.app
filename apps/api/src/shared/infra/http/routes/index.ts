@@ -12,6 +12,6 @@ routes.use('/users', usersRoutes);
 routes.use('/auth', authRoutes);
 routes.use('/cards', cardsRoutes);
 routes.use('/expenses', expensesRoutes);
-routes.use('/settings/income', settingsRoutes.incomesRoutes);
+routes.use('/settings/incomes', settingsRoutes.incomesRoutes);
 
 export default routes;
