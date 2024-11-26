@@ -28,5 +28,5 @@ export default {
   testMatch: ['**/*.spec.ts'],
 
   // Adiciona suporte a paths conforme o tsconfig.json
-  setupFilesAfterEnv: ['tsconfig-paths/register'],
+  setupFilesAfterEnv: ['tsconfig-paths/register', 'reflect-metadata'],
 };
