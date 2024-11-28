@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 import { Spinner, SpinnerProps } from '../Spinner';
 
@@ -14,7 +14,7 @@ export interface ButtonContainerProps {
 	 * Variação de tamanho do botão
 	 * @default md
 	 */
-	size?: 'xs' | 'sm' | 'md' | 'lg';
+	size?: 'xs' | 'sm' | 'md' | 'lg' | 'icon' | 'full';
 	/**
 	 * Permite que o botão preencha todo o espaço disponível.
 	 * @default false
@@ -42,16 +42,13 @@ export interface ButtonProps extends ButtonContainerProps, React.ButtonHTMLAttri
 	spinnerConfig?: SpinnerProps;
 }
 
-export function Button({
-	children,
-	isLoading,
-	isDisabled,
-	spinnerConfig = { mode: 'dark', size: 'sm' },
-	...rest
-}: React.PropsWithChildren<ButtonProps>) {
+export const Button = forwardRef<HTMLButtonElement, React.PropsWithChildren<ButtonProps>>(function Button(
+	{ children, isLoading, isDisabled, spinnerConfig = { mode: 'dark', size: 'sm' }, ...rest },
+	ref,
+) {
 	return (
-		<ButtonContainer disabled={isDisabled || isLoading} {...rest}>
+		<ButtonContainer ref={ref} disabled={isDisabled || isLoading} {...rest}>
 			{isLoading ? <Spinner {...spinnerConfig} /> : children}
 		</ButtonContainer>
 	);
-}
+});

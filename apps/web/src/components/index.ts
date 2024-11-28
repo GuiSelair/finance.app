@@ -9,3 +9,4 @@ export * from './SEO';
 export * from './Spinner';
 export * from './Table';
 export * from './Form';
+export * from './Popover';

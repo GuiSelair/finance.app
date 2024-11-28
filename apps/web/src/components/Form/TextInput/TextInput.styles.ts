@@ -11,7 +11,21 @@ export const Container = styled.div`
 interface BaseInputStyleContainerProps {
 	hasError: boolean;
 	isDisabled?: boolean;
+	size: 'sm' | 'md';
 }
+
+const INPUT_SIZE_MAPPER = {
+	sm: css`
+		padding: 0.5rem 0.75rem;
+		input {
+			font-size: ${({ theme }) => theme.fontSizes.small};
+		}
+	`,
+	md: css`
+		padding: 0.75rem 1rem;
+		font-size: ${({ theme }) => theme.fontSizes.regular};
+	`,
+};
 
 export const BaseInputStyleContainer = styled.div.withConfig({
 	shouldForwardProp: prop => !['hasError', 'isDisabled'].includes(prop),
@@ -21,7 +35,6 @@ export const BaseInputStyleContainer = styled.div.withConfig({
 	width: 100%;
 	background: ${props => props.theme.colors.white};
 	border-radius: 4px;
-	padding: 0.75rem 1rem;
 	box-shadow: 0 0 0 1px ${props => props.theme.colors.gray100};
 
 	${props =>
@@ -65,6 +78,8 @@ export const BaseInputStyleContainer = styled.div.withConfig({
 			cursor: not-allowed;
 		}
 	}
+
+	${({ size }) => INPUT_SIZE_MAPPER[size ?? 'md']};
 `;
 
 export const Prefix = styled.span`
