@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { WarningCircle, CheckCircle } from 'phosphor-react';
 import { useForm } from 'react-hook-form';
 
@@ -8,22 +7,38 @@ import { defaultTheme } from '@/styles/theme/default';
 import { OverlayContainer, OverlayTitle } from './FormIncomePopover.styles';
 import { FormIncome, formIncomeSchema } from './constants/formSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useModifyMonthIncomeApi } from '@/hooks/api/settings/useModifyMonthIncome.api';
+import { useFindMonthIncomeApi } from '@/hooks/api/settings/useFindMonthIncome.api';
 
 export function FormIncomePopover() {
+	const { data, isLoading: isFindingIncome, refetch } = useFindMonthIncomeApi({ ignoreInitialFetch: true });
 	const {
 		register,
 		formState: { isDirty, errors },
 		handleSubmit,
+		reset,
 	} = useForm<FormIncome>({
 		resolver: yupResolver(formIncomeSchema),
+		defaultValues: async () => {
+			const { data } = await refetch();
+			return {
+				income: data?.income?.income || 0,
+			};
+		},
 	});
-	const [hasCurrentMonthIncome, setHasCurrentMonthIncome] = useState(false);
+	const { mutateAsync, isLoading: isModifyingIncome } = useModifyMonthIncomeApi();
 
-	function handleModifyIncome({ income }: FormIncome) {
-		// TODO: Implementar logica de requisição
+	const hasCurrentMonthIncome = data?.income;
+
+	async function handleModifyIncome({ income }: FormIncome) {
+		await mutateAsync({ income });
+		reset(
+			{ income },
+			{
+				keepDirty: false,
+			},
+		);
 		// TODO: Corrigir input perdendo foco depois que primeiro digito é inserido
-		console.log(income);
-		setHasCurrentMonthIncome(true);
 	}
 
 	const FormIncomeOverlay = () => {
@@ -36,8 +51,21 @@ export function FormIncomePopover() {
 							: 'Adicione um valor de entrada para calcular o valor da sua economia.'}
 					</OverlayTitle>
 
-					<TextInput size="sm" placeholder="00.00" prefix="R$" {...register('income')} error={errors.income?.message} />
-					<Button variant="solid" size="full" isDisabled={!isDirty} type="submit">
+					<TextInput
+						size="sm"
+						placeholder="00.00"
+						prefix="R$"
+						error={errors.income?.message}
+						disabled={isFindingIncome}
+						{...register('income')}
+					/>
+					<Button
+						variant="solid"
+						size="full"
+						isDisabled={!isDirty}
+						type="submit"
+						isLoading={isModifyingIncome || isFindingIncome}
+					>
 						{hasCurrentMonthIncome ? 'Salvar' : 'Adicionar entrada'}
 					</Button>
 				</OverlayContainer>
