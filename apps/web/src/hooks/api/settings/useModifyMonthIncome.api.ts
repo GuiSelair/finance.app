@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useContextSelector } from 'use-context-selector';
+import { toast } from 'react-toastify';
 
 import { selectedMonthYearContext } from '@/contexts';
 import { httpClient } from '@/providers/HTTPClient';
@@ -30,6 +31,9 @@ export function useModifyMonthIncomeApi() {
 				queryKey: ['summary', month, year],
 				exact: true,
 			});
+		},
+		onError: () => {
+			toast.error('Não foi possível modificar o valor de entrada desse mês. Atualize a página e tente novamente.');
 		},
 	});
 }

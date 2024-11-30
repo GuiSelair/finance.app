@@ -8,4 +8,4 @@ export const formIncomeSchema = yup.object().shape({
 	income: yup.number().typeError(requiredField).min(0, invalidField).required(invalidField),
 });
 
-export type FormIncome = InferType<typeof formIncomeSchema>;
+export type FormIncomeSchema = InferType<typeof formIncomeSchema>;
