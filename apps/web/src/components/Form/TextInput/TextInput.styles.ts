@@ -11,7 +11,7 @@ export const Container = styled.div`
 interface BaseInputStyleContainerProps {
 	hasError: boolean;
 	isDisabled?: boolean;
-	size: 'sm' | 'md';
+	size?: 'sm' | 'md';
 }
 
 const INPUT_SIZE_MAPPER = {
