@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useContextSelector } from 'use-context-selector';
 
 import { selectedMonthYearContext } from '@/contexts';
@@ -9,6 +9,8 @@ interface ModifyMonthIncomeMutationProps {
 }
 
 export function useModifyMonthIncomeApi() {
+	const queryClient = useQueryClient();
+
 	const month = useContextSelector(selectedMonthYearContext, ctx => ctx.month);
 	const year = useContextSelector(selectedMonthYearContext, ctx => ctx.year);
 
@@ -21,6 +23,12 @@ export function useModifyMonthIncomeApi() {
 					year,
 					income: data.income,
 				},
+			});
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ['summary', month, year],
+				exact: true,
 			});
 		},
 	});
