@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { formatCurrency } from '@/helpers/formatCurrency';
 import { Spinner } from '@/components';
@@ -18,9 +18,17 @@ interface ISummaryCardProps {
 	value: number;
 	variant?: 'info' | 'error' | 'success';
 	isLoading?: boolean;
+	optionsComponent?: React.ReactNode;
 }
 
-export default function SummaryCard({ title, value, icon, variant, isLoading = false }: Readonly<ISummaryCardProps>) {
+export function SummaryCard({
+	title,
+	value,
+	icon,
+	variant,
+	isLoading = false,
+	optionsComponent,
+}: Readonly<ISummaryCardProps>) {
 	const priceFormatted = formatCurrency(value)?.replace('R$', '');
 	const shouldShowHeader = !!icon;
 
@@ -31,6 +39,7 @@ export default function SummaryCard({ title, value, icon, variant, isLoading = f
 					{shouldShowHeader && (
 						<SummaryCardHeader>
 							<CircularIconContainer>{icon}</CircularIconContainer>
+							{optionsComponent}
 						</SummaryCardHeader>
 					)}
 					<SummaryCardContent>
@@ -43,7 +52,7 @@ export default function SummaryCard({ title, value, icon, variant, isLoading = f
 				</SummaryCardContainer>
 			);
 		};
-	}, [shouldShowHeader, variant, icon, title]);
+	}, [shouldShowHeader, variant, icon, title, optionsComponent]);
 
 	if (isLoading) {
 		return (

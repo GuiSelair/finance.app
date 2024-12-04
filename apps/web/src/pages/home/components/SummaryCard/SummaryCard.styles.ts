@@ -48,6 +48,7 @@ export const SummaryCardContainer = styled.article.withConfig({
 export const SummaryCardHeader = styled.header`
 	display: flex;
 	justify-content: space-between;
+	align-items: flex-start;
 	margin-bottom: 1.5rem;
 `;
 

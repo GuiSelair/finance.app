@@ -21,19 +21,38 @@ export const defaultTheme = {
 		red100: '#fee2e2',
 		red200: '#fecaca',
 		red300: '#fca5a5',
+		red400: '#f87171',
 		red500: '#ef4444',
+		red600: '#dc2626',
 		red700: '#b91c1c',
+		red800: '#991b1b',
 		red900: '#7f1d1d',
+
+		orange100: '#ffedd5',
+		orange200: '#fed7aa',
+		orange300: '#fdba74',
+		orange400: '#fb923c',
+		orange500: '#f97316',
+		orange600: '#ea580c',
+		orange700: '#c2410c',
+		orange800: '#9a3412',
+		orange900: '#7c2d12',
 	},
 
 	fontSizes: {
-		xs: '0.75rem',
-		small: '0.875rem',
-		regular: '1rem',
-		'semi-medium': '1.125rem',
-		medium: '1.5rem',
-		large: '2rem',
-		xl: '2.5rem',
-		'2xl': '3.375rem',
+		xs: '0.75rem', //12px
+		small: '0.875rem', //14px
+		regular: '1rem', //16px
+		'semi-medium': '1.125rem', //18px
+		medium: '1.5rem', //24px
+		large: '2rem', //32px
+		xl: '2.5rem', //40px
+		'2xl': '3.375rem', //54px
+	},
+
+	radius: {
+		small: '4px',
+		regular: '8px',
+		large: '16px',
 	},
 } as const;

@@ -3,6 +3,7 @@ import { Coins as CoinsIcon, CoinVertical as CoinVerticalIcon, Wallet as WalletI
 import { SummaryCard } from '../SummaryCard';
 
 import { SummaryContainer } from './Summary.styles';
+import { FormIncomePopover } from '../FormIncomePopover';
 
 export interface IExpensesSummary {
 	economy: number;
@@ -48,6 +49,7 @@ export default function Summary({ fetchSummary }: Readonly<ISummaryProps>) {
 				variant="success"
 				icon={<WalletIcon size={24} />}
 				isLoading={isFetchingSummary}
+				optionsComponent={<FormIncomePopover />}
 			/>
 		</SummaryContainer>
 	);

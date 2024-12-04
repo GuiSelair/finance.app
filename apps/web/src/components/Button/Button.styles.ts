@@ -69,6 +69,13 @@ const BUTTON_SIZE_MAPPER = {
 		padding: 14px 18px;
 		font-size: ${({ theme }) => theme.fontSizes['semi-medium']};
 	`,
+	icon: css`
+		padding: 6px;
+	`,
+	full: css`
+		width: 100%;
+		padding: 8px 16px;
+	`,
 };
 
 export const ButtonContainer = styled.button.withConfig({

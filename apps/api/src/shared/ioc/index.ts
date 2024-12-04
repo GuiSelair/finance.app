@@ -13,6 +13,9 @@ import { ExpensesRepository } from '@modules/Expense/infra/typeorm/repositories/
 import type { IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
 import { ExpensesMonthRepository } from '@modules/Expense/infra/typeorm/repositories/ExpensesMonthRepository';
 
+import type { IIncomesRepository } from '@modules/Settings/domain/repositories/IIncomeRepository';
+import { IncomesRepository } from '@modules/Settings/infra/typeorm/repositories/IncomesRepository';
+
 container.registerSingleton<IUsersRepository>('UsersRepository', UsersRepository);
 container.registerSingleton<ICardsRepository>('CardsRepository', CardsRepository);
 container.registerSingleton<IExpensesRepository>('ExpensesRepository', ExpensesRepository);
@@ -20,6 +23,7 @@ container.registerSingleton<IExpensesMonthRepository>(
   'ExpensesMonthRepository',
   ExpensesMonthRepository,
 );
+container.registerSingleton<IIncomesRepository>('IncomesRepository', IncomesRepository)
 
 /** Providers register */
 import type { IHashProvider } from '@shared/providers/HashProvider/interfaces/IHashProvider';
