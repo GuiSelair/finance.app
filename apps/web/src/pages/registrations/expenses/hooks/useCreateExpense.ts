@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
-
+import { getMonth, getYear } from 'date-fns';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+
 import { FormExpenseFieldsType, createFormExpenseFormSchema } from '../constants/formSchema';
 import { useCreateExpenseApi } from '@/hooks/api/expenses/useCreateExpense.api';
 
@@ -13,6 +14,7 @@ export function useCreateExpense() {
 		resolver: yupResolver(createFormExpenseFormSchema(false)),
 		defaultValues: {
 			parcelQuantity: 1,
+			expenseDate: `${getYear(new Date())}-${getMonth(new Date()) + 1}`,
 		},
 	});
 	const { mutateAsync, isLoading: isCreating } = useCreateExpenseApi();
@@ -31,6 +33,7 @@ export function useCreateExpense() {
 			parcel: data.parcelQuantity,
 			isRecurring: data.isRecurring,
 			purchaseDate: data.purchaseDate,
+			expenseDate: data.expenseDate,
 		});
 		toast.success('Despesa criada com sucesso!');
 		router.push('/');

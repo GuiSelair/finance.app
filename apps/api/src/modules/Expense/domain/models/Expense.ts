@@ -9,6 +9,7 @@ export class Expense {
     card_id: z.string().uuid(),
     user_id: z.string().uuid(),
     purchase_date: z.coerce.date().max(new Date()),
+    expense_date: z.string().length(7),
     is_recurring: z.boolean(),
     due_date: z.coerce.date().optional().nullable(),
     description: z.string().max(120).optional().nullable(),
@@ -26,6 +27,7 @@ export class Expense {
   public readonly is_recurring?: boolean;
   public readonly due_date?: string;
   public readonly description?: string;
+  public readonly expense_date?: string;
   public readonly created_at?: Date;
   public readonly updated_at?: Date;
 
@@ -50,6 +52,7 @@ export class Expense {
             card_id: true,
             user_id: true,
             purchase_date: true,
+            expense_date: true,
             due_date: true,
             is_recurring: true,
             parcel: true,
