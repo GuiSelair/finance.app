@@ -45,6 +45,7 @@ describe('CreateExpenseService use case - Unit test', () => {
       user_id: v4(),
       card_id: v4(),
       purchase_date: '2024-09-17',
+      manual_expense_date: '2024-09',
     });
 
     expect(createExpenseServiceResponse).toHaveProperty('id');
@@ -61,6 +62,7 @@ describe('CreateExpenseService use case - Unit test', () => {
         user_id: v4(),
         card_id: v4(),
         purchase_date: '2024-09-17',
+        manual_expense_date: '2024-09',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -77,6 +79,7 @@ describe('CreateExpenseService use case - Unit test', () => {
         user_id: userIdMock,
         card_id: v4(),
         purchase_date: '2024-09-17',
+        manual_expense_date: '2024-09',
       }),
     ).rejects.toBeInstanceOf(AppError);
     expect(expensesRepositoryMocked.remove).toHaveBeenCalledWith({ id: expect.any(String) });
