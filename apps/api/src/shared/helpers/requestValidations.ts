@@ -29,11 +29,11 @@ function throwIfPropertyMonthIsNotValid(month: number) {
 }
 
 function throwIfPropertyYearIsNotValid(year: number) {
-  const yearSchema = z.number().min(2020).max(new Date().getFullYear());
+  const yearSchema = z.number().min(2020);
 
   if (!yearSchema.safeParse(year).success) {
     throw new AppError(
-      `Year number invalid, try a number between 2000 and ${new Date().getFullYear()}`,
+      `Year number invalid, try a number greater than 2000`,
     );
   }
 }
