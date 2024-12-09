@@ -35,7 +35,7 @@ export default function PaymentMethodSelectionSection({ isEditMode }: PaymentMet
 			</InputLabel>
 			<InputLabel>
 				Data da despesa:
-				<TextInput type="month" {...register('expenseDate')} disabled={isEditMode} />
+				<TextInput type="month" {...register('manualExpenseDate')} disabled={isEditMode} />
 			</InputLabel>
 			<InputLabel>
 				Meio de pagamento:

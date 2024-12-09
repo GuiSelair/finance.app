@@ -14,7 +14,7 @@ export function useCreateExpense() {
 		resolver: yupResolver(createFormExpenseFormSchema(false)),
 		defaultValues: {
 			parcelQuantity: 1,
-			expenseDate: `${getYear(new Date())}-${getMonth(new Date()) + 1}`,
+			manualExpenseDate: `${getYear(new Date())}-${getMonth(new Date()) + 1}`,
 		},
 	});
 	const { mutateAsync, isLoading: isCreating } = useCreateExpenseApi();
@@ -33,7 +33,7 @@ export function useCreateExpense() {
 			parcel: data.parcelQuantity,
 			isRecurring: data.isRecurring,
 			purchaseDate: data.purchaseDate,
-			expenseDate: data.expenseDate,
+			manualExpenseDate: data.manualExpenseDate,
 		});
 		toast.success('Despesa criada com sucesso!');
 		router.push('/');
