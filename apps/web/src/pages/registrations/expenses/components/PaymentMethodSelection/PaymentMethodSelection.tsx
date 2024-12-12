@@ -28,15 +28,17 @@ export default function PaymentMethodSelectionSection({ isEditMode }: PaymentMet
 	}, [userAllPaymentMethods]);
 
 	return (
-		<GridColumn gridTemplateColumns="200px 418px 1fr" margin="0.5rem 0 0 0" gap="1.5rem">
+		<GridColumn gridTemplateColumns={isEditMode ? '200px 1fr' : '200px 418px 1fr'} margin="0.5rem 0 0 0" gap="1.5rem">
 			<InputLabel>
 				Data de compra:
 				<TextInput type="date" max={maxDateLimit} {...register('purchaseDate')} disabled={isEditMode} />
 			</InputLabel>
-			<InputLabel>
-				Data da despesa:
-				<TextInput type="month" {...register('manualExpenseDate')} disabled={isEditMode} />
-			</InputLabel>
+			{!isEditMode && (
+				<InputLabel>
+					Data da despesa:
+					<TextInput type="month" {...register('manualExpenseDate')} disabled={isEditMode} />
+				</InputLabel>
+			)}
 			<InputLabel>
 				Meio de pagamento:
 				<div>

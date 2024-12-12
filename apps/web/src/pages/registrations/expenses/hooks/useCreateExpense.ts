@@ -33,7 +33,7 @@ export function useCreateExpense() {
 			parcel: data.parcelQuantity,
 			isRecurring: data.isRecurring,
 			purchaseDate: data.purchaseDate,
-			manualExpenseDate: data.manualExpenseDate,
+			manualExpenseDate: data.manualExpenseDate!,
 		});
 		toast.success('Despesa criada com sucesso!');
 		router.push('/');

@@ -6,7 +6,7 @@ export const createFormExpenseFormSchema = (isEditMode = false) => {
 	return Yup.object().shape({
 		name: Yup.string().required(requiredFieldMessage),
 		purchaseDate: Yup.string().required(requiredFieldMessage),
-		manualExpenseDate: Yup.string().required(requiredFieldMessage),
+		manualExpenseDate: isEditMode ? Yup.string() : Yup.string().required(requiredFieldMessage),
 		category: Yup.string(),
 		totalValue: Yup.number().required(requiredFieldMessage),
 		parcelQuantity: Yup.number().required(requiredFieldMessage),
