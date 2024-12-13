@@ -1,5 +1,5 @@
 import { useContextSelector } from 'use-context-selector';
-import { getYear } from 'date-fns';
+import { useMemo } from 'react';
 
 import { Select, SelectOptionProps } from '@/components/Form/Select';
 import { getMonthOption, getMonthOptions } from '@/helpers/monthOptions';
@@ -16,12 +16,10 @@ export function SelectMonthAndYear() {
 		handleSelectMonthAndYear,
 	} = useContextSelector(selectedMonthYearContext, ctx => ctx);
 
-	if (!userCreatedAt || typeof selectedMonth === 'undefined') return null;
-
-	const monthOptions = getMonthOptions();
+	const monthOptions = useMemo(() => getMonthOptions(), []);
 	const currentMonthOption = getMonthOption(selectedMonth);
 
-	const yearOptions = getYearOptions(getYear(userCreatedAt) ?? 2022);
+	const yearOptions = useMemo(() => getYearOptions(), []);
 	const currentYearOption = yearOptions.find(yearOption => Number(yearOption.value) === selectedYear);
 
 	function handleSelectMonth(option: SelectOptionProps) {
@@ -31,6 +29,8 @@ export function SelectMonthAndYear() {
 	function handleSelectYear(option: SelectOptionProps) {
 		handleSelectMonthAndYear(selectedMonth, Number(option.value));
 	}
+
+	if (!userCreatedAt || typeof selectedMonth === 'undefined') return null;
 
 	return (
 		<SelectMonthAndYearContainer>

@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { getYear } from 'date-fns';
+import { getMonth, getYear } from 'date-fns';
 import { calculateExpenseMonth } from '@finance-app/helpers'
 
 import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository';
@@ -33,22 +33,16 @@ export class CreateExpenseMonthService {
     const expensesMonthList = [] as ExpenseMonth[];
     const valueOfParcel = Number(expense.amount) / Number(expense.parcel);
 
-    const firstMonth = await this.getFirstMonthOfExpense({
-      purchase_date: new Date(expense.purchase_date!),
-      card_id: expense.card_id!,
-      user_id: expense.user_id!,
-    });
-
-    let currentYear = getYear(expense.purchase_date!);
-    let currentMonth = firstMonth;
+    let currentYear = getYear(expense.manual_expense_date!);
+    let currentMonth = getMonth(expense.manual_expense_date!);
 
     for (let parcel = 1; parcel <= expense.parcel!; parcel++) {
       if (parcel !== 1) {
         currentMonth += 1;
       }
 
-      if (currentMonth > 12) {
-        currentMonth = 1;
+      if (currentMonth > 11) {
+        currentMonth = 0;
         currentYear += 1;
       }
 

@@ -1,12 +1,7 @@
-import { getYear } from 'date-fns';
-
-export function getYearOptions(firstYearToGenerate: number) {
-	const currentYear = getYear(new Date());
-	const years = [];
-
-	for (let i = currentYear; i >= firstYearToGenerate; i--) {
-		years.push({ value: String(i), label: String(i) });
-	}
-
-	return years;
+export function getYearOptions(yearRange = 10) {
+	const today = new Date();
+	return Array.from({ length: yearRange * 2 + 1 }, (_, i) => ({
+		value: (today.getFullYear() - yearRange + i).toString(),
+		label: (today.getFullYear() - yearRange + i).toString(),
+	}));
 }

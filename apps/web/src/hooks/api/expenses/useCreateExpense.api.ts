@@ -9,6 +9,7 @@ interface ICreateExpenseParams {
 	parcel: number;
 	isRecurring?: boolean;
 	purchaseDate: string;
+	manualExpenseDate: string;
 }
 
 export function useCreateExpenseApi() {
@@ -23,6 +24,7 @@ export function useCreateExpenseApi() {
 					parcel: newExpense.parcel,
 					is_recurring: newExpense.isRecurring,
 					purchase_date: newExpense.purchaseDate,
+					manual_expense_date: newExpense.manualExpenseDate,
 				},
 			});
 

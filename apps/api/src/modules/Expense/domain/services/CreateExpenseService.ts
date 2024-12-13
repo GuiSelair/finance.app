@@ -7,12 +7,13 @@ import { IExpensesRepository } from '../repositories/IExpensesRepository';
 import { Expense } from '../models/Expense';
 import { CreateExpenseMonthService } from './CreateExpenseMonthService';
 
-export interface ICreateExpenseDTO {
+export interface ICreateExpenseInput {
   name: string;
   amount: number;
   card_id: string;
   user_id: string;
   parcel: number;
+  manual_expense_date: string;
   purchase_date?: string;
   description?: string;
   due_date?: string;
@@ -34,8 +35,8 @@ export class CreateExpenseService {
     this.cardsRepository = cardsRepository;
   }
 
-  public async execute(expenseDTO: ICreateExpenseDTO): Promise<ExpenseMapper> {
-    const expenseToCreate = this.makeExpenseModel(expenseDTO);
+  public async execute(expenseInput: ICreateExpenseInput): Promise<ExpenseMapper> {
+    const expenseToCreate = this.makeExpenseModel(expenseInput);
 
     const cardFound = await this.cardsRepository.findById(
       expenseToCreate.card_id!,
@@ -46,12 +47,12 @@ export class CreateExpenseService {
     }
 
     const newExpense = await this.expensesRepository.create(expenseToCreate);
-
     try {
       const createExpenseMonthService = container.resolve(CreateExpenseMonthService);
       await createExpenseMonthService.execute(
         new Expense({
           ...newExpense,
+          manual_expense_date: expenseToCreate.manual_expense_date,
         }),
       );
     } catch (err) {
@@ -72,7 +73,8 @@ export class CreateExpenseService {
     purchase_date,
     parcel = 1,
     is_recurring = false,
-  }: ICreateExpenseDTO) {
+    manual_expense_date,
+  }: ICreateExpenseInput) {
     return new Expense(
       {
         name,
@@ -84,6 +86,7 @@ export class CreateExpenseService {
         parcel,
         purchase_date,
         is_recurring,
+        manual_expense_date,
       },
       'create',
     );
