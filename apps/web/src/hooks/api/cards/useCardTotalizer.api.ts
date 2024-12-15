@@ -2,32 +2,25 @@ import { useQuery } from 'react-query';
 import { toast } from 'react-toastify';
 
 import { httpClient } from '@/providers/HTTPClient';
+import { makeCardModel, RawCard } from '@/helpers/mappers/makeCardModel';
 
 interface IFetchCardTotalizerParams {
 	month: number;
 	year: number;
 }
 
-interface IFetchCardTotalizerReturn {
-	id: string;
-	name: string;
-	turningDay: number;
-	total: number;
-}
-
 export const useCardTotalizerApi = ({ month, year }: IFetchCardTotalizerParams) =>
 	useQuery(
 		['cardTotalizer', month, year],
 		async () => {
-			const apiResponse = await httpClient.get<IFetchCardTotalizerReturn[]>('/cards/totalizers', {
+			const apiResponse = await httpClient.get<RawCard[]>('/cards/totalizers', {
 				params: {
 					month,
 					year,
 				},
 			});
 
-			const data = apiResponse.data;
-			return data;
+			return apiResponse.data.map(rawCard => makeCardModel(rawCard));
 		},
 		{
 			onError: () => {
