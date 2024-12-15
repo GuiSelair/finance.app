@@ -4,7 +4,7 @@ export class Income {
   private static readonly schema = z.object({
     id: z.number().optional(),
     month: z.number().min(0).max(11),
-    year: z.number().min(2020).max(new Date().getFullYear()),
+    year: z.number().min(2020, { message: 'Year must be in the format YYYY and greater than 2020' }).positive(),
     income: z.number().nonnegative().min(1),
     user_id: z.string().uuid(),
     created_at: z.date().optional(),
