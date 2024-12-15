@@ -9,9 +9,6 @@ import { CreateCardFieldsType, createCardFormSchema } from '../constants/formSch
 export function useCreateCards() {
 	const router = useRouter();
 	const formSchema = useForm<CreateCardFieldsType>({
-		defaultValues: {
-			creditLimit: 0,
-		},
 		resolver: yupResolver(createCardFormSchema),
 	});
 	const { mutateAsync, isLoading: isCreating, isSuccess } = useCreateCardApi();

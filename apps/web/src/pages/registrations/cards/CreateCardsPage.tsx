@@ -13,7 +13,7 @@ export default function CreateCardsPage() {
 
 	const {
 		register,
-		formState: { errors, isValid },
+		formState: { errors },
 		handleSubmit,
 		control,
 	} = formSchema;
@@ -80,20 +80,6 @@ export default function CreateCardsPage() {
 								</InputLabel>
 							</Column>
 						</Row>
-						<Row>
-							<Column>
-								<InputLabel>
-									Limite do cartão:
-									<TextInput
-										prefix="R$"
-										type="number"
-										placeholder="1000"
-										error={errors.creditLimit?.message}
-										{...register('creditLimit', { valueAsNumber: true })}
-									/>
-								</InputLabel>
-							</Column>
-						</Row>
 					</RegisterCardsForm>
 				</LayoutBox.Content>
 				<LayoutBox.Footer>
@@ -101,7 +87,6 @@ export default function CreateCardsPage() {
 						<ActionButtons>
 							<ActionButtons.Cancel onClick={handleCancel} />
 							<ActionButtons.Submit
-								isDisabled={!isValid}
 								isLoading={isCreatingCard}
 								onClick={handleSubmit(handleCreateCard)}
 								spinnerConfig={{ mode: 'light', size: 'sm' }}
