@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
 import { getMonth, getYear } from 'date-fns';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -9,7 +8,6 @@ import { FormExpenseFieldsType, createFormExpenseFormSchema } from '../constants
 import { useCreateExpenseApi } from '@/hooks/api/expenses/useCreateExpense.api';
 
 export function useCreateExpense() {
-	const router = useRouter();
 	const formSchema = useForm<FormExpenseFieldsType>({
 		resolver: yupResolver(createFormExpenseFormSchema(false)),
 		defaultValues: {
@@ -36,7 +34,13 @@ export function useCreateExpense() {
 			manualExpenseDate: data.manualExpenseDate!,
 		});
 		toast.success('Despesa criada com sucesso!');
-		router.push('/');
+		formSchema.resetField('name');
+		formSchema.resetField('category');
+		formSchema.resetField('totalValue');
+		formSchema.resetField('isRecurring');
+		formSchema.resetField('parcelQuantity');
+		formSchema.resetField('parcelValue');
+		formSchema.setFocus('name');
 	}
 
 	const parcelValue =
