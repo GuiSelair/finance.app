@@ -21,6 +21,11 @@ export const CARD_TOTALIZER_TABLE_COLUMNS: TableColumnsProps = [
 		size: 500,
 	},
 	{
+		header: 'Data de vencimento',
+		accessorKey: 'dueDate',
+		size: 500,
+	},
+	{
 		header: 'Total',
 		accessorKey: 'total',
 		size: 300,

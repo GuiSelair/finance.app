@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useContextSelector } from 'use-context-selector';
+import { addMonths } from 'date-fns';
 
 import { formatCurrency } from '@/helpers/formatCurrency';
 import { useCardTotalizerApi } from '@/hooks/api/cards/useCardTotalizer.api';
@@ -15,11 +16,12 @@ export function useCardTotalizer() {
 		year,
 	});
 
-	function transformTuningDayToDate(tuningDay: number) {
+	function convertDueDayToDate(day: number) {
 		const monthFormatted = String(month + 1).padStart(2, '0');
-		const turningDayFormatted = String(tuningDay).padStart(2, '0');
+		const turningDayFormatted = String(day).padStart(2, '0');
+		const dateFormatted = `${year}-${monthFormatted}-${turningDayFormatted}T00:00:00`;
 
-		return `${turningDayFormatted}/${monthFormatted}/${year}`;
+		return addMonths(new Date(dateFormatted), 1).toLocaleDateString('pt-BR');
 	}
 
 	const tableDataMemoized = useMemo(() => {
@@ -28,8 +30,9 @@ export function useCardTotalizer() {
 		return cardTotalizer.map(card => ({
 			id: card.id,
 			name: card.name,
-			turningDay: transformTuningDayToDate(card.turningDay),
-			total: formatCurrency(card.total),
+			turningDay: String(card.turningDay).padStart(2, '0'),
+			dueDate: convertDueDayToDate(card.dueDay),
+			total: formatCurrency(card.total || 0),
 		}));
 	}, [cardTotalizer]);
 

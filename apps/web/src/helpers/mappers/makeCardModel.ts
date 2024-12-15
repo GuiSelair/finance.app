@@ -9,6 +9,7 @@ export interface RawCard {
 	turning_day: number;
 	created_at: string;
 	updated_at: string;
+	total?: number;
 }
 
 export function makeCardModel(rawCard: RawCard): Card {
