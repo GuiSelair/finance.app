@@ -9,6 +9,7 @@ export interface CardProps {
 	turningDay: number;
 	createdAt?: string;
 	updatedAt?: string;
+	total?: number;
 }
 
 export class Card {
@@ -20,6 +21,7 @@ export class Card {
 	turningDay: number;
 	createdAt?: Date;
 	updatedAt?: Date;
+	total?: number;
 
 	constructor(data: CardProps) {
 		this.id = data.id;
@@ -30,5 +32,6 @@ export class Card {
 		this.turningDay = data.turningDay;
 		this.createdAt = data.createdAt ? parseISO(data.createdAt) : undefined;
 		this.updatedAt = data.updatedAt ? parseISO(data.updatedAt) : undefined;
+		this.total = data.total || 0;
 	}
 }
