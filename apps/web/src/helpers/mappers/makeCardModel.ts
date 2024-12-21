@@ -18,6 +18,7 @@ export function makeCardModel(rawCard: RawCard): Card {
 		userId: rawCard.user_id,
 		name: rawCard.name,
 		flag: rawCard.flag,
+		total: rawCard.total,
 		dueDay: rawCard.due_day,
 		turningDay: rawCard.turning_day,
 		createdAt: rawCard.created_at,
