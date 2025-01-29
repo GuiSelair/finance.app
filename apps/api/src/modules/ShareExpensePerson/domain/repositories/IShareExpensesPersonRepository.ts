@@ -4,6 +4,6 @@ import { ShareExpensePerson } from "../models/ShareExpensePerson";
 export type FindByNameInput = { name: string, user_id: string }
 
 export interface IShareExpensesPersonRepository {
-  create: (args: ShareExpensePerson) => Promise<ShareExpensePersonMapper>
-  findByName: (args: FindByNameInput) => Promise<ShareExpensePersonMapper[] | null>
+  create: (args: ShareExpensePerson) => Promise<ShareExpensePerson>
+  findByName: (args: FindByNameInput) => Promise<ShareExpensePerson | null>
 }

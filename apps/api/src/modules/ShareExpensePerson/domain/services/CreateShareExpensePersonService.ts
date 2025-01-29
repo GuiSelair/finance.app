@@ -1,8 +1,8 @@
-import { inject } from "tsyringe"
+import { inject, injectable } from "tsyringe"
 
 import AppError from "@shared/errors/AppError"
 import { ShareExpensePerson } from "../models/ShareExpensePerson"
-import { IShareExpensesPersonRepository } from "../repositories/ShareExpensesPersonRepository"
+import { IShareExpensesPersonRepository } from "../repositories/IShareExpensesPersonRepository"
 
 interface CreateShareExpensePersonServiceInput {
   name: string
@@ -12,6 +12,7 @@ interface CreateShareExpensePersonServiceInput {
 }
 type CreateShareExpensePersonServiceOutput = Promise<ShareExpensePerson>
 
+@injectable()
 export class CreateShareExpensePersonService {
   constructor(
     @inject('ShareExpensesPersonRepository') private readonly shareExpensesPersonRepository: IShareExpensesPersonRepository,
@@ -21,7 +22,7 @@ export class CreateShareExpensePersonService {
     const shareExpensePersonModel = this.makeShareExpensePersonModel(props)
 
     const peopleWithSameName = await this.shareExpensesPersonRepository.findByName({ name: shareExpensePersonModel.name!, user_id: shareExpensePersonModel.user_id! })
-    if (peopleWithSameName?.length) {
+    if (peopleWithSameName) {
       throw new AppError('[ERROR]: Name of person must be unique.');
     }
 

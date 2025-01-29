@@ -4,7 +4,7 @@ export class ShareExpensePerson {
   private static readonly schema = z.object({
       id: z.number(),
       name: z.string().min(3).max(20),
-      whatsapp: z.string().length(10),
+      whatsapp: z.string().length(11),
       day_to_send_message: z.enum(['1', '5', '10']).default('5').transform(value => Number(value)),
       user_id: z.string().uuid(),
       created_at: z.date().optional(),
@@ -14,7 +14,7 @@ export class ShareExpensePerson {
     public readonly id?: number;
     public readonly name?: string;
     public readonly user_id?: string;
-    public readonly day_to_send_message?: number;
+    public readonly day_to_send_message?: number | string;
     public readonly whatsapp?: string;
     public readonly created_at?: Date;
     public readonly updated_at?: Date;
