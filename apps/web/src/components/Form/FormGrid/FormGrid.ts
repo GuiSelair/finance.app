@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-import { Box } from '@/components/Box';
+import { Flex } from '@/components/Flex';
 
-export const Row = styled(Box)`
+export const Row = styled(Flex)`
 	display: flex;
 `;
 
-export const Column = styled(Box)`
+export const Column = styled(Flex)`
 	display: flex;
 	flex-direction: column;
 `;
@@ -15,7 +15,7 @@ interface GridColumnProps {
 	gridTemplateColumns?: string;
 }
 
-export const GridColumn = styled(Box).withConfig({
+export const GridColumn = styled(Flex).withConfig({
 	shouldForwardProp: prop => !['gridTemplateColumns'].includes(prop),
 })<GridColumnProps>`
 	display: grid;

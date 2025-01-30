@@ -1,5 +1,6 @@
 export * from './BaseModal';
-export * from './Box';
+export * from './Flex';
+export * from './Grid';
 export * from './Button';
 export * from './Header';
 export * from './LayoutBox';

@@ -9,7 +9,7 @@ import {
 import Link from 'next/link';
 
 import { TextInput } from '@/components/Form/TextInput';
-import { Table, Spinner, Box, Button } from '@/components';
+import { Table, Spinner, Flex, Button } from '@/components';
 import { ExpenseInMonth } from '@/models/ExpenseInMonth';
 import { formatCurrency } from '@/helpers/formatCurrency';
 import { formatParcel } from '@/helpers/formatParcel';
@@ -109,9 +109,9 @@ export default function ExpensesTable({ fetchExpenses, deleteExpense }: Readonly
 
 	if (isFetchingExpenses) {
 		return (
-			<Box alignItems="center" justifyContent="center" width="100%">
+			<Flex alignItems="center" justifyContent="center" width="100%">
 				<Spinner size="md" mode="dark" />
-			</Box>
+			</Flex>
 		);
 	}
 
