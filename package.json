@@ -15,8 +15,8 @@
     "test": "turbo run test",
     "dev": "turbo run dev --parallel",
     "migration:run": "turbo run migration:run --parallel",
-    "container:db": "docker-compose up -d datasource",
-    "container:up": "docker-compose up -d datasource api web",
-    "container:down": "docker-compose stop"
+    "container:db": "docker compose up -d datasource",
+    "container:up": "docker compose up -d datasource api web",
+    "container:down": "docker compose stop"
   }
 }
