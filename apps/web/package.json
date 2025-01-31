@@ -28,6 +28,7 @@
 		"react-toastify": "^9.1.1",
 		"styled-components": "^6.1.8",
 		"use-context-selector": "^1.4.1",
+		"use-mask-input": "^3.4.2",
 		"yup": "^1.4.0"
 	},
 	"devDependencies": {

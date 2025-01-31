@@ -1,4 +1,4 @@
-import { ComponentProps, ElementRef, forwardRef } from 'react';
+import { ComponentProps, ElementRef, forwardRef, useId } from 'react';
 import ReactSelect, { OptionsOrGroups } from 'react-select';
 
 import { defaultTheme } from '@/styles/theme/default';
@@ -24,9 +24,12 @@ export const Select = forwardRef<ElementRef<typeof ReactSelect>, SelectProps>(fu
 	{ width, ...rest }: SelectProps,
 	ref,
 ) {
+	const id = useId();
+
 	return (
 		<ReactSelect
 			ref={ref}
+			instanceId={id}
 			styles={{
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
