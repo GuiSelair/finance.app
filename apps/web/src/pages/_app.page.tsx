@@ -1,4 +1,5 @@
 import 'react-toastify/dist/ReactToastify.css';
+import '@/constants/yupPtBrTranslations';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import { ToastContainer } from 'react-toastify';
