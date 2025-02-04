@@ -20,7 +20,7 @@ export interface NavigationContent {
 	name?: string;
 }
 
-export type PrincipalNavigationRoutes = 'home' | 'registrations' | 'cards';
+export type PrincipalNavigationRoutes = 'home' | 'registrations' | 'cards' | 'dividers';
 export type NavigationSystemProps = Record<PrincipalNavigationRoutes, NavigationContent>;
 
 export const navigationMapper = {
@@ -57,5 +57,20 @@ export const navigationMapper = {
 			},
 		],
 		name: 'Cartões',
+	},
+	dividers: {
+		title: 'Pessoas divisoras',
+		name: 'Divisões',
+		navigation: [
+			{
+				name: 'Total p/Pessoa',
+				path: '',
+			},
+			{
+				name: 'Cadastros',
+				path: 'share-people',
+				defaultActive: true,
+			},
+		],
 	},
 } as NavigationSystemProps;
