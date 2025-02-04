@@ -35,7 +35,7 @@ export class ShareExpensePersonMapper {
       id: data.id,
       name: data.name,
       whatsapp: data.whatsapp,
-      day_to_send_message: data.day_to_send_message,
+      day_to_send_message: String(data.day_to_send_message),
       user_id: data.user_id,
       created_at: data.created_at,
       updated_at: data.updated_at,
