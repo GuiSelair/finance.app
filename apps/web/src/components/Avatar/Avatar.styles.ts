@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const AvatarContainer = styled.div``;
 export const AvatarFallback = styled.div`
 	aspect-ratio: 1/1;
-	width: 1.125rem;
-	height: 1.125rem;
+	width: 2rem;
+	height: 2rem;
 	border-radius: 99999999%;
 	object-fit: cover;
 	padding: 0.5rem;
@@ -12,4 +12,5 @@ export const AvatarFallback = styled.div`
 	color: ${({ theme }) => theme.colors.green100};
 	font-size: ${({ theme }) => theme.fontSizes.small};
 	font-weight: 600;
+	text-align: center;
 `;

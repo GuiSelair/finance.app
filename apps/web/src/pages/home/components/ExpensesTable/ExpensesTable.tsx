@@ -9,7 +9,7 @@ import {
 import Link from 'next/link';
 
 import { TextInput } from '@/components/Form/TextInput';
-import { Table, Spinner, Flex, Button } from '@/components';
+import { DataTable, Spinner, Flex, Button } from '@/components';
 import { ExpenseInMonth } from '@/models/ExpenseInMonth';
 import { formatCurrency } from '@/helpers/formatCurrency';
 import { formatParcel } from '@/helpers/formatParcel';
@@ -128,7 +128,7 @@ export default function ExpensesTable({ fetchExpenses, deleteExpense }: Readonly
 					Exportar
 				</FilterButton>
 			</FilterContainer>
-			<Table columns={expensesTableColumns} data={expensesTableData} />
+			<DataTable columns={expensesTableColumns} data={expensesTableData} />
 			<ExpenseDetailsModal
 				isOpenModal={isOpenExpenseDetailsModal}
 				onClose={() => setIsOpenExpenseDetailsModal(false)}
