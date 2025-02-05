@@ -3,7 +3,7 @@ import * as yup from 'yup';
 export const sharePeopleFormSchema = yup.object().shape({
 	name: yup.string().label('Nome').required(),
 	whatsapp: yup.string().label('Whatsapp').required(),
-	betterDayTosendInvoice: yup
+	betterDayToSendInvoice: yup
 		.object()
 		.label('Dia para enviar o fatura')
 		.shape({

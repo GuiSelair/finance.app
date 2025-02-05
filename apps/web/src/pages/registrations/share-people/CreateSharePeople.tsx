@@ -52,7 +52,7 @@ export default function SharePeoplePage() {
 							<InputLabel>
 								Melhor dia para enviar fatura:
 								<Controller
-									name="betterDayTosendInvoice"
+									name="betterDayToSendInvoice"
 									control={control}
 									render={({ field }) => {
 										return (
