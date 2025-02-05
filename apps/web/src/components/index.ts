@@ -12,3 +12,4 @@ export * from './DataTable';
 export * from './Form';
 export * from './Popover';
 export * from './Avatar';
+export * from './LinkText';
