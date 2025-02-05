@@ -50,6 +50,16 @@ const BUTTON_VARIANT_MAPPER = {
 			background-color: ${({ theme }) => theme.colors.red900};
 		}
 	`,
+	dangerGhost: css`
+		border: 1px solid transparent;
+		background-color: ${({ theme }) => theme.colors.red100};
+		color: ${({ theme }) => theme.colors.red500};
+		font-weight: 600;
+
+		&:not(:disabled):hover {
+			border-color: ${({ theme }) => theme.colors.red500};
+		}
+	`,
 };
 
 const BUTTON_SIZE_MAPPER = {
