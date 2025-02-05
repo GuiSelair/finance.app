@@ -13,7 +13,7 @@ export function useCreateSharePeopleApi() {
 				body: {
 					name: formData.name,
 					whatsapp: removeInputMasks.removePHONEMask(formData.whatsapp),
-					day_to_send_message: formData.betterDayTosendInvoice.value,
+					day_to_send_message: formData.betterDayToSendInvoice.value,
 				},
 			});
 		},
