@@ -7,7 +7,7 @@ type CartTotalizerTableColumns = DataTableColumn<
 	{
 		id: string;
 		name: string;
-		turningDay: number;
+		turningDay: string;
 		dueDate: string;
 		total: string;
 	},

@@ -1,11 +1,12 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { TrashSimple as TrashIcon, PencilSimple as PencilSimpleIcon } from 'phosphor-react';
 
 import { Avatar, Button, Flex } from '@/components';
 import { useFetchSharePeopleApi } from '@/hooks/api/sharePeople/useFetchSharePeople.api';
+import { toast } from 'react-toastify';
 
 export function useSharePeopleList() {
-	const { data: sharePeopleResponse } = useFetchSharePeopleApi();
+	const { data: sharePeopleResponse, isLoading: isLoadingSharePeople, isError } = useFetchSharePeopleApi();
 	const sharePeopleList = useMemo(() => {
 		return (
 			sharePeopleResponse?.map(sharePerson => {
@@ -30,7 +31,19 @@ export function useSharePeopleList() {
 		);
 	}, [sharePeopleResponse]);
 
+	const isEmptyState = !sharePeopleResponse?.length && !isLoadingSharePeople;
+
+	useEffect(() => {
+		if (isError) {
+			toast.error(
+				'Ops! Aconteceu um erro ao buscar as pessoas divisoras cadastradas. Atualize a página e tente novamente',
+			);
+		}
+	}, [isError]);
+
 	return {
 		sharePeopleList,
+		isEmptyState,
+		isLoadingSharePeople,
 	};
 }
