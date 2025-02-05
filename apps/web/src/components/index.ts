@@ -8,6 +8,7 @@ export * from './NavLink';
 export * from './SelectMonthAndYear';
 export * from './SEO';
 export * from './Spinner';
-export * from './Table';
+export * from './DataTable';
 export * from './Form';
 export * from './Popover';
+export * from './Avatar';
