@@ -13,7 +13,6 @@ export function useCreateSharePeople() {
 			betterDayToSendInvoice: betterDaysToSendInvoiceOptions[1],
 		},
 	});
-	console.log(formMethods.formState.errors);
 
 	return {
 		formMethods,
