@@ -15,3 +15,7 @@ export const removeInputMasks = {
 	removeCurrencyMask: (value: string) => value.replace(/[^\d]+/g, ''),
 	removePercentageMask: (value: string) => value.replace(/[^\d]+/g, ''),
 };
+
+export const applyMasks = {
+	applyPhoneMask: (value: string) => value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'),
+};
