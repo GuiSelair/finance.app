@@ -40,6 +40,10 @@ export const navigationMapper = {
 				path: 'cards',
 				name: 'Cartões',
 			},
+			{
+				path: 'share-people',
+				name: 'Pessoas',
+			},
 		],
 		visible: false,
 	},

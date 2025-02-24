@@ -5,7 +5,7 @@ import { LayoutBox } from '@/components/LayoutBox';
 import { SEO } from '@/components/SEO';
 import { Table } from '@/components/Table';
 import { Spinner } from '@/components/Spinner';
-import { Box } from '@/components/Box';
+import { Flex } from '@/components/Flex';
 
 import { useCardTotalizer } from './hooks/useCardTotalizer';
 
@@ -28,10 +28,10 @@ export default function CardTotalizerPage() {
 				</LayoutBox.Header>
 				<LayoutBox.Content>
 					{isLoadingTableContent ? (
-						<Box height="200px" flexDirection="column" alignItems="center" justifyContent="center" gap="32px">
+						<Flex height="200px" flexDirection="column" alignItems="center" justifyContent="center" gap="32px">
 							<Spinner />
 							<span>Buscando resumo...</span>
-						</Box>
+						</Flex>
 					) : (
 						<Table columns={cardTotalizerTableColumns} data={cardTotalizerTableData} />
 					)}
