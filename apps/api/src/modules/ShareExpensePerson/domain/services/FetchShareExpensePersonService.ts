@@ -6,7 +6,9 @@ import { IShareExpensesPersonRepository } from "../repositories/IShareExpensesPe
 interface FetchShareExpensePersonServiceInput {
   user_id: string
 }
-type FetchShareExpensePersonServiceOutput = Promise<ShareExpensePerson[]>
+type FetchShareExpensePersonServiceOutput = Promise<{
+  sharePeople: ShareExpensePerson[]
+}>
 
 @injectable()
 export class FetchShareExpensePersonService {
@@ -17,7 +19,9 @@ export class FetchShareExpensePersonService {
   async execute({ user_id }: FetchShareExpensePersonServiceInput): FetchShareExpensePersonServiceOutput {
     const shareExpensePeopleFound = await this.shareExpensesPersonRepository.fetch({ user_id })
 
-    return shareExpensePeopleFound || []
+    return {
+      sharePeople: shareExpensePeopleFound || []
+    }
   }
 
 }
