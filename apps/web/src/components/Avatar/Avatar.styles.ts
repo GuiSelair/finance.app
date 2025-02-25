@@ -7,10 +7,11 @@ export const AvatarFallback = styled.div`
 	height: 2rem;
 	border-radius: 99999999%;
 	object-fit: cover;
-	padding: 0.5rem;
 	background: ${({ theme }) => theme.colors.green800};
 	color: ${({ theme }) => theme.colors.green100};
 	font-size: ${({ theme }) => theme.fontSizes.small};
 	font-weight: 600;
-	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
