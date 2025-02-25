@@ -1,20 +1,9 @@
-import { Controller } from 'react-hook-form';
-import { useHookFormMask } from 'use-mask-input';
-
-import { ActionButtons, Flex, Grid, InputLabel, LayoutBox, Select, SEO, TextInput } from '@/components';
-import { betterDaysToSendInvoiceOptions } from './constants/betterDaysToSendInvoiceOptions';
+import { ActionButtons, Flex, LayoutBox, SEO } from '@/components';
 import { useCreateSharePeople } from './hooks/useCreateSharePeople';
-import { InputMasks } from '@/constants/inputMasks';
+import { FormSharePeople } from './FormSharePeople';
 
-export default function SharePeoplePage() {
+export default function CreateSharePeoplePage() {
 	const { formMethods, handleCreateSharePeople } = useCreateSharePeople();
-	const {
-		register,
-		handleSubmit,
-		formState: { errors, isSubmitting },
-		control,
-	} = formMethods;
-	const registerWithMask = useHookFormMask(register);
 
 	return (
 		<>
@@ -29,43 +18,9 @@ export default function SharePeoplePage() {
 						id="share-people-form-id"
 						flexDirection="column"
 						gap="1rem"
-						onSubmit={handleSubmit(data => handleCreateSharePeople(data))}
+						onSubmit={formMethods.handleSubmit(data => handleCreateSharePeople(data))}
 					>
-						<InputLabel>
-							Nome:
-							<TextInput
-								placeholder="Insira o nome da pessoa aqui"
-								error={errors.name?.message}
-								{...register('name')}
-							/>
-						</InputLabel>
-						<Grid gap="1.5rem" gridTemplateColumns="minmax(300px, 1fr) minmax(300px, 1fr)">
-							<InputLabel>
-								Whatsapp:
-								<TextInput
-									placeholder="Whatsapp"
-									type="tel"
-									error={errors.whatsapp?.message}
-									{...registerWithMask('whatsapp', [InputMasks.Phone])}
-								/>
-							</InputLabel>
-							<InputLabel>
-								Melhor dia para enviar fatura:
-								<Controller
-									name="betterDayToSendInvoice"
-									control={control}
-									render={({ field }) => {
-										return (
-											<Select
-												placeholder="Selecione o melhor dia"
-												options={betterDaysToSendInvoiceOptions}
-												{...field}
-											/>
-										);
-									}}
-								/>
-							</InputLabel>
-						</Grid>
+						<FormSharePeople formMethods={formMethods} mode="create" />
 					</Flex>
 				</LayoutBox.Content>
 				<LayoutBox.Footer>
@@ -74,7 +29,7 @@ export default function SharePeoplePage() {
 							<ActionButtons.Cancel onClick={() => {}} />
 							<ActionButtons.Submit
 								form="share-people-form-id"
-								isLoading={isSubmitting}
+								isLoading={formMethods.formState?.isSubmitting}
 								spinnerConfig={{ mode: 'light', size: 'sm' }}
 							>
 								Criar pessoa
