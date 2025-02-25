@@ -9,7 +9,7 @@ export interface ButtonContainerProps {
 	 * Variação de estilos do botão
 	 * @default solid
 	 */
-	variant?: 'solid' | 'outline' | 'ghost' | 'link' | 'danger';
+	variant?: 'solid' | 'outline' | 'ghost' | 'link' | 'danger' | 'dangerGhost';
 	/**
 	 * Variação de tamanho do botão
 	 * @default md

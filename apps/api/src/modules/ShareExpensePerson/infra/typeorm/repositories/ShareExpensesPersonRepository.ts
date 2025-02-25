@@ -2,13 +2,23 @@ import { Repository } from "typeorm";
 import { ShareExpensePersonMapper } from "../entities/ShareExpensePersonMapper";
 import { DataSourceConfiguration } from "@shared/infra/typeorm/bootstrap";
 import { ShareExpensePerson } from "@modules/ShareExpensePerson/domain/models/ShareExpensePerson";
-import { FindByNameInput, IShareExpensesPersonRepository } from "@modules/ShareExpensePerson/domain/repositories/IShareExpensesPersonRepository";
+import { FetchInput, FindByNameInput, IShareExpensesPersonRepository } from "@modules/ShareExpensePerson/domain/repositories/IShareExpensesPersonRepository";
 
 export class ShareExpensesPersonRepository implements IShareExpensesPersonRepository {
   private repository: Repository<ShareExpensePersonMapper>
 
   constructor() {
     this.repository = DataSourceConfiguration.getRepository(ShareExpensePersonMapper)
+  }
+
+  public async fetch({ user_id }: FetchInput): Promise<ShareExpensePerson[]> {
+    const mappers = await this.repository.find({
+      where: {
+        user_id
+      },
+    })
+
+    return mappers?.map(ShareExpensePersonMapper.toModel) || []
   }
 
   private makeShareExpensePersonMapper(input: ShareExpensePerson): ShareExpensePersonMapper {
@@ -21,6 +31,7 @@ export class ShareExpensesPersonRepository implements IShareExpensesPersonReposi
     await this.repository.save(shareExpensePerson)
     return ShareExpensePersonMapper.toModel(shareExpensePerson)
   }
+
   public async findByName({ name, user_id }: FindByNameInput): Promise<ShareExpensePerson | null> {
     const mapperFound = await this.repository.findOneBy({
       name,

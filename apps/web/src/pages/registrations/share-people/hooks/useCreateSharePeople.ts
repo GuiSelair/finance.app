@@ -10,10 +10,9 @@ export function useCreateSharePeople() {
 	const formMethods = useForm<SharePeopleFormType>({
 		resolver: yupResolver(sharePeopleFormSchema),
 		defaultValues: {
-			betterDayTosendInvoice: betterDaysToSendInvoiceOptions[1],
+			betterDayToSendInvoice: betterDaysToSendInvoiceOptions[1],
 		},
 	});
-	console.log(formMethods.formState.errors);
 
 	return {
 		formMethods,

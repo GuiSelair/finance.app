@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Button } from '@/components/Button';
 import { LayoutBox } from '@/components/LayoutBox';
 import { SEO } from '@/components/SEO';
-import { Table } from '@/components/Table';
+import { DataTable } from '@/components/DataTable';
 import { Spinner } from '@/components/Spinner';
 import { Flex } from '@/components/Flex';
 
@@ -33,7 +33,7 @@ export default function CardTotalizerPage() {
 							<span>Buscando resumo...</span>
 						</Flex>
 					) : (
-						<Table columns={cardTotalizerTableColumns} data={cardTotalizerTableData} />
+						<DataTable columns={cardTotalizerTableColumns} data={cardTotalizerTableData} />
 					)}
 				</LayoutBox.Content>
 			</LayoutBox>

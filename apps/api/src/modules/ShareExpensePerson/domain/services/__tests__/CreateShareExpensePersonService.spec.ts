@@ -1,7 +1,6 @@
 import { v4 } from 'uuid'
 import { IShareExpensesPersonRepository } from '../../repositories/IShareExpensesPersonRepository'
 import { CreateShareExpensePersonService } from '../CreateShareExpensePersonService'
-import { ShareExpensePerson } from '../../models/ShareExpensePerson'
 import AppError from '@shared/errors/AppError'
 
 let shareExpensesPersonRepositoryMocked: Partial<IShareExpensesPersonRepository>
@@ -27,7 +26,7 @@ describe('CreateShareExpensePersonService service - Uni test', () => {
     })
 
 
-    expect(shareExpensesPersonRepositoryMocked.create).toHaveBeenCalled
+    expect(shareExpensesPersonRepositoryMocked.create).toHaveBeenCalled()
   })
 
   it('should not be able to create a new share expense person if exist an user with same name', async() => {
@@ -40,6 +39,6 @@ describe('CreateShareExpensePersonService service - Uni test', () => {
         user_id: fakeUserId
       })
     ).rejects.toBeInstanceOf(AppError)
-    expect(shareExpensesPersonRepositoryMocked.create).not.toHaveBeenCalled
+    expect(shareExpensesPersonRepositoryMocked.create).not.toHaveBeenCalled()
   })
 })

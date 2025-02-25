@@ -1,16 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
-import { TableContainer } from './Table.styles';
+import { Table, TableCell, TableHeadCell, TableRow } from './DataTable.styles';
 
-export type TableColumnsProps = ColumnDef<any, any>[];
+export type DataTableColumn<TData, TValue = unknown> = ColumnDef<TData, TValue>[];
 
-interface TableProps {
-	columns: TableColumnsProps;
-	data: any[];
+export interface DataTableProps<TData, TValue> {
+	columns: ColumnDef<TData, TValue>[];
+	data: TData[];
 }
 
-export function Table({ columns, data }: Readonly<TableProps>) {
+export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
 	const table = useReactTable({
 		columns,
 		data,
@@ -18,34 +17,34 @@ export function Table({ columns, data }: Readonly<TableProps>) {
 	});
 
 	return (
-		<TableContainer>
+		<Table>
 			<thead>
 				{table.getHeaderGroups().map(headerGroup => (
-					<tr key={headerGroup.id}>
+					<TableRow key={headerGroup.id}>
 						{headerGroup.headers.map(header => (
-							<th
+							<TableHeadCell
 								key={header.id}
 								style={{
 									width: header.getSize(),
 								}}
 							>
 								{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-							</th>
+							</TableHeadCell>
 						))}
-					</tr>
+					</TableRow>
 				))}
 			</thead>
 			<tbody>
 				{table.getRowModel().rows.map(row => (
-					<tr key={row.id}>
+					<TableRow key={row.id}>
 						{row.getVisibleCells().map(cell => (
-							<td key={cell.id} style={{ width: cell.column.getSize() }}>
+							<TableCell key={cell.id} style={{ width: cell.column.getSize() }}>
 								{flexRender(cell.column.columnDef.cell, cell.getContext())}
-							</td>
+							</TableCell>
 						))}
-					</tr>
+					</TableRow>
 				))}
 			</tbody>
-		</TableContainer>
+		</Table>
 	);
 }

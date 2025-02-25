@@ -9,5 +9,6 @@ const shareExpensePersonController = new ShareExpensePersonController();
 shareExpensePersonRouter.use(ensureAuthenticated);
 
 shareExpensePersonRouter.post('/', shareExpensePersonController.create);
+shareExpensePersonRouter.get('/', shareExpensePersonController.fetch);
 
 export default shareExpensePersonRouter;

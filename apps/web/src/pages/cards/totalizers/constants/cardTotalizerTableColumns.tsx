@@ -1,9 +1,20 @@
-import { TableColumnsProps } from '@/components/Table';
+import { DataTableColumn } from '@/components/DataTable';
 
 import { Button } from '@/components/Button';
 import { CardTotalizerHighlightValue } from '../CardTotalizer.styles';
 
-export const CARD_TOTALIZER_TABLE_COLUMNS: TableColumnsProps = [
+type CartTotalizerTableColumns = DataTableColumn<
+	{
+		id: string;
+		name: string;
+		turningDay: string;
+		dueDate: string;
+		total: string;
+	},
+	unknown
+>;
+
+export const CARD_TOTALIZER_TABLE_COLUMNS: CartTotalizerTableColumns = [
 	{
 		header: 'Chave ID',
 		accessorKey: 'id',
