@@ -3,7 +3,7 @@ import { httpClient } from '@/providers/HTTPClient';
 import { useQuery } from 'react-query';
 
 interface FetchSharePeopleHttpResponse {
-	sharePeople: RawSharePeople[];
+	share_people: RawSharePeople[];
 }
 
 export function useFetchSharePeopleApi() {
@@ -11,7 +11,7 @@ export function useFetchSharePeopleApi() {
 		queryKey: ['share-people'],
 		queryFn: async () => {
 			const response = await httpClient.get<FetchSharePeopleHttpResponse>('/share-people');
-			const { sharePeople } = response.data;
+			const { share_people: sharePeople } = response.data;
 
 			return sharePeople?.map(sharePerson => makeSharePeopleModel(sharePerson)) || [];
 		},

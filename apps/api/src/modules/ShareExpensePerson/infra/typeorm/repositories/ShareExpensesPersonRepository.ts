@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { ShareExpensePersonMapper } from "../entities/ShareExpensePersonMapper";
 import { DataSourceConfiguration } from "@shared/infra/typeorm/bootstrap";
 import { ShareExpensePerson } from "@modules/ShareExpensePerson/domain/models/ShareExpensePerson";
-import { FetchInput, FindByNameInput, IShareExpensesPersonRepository } from "@modules/ShareExpensePerson/domain/repositories/IShareExpensesPersonRepository";
+import { FetchInput, FindByIdInput, FindByNameInput, IShareExpensesPersonRepository } from "@modules/ShareExpensePerson/domain/repositories/IShareExpensesPersonRepository";
 
 export class ShareExpensesPersonRepository implements IShareExpensesPersonRepository {
   private repository: Repository<ShareExpensePersonMapper>
@@ -39,5 +39,20 @@ export class ShareExpensesPersonRepository implements IShareExpensesPersonReposi
     })
 
     return mapperFound ? ShareExpensePersonMapper.toModel(mapperFound) : null
+  }
+
+  public async findById({ id, user_id }: FindByIdInput): Promise<ShareExpensePerson | null> {
+    const mapperFound = await this.repository.findOneBy({
+      id,
+      user_id
+    })
+
+    return mapperFound ? ShareExpensePersonMapper.toModel(mapperFound) : null
+  }
+
+  public async update(args: ShareExpensePerson): Promise<ShareExpensePerson> {
+    const shareExpensePersonMapper = this.makeShareExpensePersonMapper(args)
+    const shareExpensePerson = await this.repository.update({ id: args.id }, shareExpensePersonMapper)
+    return ShareExpensePersonMapper.toModel(shareExpensePersonMapper)
   }
 }
