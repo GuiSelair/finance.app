@@ -49,6 +49,7 @@ export default function EditSharePeoplePage() {
 							<ActionButtons.Submit
 								form="share-people-form-id"
 								isLoading={formMethods.formState?.isSubmitting}
+								isDisabled={!formMethods.formState?.isDirty}
 								spinnerConfig={{ mode: 'light', size: 'sm' }}
 							>
 								Editar pessoa

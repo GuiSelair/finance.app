@@ -5,12 +5,12 @@ import { removeInputMasks } from '@/constants/inputMasks';
 import { SharePeopleFormType } from '@/pages/registrations/share-people/constants/formSchema';
 import { httpClient } from '@/providers/HTTPClient';
 
-export type EditSharePeopleInput = SharePeopleFormType;
+export type EditSharePeopleInput = SharePeopleFormType & { id: number };
 
 export function useEditSharePeopleApi() {
 	return useMutation({
 		mutationFn: async (formData: EditSharePeopleInput) => {
-			await httpClient.put('/share-people', {
+			await httpClient.put(`/share-people/${formData.id}`, {
 				body: {
 					name: formData.name,
 					whatsapp: removeInputMasks.removePHONEMask(formData.whatsapp),

@@ -7,7 +7,7 @@ interface FindSharePeopleInput {
 }
 
 interface FindSharePeopleHttpResponse {
-	sharePerson: RawSharePeople;
+	share_person: RawSharePeople;
 }
 
 export function useFindSharePeopleApi({ sharePeopleId }: FindSharePeopleInput) {
@@ -15,7 +15,7 @@ export function useFindSharePeopleApi({ sharePeopleId }: FindSharePeopleInput) {
 		queryKey: ['share-people', sharePeopleId],
 		queryFn: async () => {
 			const response = await httpClient.get<FindSharePeopleHttpResponse>(`/share-people/${sharePeopleId}`);
-			const { sharePerson } = response.data;
+			const { share_person: sharePerson } = response.data;
 
 			return makeSharePeopleModel(sharePerson);
 		},
