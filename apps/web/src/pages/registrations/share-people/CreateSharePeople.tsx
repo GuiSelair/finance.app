@@ -3,7 +3,7 @@ import { useCreateSharePeople } from './hooks/useCreateSharePeople';
 import { FormSharePeople } from './FormSharePeople';
 
 export default function CreateSharePeoplePage() {
-	const { formMethods, handleCreateSharePeople } = useCreateSharePeople();
+	const { formMethods, handleCreateSharePeople, handleCancel } = useCreateSharePeople();
 
 	return (
 		<>
@@ -26,7 +26,7 @@ export default function CreateSharePeoplePage() {
 				<LayoutBox.Footer>
 					<LayoutBox.FooterRightSide>
 						<ActionButtons>
-							<ActionButtons.Cancel onClick={() => {}} />
+							<ActionButtons.Cancel onClick={handleCancel} isLoading={formMethods.formState?.isSubmitting} />
 							<ActionButtons.Submit
 								form="share-people-form-id"
 								isLoading={formMethods.formState?.isSubmitting}

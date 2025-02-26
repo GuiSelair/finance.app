@@ -3,7 +3,7 @@ import { FormSharePeople } from './FormSharePeople';
 import { useEditSharePeople } from './hooks/useEditSharePeople';
 
 export default function EditSharePeoplePage() {
-	const { formMethods, handleEditSharePeople, isFindingPerson } = useEditSharePeople();
+	const { formMethods, handleEditSharePeople, isFindingPerson, handleCancel } = useEditSharePeople();
 
 	if (isFindingPerson) {
 		return (
@@ -16,7 +16,7 @@ export default function EditSharePeoplePage() {
 					<LayoutBox.Content>
 						<Flex justifyContent="center" alignItems="center" width="100%" gap="8px">
 							<Spinner size="sm" />
-							<span>Buscando informações da pessoa</span>
+							<span>Buscando informações da pessoa...</span>
 						</Flex>
 					</LayoutBox.Content>
 				</LayoutBox>
@@ -45,7 +45,7 @@ export default function EditSharePeoplePage() {
 				<LayoutBox.Footer>
 					<LayoutBox.FooterRightSide>
 						<ActionButtons>
-							<ActionButtons.Cancel onClick={() => {}} />
+							<ActionButtons.Cancel onClick={handleCancel} isLoading={formMethods.formState?.isSubmitting} />
 							<ActionButtons.Submit
 								form="share-people-form-id"
 								isLoading={formMethods.formState?.isSubmitting}

@@ -4,9 +4,10 @@ import { sharePeopleFormSchema, SharePeopleFormType } from '../constants/formSch
 import { betterDaysToSendInvoiceOptions } from '../constants/betterDaysToSendInvoiceOptions';
 import { useEditSharePeopleApi } from '@/hooks/api/sharePeople/useEditSharePeople.api';
 import { useFindSharePeopleApi } from '@/hooks/api/sharePeople/useFindSharePeople.api';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 export function useEditSharePeople() {
+	const router = useRouter();
 	const params = useParams<{ id: string }>();
 	const sharePeopleId = Number(params?.id);
 	const { mutateAsync: handleEditSharePeople } = useEditSharePeopleApi();
@@ -26,9 +27,14 @@ export function useEditSharePeople() {
 		}),
 	});
 
+	function handleCancel() {
+		router.push('/dividers/share-people');
+	}
+
 	return {
 		formMethods,
 		handleEditSharePeople,
 		isFindingPerson: isLoading,
+		handleCancel,
 	};
 }
