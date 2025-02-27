@@ -5,10 +5,13 @@ import { Avatar, Button, Flex } from '@/components';
 import { useFetchSharePeopleApi } from '@/hooks/api/sharePeople/useFetchSharePeople.api';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import { useDisableSharePeopleApi } from '@/hooks/api/sharePeople/useDisableSharePeople.api';
 
 export function useSharePeopleList() {
 	const router = useRouter();
 	const { data: sharePeopleResponse, isLoading: isLoadingSharePeople, isError } = useFetchSharePeopleApi();
+	const { mutateAsync: disableSharePeopleFn, isLoading: isDisabling } = useDisableSharePeopleApi();
+
 	const sharePeopleList = useMemo(() => {
 		return (
 			sharePeopleResponse?.map(sharePerson => {
@@ -24,10 +27,16 @@ export function useSharePeopleList() {
 								variant="ghost"
 								size="icon"
 								onClick={() => router.push(`/registrations/share-people/${sharePerson.id}`)}
+								isDisabled={isDisabling}
 							>
 								<PencilSimpleIcon />
 							</Button>
-							<Button variant="dangerGhost" size="icon">
+							<Button
+								variant="dangerGhost"
+								size="icon"
+								onClick={() => disableSharePeopleFn(sharePerson.id)}
+								isLoading={isDisabling}
+							>
 								<TrashIcon />
 							</Button>
 						</Flex>
@@ -35,7 +44,7 @@ export function useSharePeopleList() {
 				};
 			}) || []
 		);
-	}, [sharePeopleResponse]);
+	}, [sharePeopleResponse, isDisabling]);
 
 	const isEmptyState = !sharePeopleResponse?.length && !isLoadingSharePeople;
 
@@ -51,5 +60,6 @@ export function useSharePeopleList() {
 		sharePeopleList,
 		isEmptyState,
 		isLoadingSharePeople,
+		isDisabling,
 	};
 }

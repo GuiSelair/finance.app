@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, DeleteDateColumn } from 'typeorm'
 
 import { ShareExpensePerson } from "@modules/ShareExpensePerson/domain/models/ShareExpensePerson";
 import { UserMapper } from '@modules/User/infra/typeorm/entities/UserMapper';
@@ -30,6 +30,9 @@ export class ShareExpensePersonMapper {
   @UpdateDateColumn()
   updated_at?: Date;
 
+  @DeleteDateColumn()
+  deleted_at?: Date;
+
   static toModel(data: ShareExpensePersonMapper) {
     return new ShareExpensePerson({
       id: data.id,
@@ -39,6 +42,7 @@ export class ShareExpensePersonMapper {
       user_id: data.user_id,
       created_at: data.created_at,
       updated_at: data.updated_at,
+      deleted_at: data.deleted_at
     });
   }
 }
