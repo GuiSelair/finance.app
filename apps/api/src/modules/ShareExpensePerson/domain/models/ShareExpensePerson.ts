@@ -9,6 +9,7 @@ export class ShareExpensePerson {
       user_id: z.string().uuid(),
       created_at: z.date().optional(),
       updated_at: z.date().optional(),
+      deleted_at: z.date().optional().nullable(),
     });
 
     public readonly id?: number;
@@ -18,6 +19,7 @@ export class ShareExpensePerson {
     public readonly whatsapp?: string;
     public readonly created_at?: Date;
     public readonly updated_at?: Date;
+    public readonly deleted_at?: Date;
 
     constructor(input: Partial<ShareExpensePerson>, validate: boolean | 'create' | 'partial' = true) {
       if (validate) {
