@@ -57,7 +57,7 @@ export default function PaymentMethodSelectionSection({ isEditMode }: PaymentMet
 					<FieldDescription>
 						Não encontrou o meio de pagamento?{' '}
 						<strong>
-							<Link href={'/add/cards'} prefetch={false}>
+							<Link href={'/registrations/cards'} prefetch={false}>
 								Crie um aqui!
 								<ArrowSquareOutIcon />
 							</Link>
