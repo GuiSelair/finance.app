@@ -9,6 +9,7 @@ export const createFormExpenseFormSchema = (isEditMode = false) => {
 		manualExpenseDate: isEditMode ? Yup.string() : Yup.string().required(requiredFieldMessage),
 		category: Yup.string(),
 		totalValue: Yup.number()
+			.typeError('Campo inválido')
 			.required(requiredFieldMessage)
 			.transform((_, originalValue) => Number(originalValue.replace(',', '.'))),
 		parcelQuantity: Yup.number().required(requiredFieldMessage),
