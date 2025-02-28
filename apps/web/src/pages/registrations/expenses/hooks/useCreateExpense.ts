@@ -43,8 +43,12 @@ export function useCreateExpense() {
 		formSchema.setFocus('name');
 	}
 
+	const totalValue = formSchema.watch('totalValue');
 	const parcelValue =
-		calculateParcelValue(Number(formSchema.watch('totalValue')), formSchema.watch('parcelQuantity')) ?? 0;
+		calculateParcelValue(
+			Number(totalValue) || Number(String(totalValue)?.replace(',', '.')),
+			formSchema.watch('parcelQuantity'),
+		) ?? 0;
 
 	return {
 		parcelValue,
