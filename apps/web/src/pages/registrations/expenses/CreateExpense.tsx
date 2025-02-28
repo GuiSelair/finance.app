@@ -57,13 +57,7 @@ export default function CreateExpensePage() {
 								<Row gap="0.5rem">
 									<InputLabel>
 										Valor total:
-										<ValueInput
-											prefix="R$"
-											error={errors.totalValue?.message}
-											{...register('totalValue', {
-												valueAsNumber: true,
-											})}
-										/>
+										<ValueInput prefix="R$" error={errors.totalValue?.message} {...register('totalValue')} />
 									</InputLabel>
 									<InputLabel>
 										Parcelas:
