@@ -7,7 +7,7 @@ interface FetchShareExpensePersonServiceInput {
   user_id: string
 }
 type FetchShareExpensePersonServiceOutput = Promise<{
-  sharePeople: ShareExpensePerson[]
+  share_people: ShareExpensePerson[]
 }>
 
 @injectable()
@@ -20,7 +20,7 @@ export class FetchShareExpensePersonService {
     const shareExpensePeopleFound = await this.shareExpensesPersonRepository.fetch({ user_id })
 
     return {
-      sharePeople: shareExpensePeopleFound || []
+      share_people: shareExpensePeopleFound || []
     }
   }
 
