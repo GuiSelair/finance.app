@@ -6,6 +6,7 @@ import { CreateShareExpensePersonService } from '@modules/ShareExpensePerson/dom
 import { FetchShareExpensePersonService } from '@modules/ShareExpensePerson/domain/services/FetchShareExpensePersonService';
 import { FindShareExpensePersonService } from '@modules/ShareExpensePerson/domain/services/FindShareExpensePersonService';
 import { EditShareExpensePersonService } from '@modules/ShareExpensePerson/domain/services/EditShareExpensePersonService';
+import { DisableShareExpensePersonService } from '@modules/ShareExpensePerson/domain/services/DisableShareExpensePersonService';
 
 export class ShareExpensePersonController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -59,5 +60,18 @@ export class ShareExpensePersonController {
     const shareExpensePerson = await findShareExpensePersonService.execute({ id: sharePersonId, user_id: id });
 
     return response.status(200).json(shareExpensePerson);
+  }
+
+  public async disable(request: Request, response: Response): Promise<Response> {
+    requestValidations.throwIfPropertyNotExists(request.params, 'id')
+    requestValidations.throwIfIsNaN({ name: 'id', value: Number(request.params.id) })
+
+    const { id } = request.user;
+    const sharePersonId = Number(request.params.id)
+
+    const disableShareExpensePersonService = container.resolve(DisableShareExpensePersonService);
+    await disableShareExpensePersonService.execute({ id: sharePersonId, user_id: id });
+
+    return response.status(204).send()
   }
 }

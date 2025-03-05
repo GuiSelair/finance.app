@@ -2,13 +2,17 @@ import { Repository } from "typeorm";
 import { ShareExpensePersonMapper } from "../entities/ShareExpensePersonMapper";
 import { DataSourceConfiguration } from "@shared/infra/typeorm/bootstrap";
 import { ShareExpensePerson } from "@modules/ShareExpensePerson/domain/models/ShareExpensePerson";
-import { FetchInput, FindByIdInput, FindByNameInput, IShareExpensesPersonRepository } from "@modules/ShareExpensePerson/domain/repositories/IShareExpensesPersonRepository";
+import { DisableInput, FetchInput, FindByIdInput, FindByNameInput, IShareExpensesPersonRepository } from "@modules/ShareExpensePerson/domain/repositories/IShareExpensesPersonRepository";
 
 export class ShareExpensesPersonRepository implements IShareExpensesPersonRepository {
   private repository: Repository<ShareExpensePersonMapper>
 
   constructor() {
     this.repository = DataSourceConfiguration.getRepository(ShareExpensePersonMapper)
+  }
+
+  private makeShareExpensePersonMapper(input: ShareExpensePerson): ShareExpensePersonMapper {
+    return Object.assign(new ShareExpensePersonMapper(), input)
   }
 
   public async fetch({ user_id }: FetchInput): Promise<ShareExpensePerson[]> {
@@ -19,10 +23,6 @@ export class ShareExpensesPersonRepository implements IShareExpensesPersonReposi
     })
 
     return mappers?.map(ShareExpensePersonMapper.toModel) || []
-  }
-
-  private makeShareExpensePersonMapper(input: ShareExpensePerson): ShareExpensePersonMapper {
-    return Object.assign(new ShareExpensePersonMapper(), input)
   }
 
   public async create(args: ShareExpensePerson): Promise<ShareExpensePerson> {
@@ -52,7 +52,11 @@ export class ShareExpensesPersonRepository implements IShareExpensesPersonReposi
 
   public async update(args: ShareExpensePerson): Promise<ShareExpensePerson> {
     const shareExpensePersonMapper = this.makeShareExpensePersonMapper(args)
-    const shareExpensePerson = await this.repository.update({ id: args.id }, shareExpensePersonMapper)
+    await this.repository.update({ id: args.id }, shareExpensePersonMapper)
     return ShareExpensePersonMapper.toModel(shareExpensePersonMapper)
+  }
+
+  public async disable(args: DisableInput): Promise<void> {
+    this.repository.softDelete({ id: args.id, user_id: args.user_id })
   }
 }
