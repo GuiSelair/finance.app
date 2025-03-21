@@ -3,7 +3,7 @@ import { z } from 'zod';
 export class Expense {
   private static readonly schema = z.object({
     id: z.string().uuid(),
-    name: z.string().min(4).max(40),
+    name: z.string().min(1).max(40),
     amount: z.number().positive(),
     parcel: z.number().positive(),
     card_id: z.string().uuid(),
