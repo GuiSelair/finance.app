@@ -26,7 +26,7 @@ export function useCreateExpense() {
 	async function createExpenseSubmit(data: FormExpenseFieldsType): Promise<void> {
 		await mutateAsync({
 			name: data.name,
-			amount: data.totalValue,
+			amount: data.totalValue!,
 			cardId: data.paymentMethod.value,
 			parcel: data.parcelQuantity,
 			isRecurring: data.isRecurring,

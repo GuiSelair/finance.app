@@ -1,19 +1,19 @@
+import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { useParams } from 'next/navigation';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+
 import { FormExpenseFieldsType, createFormExpenseFormSchema } from '../constants/formSchema';
 import { useEditExpenseApi } from '@/hooks/api/expenses/useEditExpense.api';
 import { useFindExpenseApi } from '@/hooks/api/expenses/useFindExpense.api';
-import { useEffect } from 'react';
 
 export function useEditExpense() {
 	const router = useRouter();
 	const params = useParams<{ id: string }>();
 	const expenseId = params?.id;
-	const { refetch } = useFindExpenseApi(expenseId, { ignoreInitialFetch: true });
+	const { refetch, isLoading } = useFindExpenseApi(expenseId, { ignoreInitialFetch: true });
 	const formSchema = useForm<FormExpenseFieldsType>({
 		resolver: yupResolver(createFormExpenseFormSchema(true)),
 		defaultValues: async () => {
@@ -56,6 +56,7 @@ export function useEditExpense() {
 	return {
 		editExpenseSubmit,
 		isEditing,
+		isLoading,
 		goBack,
 		formSchema,
 	};

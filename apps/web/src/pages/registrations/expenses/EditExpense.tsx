@@ -4,19 +4,40 @@ import { FormProvider } from 'react-hook-form';
 import { LayoutBox } from '@/components/LayoutBox';
 import { TextInput, InputLabel, ActionButtons, Row, Column } from '@/components/Form';
 import { SEO } from '@/components/SEO';
+import { Spinner } from '@/components/Spinner';
+import { Flex } from '@/components/Flex';
 
 import { PaymentMethodSelectionSection } from './components/PaymentMethodSelection';
 import { useEditExpense } from './hooks/useEditExpense';
 import { RegisterExpenseForm, Divider, ValueInput } from './ExpenseForm.styles';
 
 export default function EditExpensePage() {
-	const { editExpenseSubmit, goBack, isEditing, formSchema } = useEditExpense();
+	const { editExpenseSubmit, goBack, isEditing, formSchema, isLoading } = useEditExpense();
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isDirty },
 	} = formSchema;
+
+	if (isLoading) {
+		return (
+			<>
+				<SEO title="Edição de despesa" />
+				<LayoutBox>
+					<LayoutBox.Header>
+						<LayoutBox.HeaderTitle>Editar despesa</LayoutBox.HeaderTitle>
+					</LayoutBox.Header>
+					<LayoutBox.Content>
+						<Flex justifyContent="center" alignItems="center" height="100%" gap="0.5rem">
+							<Spinner size="md" mode="dark" />
+							Buscando informações da despesa...
+						</Flex>
+					</LayoutBox.Content>
+				</LayoutBox>
+			</>
+		);
+	}
 
 	return (
 		<FormProvider {...formSchema}>
@@ -46,14 +67,7 @@ export default function EditExpensePage() {
 								<Row gap="0.5rem">
 									<InputLabel>
 										Valor total:
-										<ValueInput
-											prefix="R$"
-											error={errors.totalValue?.message}
-											disabled
-											{...register('totalValue', {
-												valueAsNumber: true,
-											})}
-										/>
+										<ValueInput prefix="R$" error={errors.totalValue?.message} disabled {...register('totalValue')} />
 									</InputLabel>
 									<InputLabel>
 										Parcelas:
