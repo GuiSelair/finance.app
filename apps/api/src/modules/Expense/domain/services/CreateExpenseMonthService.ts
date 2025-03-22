@@ -46,6 +46,8 @@ export class CreateExpenseMonthService {
         currentYear += 1;
       }
 
+      // TODO: Adicionar a tabela de shareExpenseMonthPerson para criar os registros de parcelas compartilhadas
+      // TODO: Fazer insercao de parcelas compartilhadas
       expensesMonthList.push(
         new ExpenseMonth(
           {
@@ -56,6 +58,7 @@ export class CreateExpenseMonthService {
             month: currentMonth,
             year: currentYear,
             is_paid: false,
+            share_expense_people: expense.share_expense_people,
           },
           'create',
         ),

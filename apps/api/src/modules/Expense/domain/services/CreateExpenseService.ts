@@ -18,6 +18,10 @@ export interface ICreateExpenseInput {
   description?: string;
   due_date?: string;
   is_recurring?: boolean;
+  share_expense_people?: {
+    share_expense_person_id: string,
+    amount: number,
+  }[]
 }
 
 @injectable()
@@ -63,30 +67,20 @@ export class CreateExpenseService {
     return newExpense;
   }
 
-  private makeExpenseModel({
-    name,
-    description,
-    amount,
-    due_date,
-    card_id,
-    user_id,
-    purchase_date,
-    parcel = 1,
-    is_recurring = false,
-    manual_expense_date,
-  }: ICreateExpenseInput) {
+  private makeExpenseModel(args: ICreateExpenseInput) {
     return new Expense(
       {
-        name,
-        description,
-        amount,
-        due_date,
-        card_id,
-        user_id,
-        parcel,
-        purchase_date,
-        is_recurring,
-        manual_expense_date,
+        name: args.name,
+        description: args.description,
+        amount: args.amount,
+        due_date: args.due_date,
+        card_id: args.card_id,
+        user_id: args.user_id,
+        parcel: args.parcel || 1,
+        purchase_date: args.purchase_date,
+        is_recurring: args.is_recurring || false,
+        manual_expense_date: args.manual_expense_date,
+        share_expense_people: args.share_expense_people,
       },
       'create',
     );

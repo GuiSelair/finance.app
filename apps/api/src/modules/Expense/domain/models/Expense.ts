@@ -16,6 +16,10 @@ export class Expense {
     is_recurring: z.boolean(),
     due_date: z.coerce.date().optional().nullable(),
     description: z.string().max(120).optional().nullable(),
+    share_expense_people: z.array(z.object({
+      share_expense_person_id: z.coerce.number(),
+      amount: z.number().positive(),
+    })).optional().nullable(),
     created_at: z.date().optional(),
     updated_at: z.date().optional(),
   });
@@ -31,6 +35,10 @@ export class Expense {
   public readonly due_date?: string;
   public readonly description?: string;
   public manual_expense_date?: string;
+  public readonly share_expense_people?: {
+    share_expense_person_id: string,
+    amount: number,
+  }[];
   public readonly created_at?: Date;
   public readonly updated_at?: Date;
 
