@@ -2,7 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import { IExpensesRepository } from '../repositories/IExpensesRepository';
-import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '../repositories/IExpensesMonthRepository';
 
 interface IRemoveExpenseDTO {
   expense_id: string;

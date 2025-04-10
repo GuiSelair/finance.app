@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 
-import { IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesMonthRepository';
 import { ExpenseMonthMapper } from '@modules/Expense/infra/typeorm/entities/ExpenseMonthMapper';
 import { Card } from '../models/Card';
 import { ICardsRepository } from '../repositories/ICardsRepository';

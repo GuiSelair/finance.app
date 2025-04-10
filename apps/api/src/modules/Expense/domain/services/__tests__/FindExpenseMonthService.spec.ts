@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { FindExpenseMonthService } from '../FindExpenseMonthService'
-import { IExpensesMonthRepository } from '../../repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '../../repositories/IExpensesMonthRepository';
 
 const expensesMonthRepositoryMocked = {
   findById: jest.fn().mockResolvedValue({ id: 'fake-expense-id', user_id: 'fake-user-id' }),

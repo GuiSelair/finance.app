@@ -10,7 +10,7 @@ import {
 import { ExpenseMapper } from './ExpenseMapper';
 import { ExpenseMonth } from '@modules/Expense/domain/models/ExpenseMonth';
 
-@Entity('expenses-month')
+@Entity('expenses_month')
 export class ExpenseMonthMapper {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -1,12 +1,11 @@
-import { inject, injectable } from 'tsyringe';
+import { container, inject, injectable } from 'tsyringe';
 import { getMonth, getYear } from 'date-fns';
-import { calculateExpenseMonth } from '@finance-app/helpers'
 
 import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository';
-import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthRepository';
-import AppError from '@shared/errors/AppError';
+import { IExpensesMonthRepository } from '../repositories/IExpensesMonthRepository';
 import { Expense } from '../models/Expense';
 import { ExpenseMonth } from '../models/ExpenseMonth';
+import { CreateExpenseSharedService } from './CreateExpenseSharedService';
 
 interface IGetFirstMonthOfExpenseProps {
   purchase_date: Date;
@@ -46,8 +45,6 @@ export class CreateExpenseMonthService {
         currentYear += 1;
       }
 
-      // TODO: Adicionar a tabela de shareExpenseMonthPerson para criar os registros de parcelas compartilhadas
-      // TODO: Fazer insercao de parcelas compartilhadas
       expensesMonthList.push(
         new ExpenseMonth(
           {
@@ -65,18 +62,21 @@ export class CreateExpenseMonthService {
       );
     }
 
-    await this.expenseMonthRepository.create(expensesMonthList);
+    const expensesMonthCreated = await this.expenseMonthRepository.create(expensesMonthList);
+    if (expense.share_expense_people) {
+      await this.createExpenseShared(expensesMonthCreated, expense.share_expense_people, expense.user_id!);
+    }
   }
 
-  private async getFirstMonthOfExpense({
-    purchase_date,
-    card_id,
-    user_id,
-  }: IGetFirstMonthOfExpenseProps): Promise<number> {
-    const cardFound = await this.cardsRepository.findById(card_id, user_id);
-    if (!cardFound) throw new AppError('Error in generate expenses parcels, card not found.');
+  private async createExpenseShared(expenses_month: ExpenseMonth[], share_expense_people: Expense['share_expense_people'], user_id: string): Promise<void> {
+    const createExpenseSharedService = container.resolve(CreateExpenseSharedService);
 
-    const { month } = calculateExpenseMonth(purchase_date, cardFound.turning_day)
-    return month
+    const expenseMonthIds = expenses_month.map((expenseMonth) => expenseMonth.id!);
+
+    await createExpenseSharedService.execute({
+      expense_month_ids: expenseMonthIds,
+      share_expense_people,
+      user_id,
+    });
   }
 }

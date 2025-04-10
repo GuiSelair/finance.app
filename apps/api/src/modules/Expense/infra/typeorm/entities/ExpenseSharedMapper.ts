@@ -1,10 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from "typeorm"
 import { ExpenseMonthMapper } from "./ExpenseMonthMapper";
 import { ShareExpensePersonMapper } from "@modules/ShareExpensePerson/infra/typeorm/entities/ShareExpensePersonMapper";
-import { ExpenseMonthSharePerson } from "@modules/Expense/domain/models/ExpenseMonthSharePerson";
+import { ExpenseShared } from "@modules/Expense/domain/models/ExpenseShared";
 
 @Entity('expenses_month_share_people')
-export class ExpenseMonthSharePersonMapper {
+export class ExpenseSharedMapper {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -36,8 +36,8 @@ export class ExpenseMonthSharePersonMapper {
   @UpdateDateColumn()
   updated_at: Date;
 
-  static toModel(data: ExpenseMonthSharePersonMapper): ExpenseMonthSharePerson {
-    return new ExpenseMonthSharePerson({
+  static toModel(data: ExpenseSharedMapper): ExpenseShared {
+    return new ExpenseShared({
       id: data.id,
       expense_month_id: data.expense_month_id,
       expense_month: data.expense_month ? ExpenseMonthMapper.toModel(data.expense_month) : undefined,

@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { CardSummaryService } from '../CardSummaryService';
 import { Card } from '../../models/Card';
 import { ICardsRepository } from '../../repositories/ICardsRepository';
-import { IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesMonthRepository';
 import { ExpenseMonth } from '@modules/Expense/domain/models/ExpenseMonth';
 import { Expense } from '@modules/Expense/domain/models/Expense';
 

@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { randomUUID } from 'node:crypto'
 
 import { IExpensesRepository } from '../../repositories/IExpensesRepository'
-import { IExpensesMonthRepository } from '../../repositories/IExpensesInMonthRepository'
+import { IExpensesMonthRepository } from '../../repositories/IExpensesMonthRepository'
 import { EditExpenseMonthService } from '../EditExpenseMonthService'
 import { ExpenseMonthMapper } from '@modules/Expense/infra/typeorm/entities/ExpenseMonthMapper'
 import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository'

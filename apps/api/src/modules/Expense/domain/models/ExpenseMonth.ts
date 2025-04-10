@@ -29,7 +29,7 @@ export class ExpenseMonth {
   public readonly is_paid?: boolean;
   public readonly expense?: Expense;
   public readonly share_expense_people?: {
-    share_expense_person_id: string,
+    share_expense_person_id: number,
     amount: number,
   }[];
   public readonly created_at?: Date;

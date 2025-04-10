@@ -1,11 +1,11 @@
 import { v4 as createUUID } from 'uuid';
 
-import { ExpenseMonthSharePerson } from '../ExpenseMonthSharePerson';
+import { ExpenseShared } from '../ExpenseShared';
 
 describe('ExpenseMonthSharePerson model - Unit test', () => {
   it('should be able to create a new expense month share person', () => {
     const expenseMonthId = createUUID()
-    const expenseMonthSharePerson = new ExpenseMonthSharePerson({
+    const expenseMonthSharePerson = new ExpenseShared({
       expense_month_id: expenseMonthId,
       share_expense_person_id: 1,
       amount: 100.5,
@@ -22,7 +22,7 @@ describe('ExpenseMonthSharePerson model - Unit test', () => {
     const expenseMonthId = createUUID()
     const currentDate = new Date();
 
-    const expenseMonthSharePerson = new ExpenseMonthSharePerson({
+    const expenseMonthSharePerson = new ExpenseShared({
       id: 1,
       expense_month_id: expenseMonthId,
       share_expense_person_id: 1,
@@ -42,7 +42,7 @@ describe('ExpenseMonthSharePerson model - Unit test', () => {
   });
 
   it('should be able to create a partial expense month share person', () => {
-    const expenseMonthSharePerson = new ExpenseMonthSharePerson({
+    const expenseMonthSharePerson = new ExpenseShared({
       id: 1,
     }, 'partial');
 
@@ -55,7 +55,7 @@ describe('ExpenseMonthSharePerson model - Unit test', () => {
 
   it('should throw an error if expense_month_id is invalid', () => {
     expect(() => {
-      new ExpenseMonthSharePerson({
+      new ExpenseShared({
         expense_month_id: 'invalid-uuid',
         share_expense_person_id: 1,
         amount: 100.5,
@@ -67,7 +67,7 @@ describe('ExpenseMonthSharePerson model - Unit test', () => {
   it('should throw an error if share_expense_person_id is not a number', () => {
     const expenseMonthId = createUUID()
     expect(() => {
-      new ExpenseMonthSharePerson({
+      new ExpenseShared({
         expense_month_id: expenseMonthId,
         share_expense_person_id: 'invalid' as any,
         amount: 100.5,
@@ -79,7 +79,7 @@ describe('ExpenseMonthSharePerson model - Unit test', () => {
   it('should throw an error if amount is not positive', () => {
     const expenseMonthId = createUUID()
     expect(() => {
-      new ExpenseMonthSharePerson({
+      new ExpenseShared({
         expense_month_id: expenseMonthId,
         share_expense_person_id: 1,
         amount: -100.5,
@@ -90,7 +90,7 @@ describe('ExpenseMonthSharePerson model - Unit test', () => {
 
   it('should throw an error if amount is not a number', () => {
     expect(() => {
-      new ExpenseMonthSharePerson({
+      new ExpenseShared({
         expense_month_id: createUUID(),
         share_expense_person_id: 1,
         amount: 'invalid' as any,
@@ -101,7 +101,7 @@ describe('ExpenseMonthSharePerson model - Unit test', () => {
 
   it('should throw an error if is_paid is not a boolean', () => {
     expect(() => {
-      new ExpenseMonthSharePerson({
+      new ExpenseShared({
         expense_month_id: createUUID(),
         share_expense_person_id: 1,
         amount: 100.5,

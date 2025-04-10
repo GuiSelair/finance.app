@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { ExpenseMonth } from './ExpenseMonth';
 import { ShareExpensePerson } from '@modules/ShareExpensePerson/domain/models/ShareExpensePerson';
 
-export class ExpenseMonthSharePerson {
+export class ExpenseShared {
   private static readonly schema = z.object({
     id: z.number(),
     expense_month_id: z.string().uuid(),
@@ -23,9 +23,9 @@ export class ExpenseMonthSharePerson {
   public readonly created_at?: Date;
   public readonly updated_at?: Date;
 
-  constructor(input: Partial<ExpenseMonthSharePerson>, validate: boolean | 'create' | 'partial' = true) {
+  constructor(input: Partial<ExpenseShared>, validate: boolean | 'create' | 'partial' = true) {
     if (validate) {
-      let schema = ExpenseMonthSharePerson.schema;
+      let schema = ExpenseShared.schema;
 
       switch (validate) {
         case true: {

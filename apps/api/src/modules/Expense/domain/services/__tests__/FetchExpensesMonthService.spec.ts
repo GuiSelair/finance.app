@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { IExpensesMonthRepository } from '../../repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '../../repositories/IExpensesMonthRepository';
 import { FetchExpensesMonthService } from '../FetchExpensesMonthService';
 
 const expensesMonthRepositoryMocked = {

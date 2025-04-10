@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe'
 
 import { IExpensesRepository } from '../repositories/IExpensesRepository';
-import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '../repositories/IExpensesMonthRepository';
 import { ExpenseMonth } from '../models/ExpenseMonth';
 import { Expense } from '../models/Expense';
 import AppError from '@shared/errors/AppError';

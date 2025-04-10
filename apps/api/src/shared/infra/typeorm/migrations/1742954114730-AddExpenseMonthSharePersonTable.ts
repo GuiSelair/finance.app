@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
+import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class AddExpenseMonthSharePersonTable1742954114730 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -10,7 +10,6 @@ export class AddExpenseMonthSharePersonTable1742954114730 implements MigrationIn
                   name: 'id',
                   type: "serial4",
                   isPrimary: true,
-                  isGenerated: true,
                   generationStrategy: 'increment'
               },
               {
@@ -43,27 +42,23 @@ export class AddExpenseMonthSharePersonTable1742954114730 implements MigrationIn
                   type: 'timestamp',
                   default: 'now()'
               }
+          ],
+          foreignKeys: [
+            {
+              name: 'fk_expenses_month_id',
+              columnNames: ['expense_month_id'],
+              referencedColumnNames: ['id'],
+              referencedTableName: 'expenses-month',
+              onDelete: 'CASCADE'
+            },
+            {
+              name: 'fk_share_expense_person_id',
+              columnNames: ['share_expense_person_id'],
+              referencedColumnNames: ['id'],
+              referencedTableName: 'share_expense_people',
+              onDelete: 'CASCADE'
+            }
           ]
-      })
-    );
-
-    await queryRunner.createForeignKey(
-      'fk_expenses_month_share_people',
-      new TableForeignKey({
-          columnNames: ['expense_month_id'],
-          referencedColumnNames: ['id'],
-          referencedTableName: 'expenses_month',
-          onDelete: 'CASCADE'
-      })
-    );
-
-    await queryRunner.createForeignKey(
-      'fk_expenses_month_share_people',
-      new TableForeignKey({
-          columnNames: ['share_expense_person_id'],
-          referencedColumnNames: ['id'],
-          referencedTableName: 'share_expense_people',
-          onDelete: 'CASCADE'
       })
     );
   }

@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { v4 } from 'uuid';
 
 import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository';
-import { IExpensesMonthRepository } from '../../repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '../../repositories/IExpensesMonthRepository';
 import { CreateExpenseMonthService } from '../CreateExpenseMonthService';
 import { Expense } from '../../models/Expense';
 import { ExpenseMonth } from '../../models/ExpenseMonth';

@@ -19,7 +19,7 @@ export interface ICreateExpenseInput {
   due_date?: string;
   is_recurring?: boolean;
   share_expense_people?: {
-    share_expense_person_id: string,
+    share_expense_person_id: number,
     amount: number,
   }[]
 }
@@ -41,7 +41,6 @@ export class CreateExpenseService {
 
   public async execute(expenseInput: ICreateExpenseInput): Promise<ExpenseMapper> {
     const expenseToCreate = this.makeExpenseModel(expenseInput);
-
     const cardFound = await this.cardsRepository.findById(
       expenseToCreate.card_id!,
       expenseToCreate.user_id!,
@@ -56,6 +55,7 @@ export class CreateExpenseService {
       await createExpenseMonthService.execute(
         new Expense({
           ...newExpense,
+          share_expense_people: expenseToCreate.share_expense_people,
           manual_expense_date: expenseToCreate.manual_expense_date,
         }),
       );
