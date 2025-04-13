@@ -63,7 +63,7 @@ export class CreateExpenseMonthService {
     }
 
     const expensesMonthCreated = await this.expenseMonthRepository.create(expensesMonthList);
-    if (expense.share_expense_people) {
+    if (expense.is_splitted && expense.share_expense_people) {
       await this.createExpenseShared(expensesMonthCreated, expense.share_expense_people, expense.user_id!);
     }
   }
@@ -71,10 +71,8 @@ export class CreateExpenseMonthService {
   private async createExpenseShared(expenses_month: ExpenseMonth[], share_expense_people: Expense['share_expense_people'], user_id: string): Promise<void> {
     const createExpenseSharedService = container.resolve(CreateExpenseSharedService);
 
-    const expenseMonthIds = expenses_month.map((expenseMonth) => expenseMonth.id!);
-
     await createExpenseSharedService.execute({
-      expense_month_ids: expenseMonthIds,
+      expense_months: expenses_month,
       share_expense_people,
       user_id,
     });

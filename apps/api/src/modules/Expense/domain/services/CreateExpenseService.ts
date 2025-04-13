@@ -22,6 +22,7 @@ export interface ICreateExpenseInput {
     share_expense_person_id: number,
     amount: number,
   }[]
+  is_splitted?: boolean;
 }
 
 @injectable()
@@ -57,6 +58,7 @@ export class CreateExpenseService {
           ...newExpense,
           share_expense_people: expenseToCreate.share_expense_people,
           manual_expense_date: expenseToCreate.manual_expense_date,
+          is_splitted: expenseToCreate.is_splitted || false,
         }),
       );
     } catch (err) {
@@ -81,6 +83,7 @@ export class CreateExpenseService {
         is_recurring: args.is_recurring || false,
         manual_expense_date: args.manual_expense_date,
         share_expense_people: args.share_expense_people,
+        is_splitted: args.is_splitted || false,
       },
       'create',
     );

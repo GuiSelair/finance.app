@@ -20,6 +20,7 @@ export class Expense {
       share_expense_person_id: z.coerce.number(),
       amount: z.number().positive(),
     })).optional().nullable(),
+    is_splitted: z.boolean(),
     created_at: z.date().optional(),
     updated_at: z.date().optional(),
   });
@@ -39,6 +40,7 @@ export class Expense {
     share_expense_person_id: number,
     amount: number,
   }[];
+  public readonly is_splitted?: boolean;
   public readonly created_at?: Date;
   public readonly updated_at?: Date;
 

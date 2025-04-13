@@ -42,6 +42,9 @@ export class ExpenseMapper {
   is_recurring: boolean;
 
   @Column()
+  is_splitted: boolean;
+
+  @Column()
   card_id: string;
 
   @ManyToOne(() => CardMapper, { cascade: true })
@@ -73,6 +76,7 @@ export class ExpenseMapper {
       due_date: data.due_date,
       amount: data.amount,
       is_recurring: data.is_recurring,
+      is_splitted: data.is_splitted,
       card_id: data.card_id,
       user_id: data.user_id,
       parcel: data.parcel,
