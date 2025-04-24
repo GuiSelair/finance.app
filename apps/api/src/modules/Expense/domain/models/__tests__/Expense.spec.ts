@@ -16,7 +16,7 @@ describe('Expense model - Unit test', () => {
         purchase_date: '2024-09-17',
         is_recurring: false,
         due_date: '2024-09-30',
-        manual_expense_date: '2024-09',
+        is_splitted: false,
       },
       true,
     );
@@ -48,7 +48,7 @@ describe('Expense model - Unit test', () => {
         purchase_date: '2024-09-17',
         is_recurring: false,
         due_date: '2024-09-30',
-        manual_expense_date: '2024-09',
+        is_splitted: false,
       },
       'create',
     );

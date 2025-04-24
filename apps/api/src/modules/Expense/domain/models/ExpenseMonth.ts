@@ -11,10 +11,6 @@ export class ExpenseMonth {
     year: z.number().positive(),
     value_of_parcel: z.number().positive(),
     is_paid: z.boolean().optional().default(false),
-    share_expense_people: z.array(z.object({
-      share_expense_person_id: z.coerce.number(),
-      amount: z.number().positive(),
-    })).optional().nullable(),
     created_at: z.date().optional(),
     updated_at: z.date().optional(),
   });
@@ -28,10 +24,6 @@ export class ExpenseMonth {
   public readonly value_of_parcel?: number;
   public readonly is_paid?: boolean;
   public readonly expense?: Expense;
-  public readonly share_expense_people?: {
-    share_expense_person_id: number,
-    amount: number,
-  }[];
   public readonly created_at?: Date;
   public readonly updated_at?: Date;
 

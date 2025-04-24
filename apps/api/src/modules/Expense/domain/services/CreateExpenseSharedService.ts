@@ -7,9 +7,14 @@ import { ExpenseShared } from "../models/ExpenseShared";
 import { IShareExpensesPersonRepository } from "@modules/ShareExpensePerson/domain/repositories/IShareExpensesPersonRepository";
 import { ExpenseMonth } from "../models/ExpenseMonth";
 
+export interface ShareExpensePeopleInput {
+  share_expense_person_id: number;
+  amount: number;
+}
+
 interface CreateExpenseSharedServiceInput {
   expense_months: ExpenseMonth[];
-  share_expense_people: Expense['share_expense_people'];
+  share_expense_people: ShareExpensePeopleInput[];
   user_id: string;
 }
 
@@ -23,7 +28,7 @@ export class CreateExpenseSharedService {
   ) {}
 
   public async execute({ expense_months, share_expense_people, user_id }: CreateExpenseSharedServiceInput): Promise<void> {
-    if (!share_expense_people) return;
+    if (!share_expense_people.length) return;
 
     await this.checkIfSharePeopleExists(share_expense_people, user_id);
     const expenseMonthParcelValue = expense_months[0].value_of_parcel!;
@@ -52,8 +57,8 @@ export class CreateExpenseSharedService {
     }
   }
 
-  private async checkIfSharePeopleExists(share_expense_people: Expense['share_expense_people'], user_id: string): Promise<void> {
-    for (const shareExpensePerson of share_expense_people!) {
+  private async checkIfSharePeopleExists(share_expense_people: ShareExpensePeopleInput[], user_id: string): Promise<void> {
+    for (const shareExpensePerson of share_expense_people) {
       const shareExpensePersonExists = await this.shareExpensesPersonRepository.findById({ id: shareExpensePerson.share_expense_person_id, user_id: user_id });
       if (!shareExpensePersonExists) {
         throw new AppError('[ERROR]: Share expense person not found');
