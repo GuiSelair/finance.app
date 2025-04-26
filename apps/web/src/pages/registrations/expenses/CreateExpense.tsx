@@ -1,13 +1,12 @@
 import React from 'react';
-import { FormProvider } from 'react-hook-form';
+import { Controller, FormProvider } from 'react-hook-form';
 
-import { LayoutBox } from '@/components/LayoutBox';
-import { TextInput, InputLabel, ActionButtons, Row, Column } from '@/components/Form';
-import { SEO } from '@/components/SEO';
+import { LayoutBox, Flex, SEO } from '@/components';
+import { TextInput, InputLabel, ActionButtons, Switch } from '@/components/Form';
 
 import { PaymentMethodSelectionSection } from './components/PaymentMethodSelection';
 import { useCreateExpense } from './hooks/useCreateExpense';
-import { RegisterExpenseForm, Divider, ValueInput } from './ExpenseForm.styles';
+import { RegisterExpenseForm, ValueInput } from './ExpenseForm.styles';
 
 export default function CreateExpensePage() {
 	const { createExpenseSubmit, isCreatingExpense, formSchema, parcelValue } = useCreateExpense();
@@ -28,7 +27,7 @@ export default function CreateExpensePage() {
 				</LayoutBox.Header>
 				<LayoutBox.Content>
 					<RegisterExpenseForm>
-						<Row>
+						<Flex>
 							<InputLabel>
 								Nome:
 								<TextInput
@@ -37,48 +36,49 @@ export default function CreateExpensePage() {
 									{...register('name')}
 								/>
 							</InputLabel>
-						</Row>
+						</Flex>
 
 						<PaymentMethodSelectionSection />
 
-						<Row margin="1rem 0 0 0">
-							<InputLabel>
-								Categoria:
-								<TextInput
-									placeholder="Insira a categoria de sua despesa aqui..."
-									error={errors.category?.message}
-									{...register('category')}
+						<Flex gap="1rem" alignItems="flex-start">
+							<div>
+								<InputLabel>
+									Valor total:
+									<ValueInput prefix="R$" error={errors.totalValue?.message} {...register('totalValue')} />
+								</InputLabel>
+							</div>
+							<div>
+								<InputLabel>
+									Parcelas:
+									<ValueInput
+										error={errors.parcelQuantity?.message}
+										{...register('parcelQuantity', {
+											valueAsNumber: true,
+										})}
+									/>
+								</InputLabel>
+							</div>
+							<div>
+								<InputLabel>
+									Valor por parcela:
+									<ValueInput prefix="R$" disabled value={parcelValue} />
+								</InputLabel>
+							</div>
+							<Flex flexDirection="column" gap="0.5rem" whiteSpace="nowrap">
+								<InputLabel>Despesa fixa:</InputLabel>
+								<Controller
+									name="isRecurring"
+									render={({ field: { value, ...field } }) => <Switch checked={value} {...field} />}
 								/>
-							</InputLabel>
-						</Row>
-						<Divider />
-						<Row margin="0 0 100px 0">
-							<Column width="600px">
-								<Row gap="0.5rem">
-									<InputLabel>
-										Valor total:
-										<ValueInput prefix="R$" error={errors.totalValue?.message} {...register('totalValue')} />
-									</InputLabel>
-									<InputLabel>
-										Parcelas:
-										<ValueInput
-											error={errors.parcelQuantity?.message}
-											{...register('parcelQuantity', {
-												valueAsNumber: true,
-											})}
-										/>
-									</InputLabel>
-									<InputLabel>
-										Valor por parcela:
-										<ValueInput prefix="R$" disabled value={parcelValue} />
-									</InputLabel>
-									<InputLabel>
-										Despesa fixa:
-										<TextInput type="checkbox" {...register('isRecurring')} />
-									</InputLabel>
-								</Row>
-							</Column>
-						</Row>
+							</Flex>
+							<Flex flexDirection="column" gap="0.5rem" whiteSpace="nowrap">
+								<InputLabel>Compartilhar despesa:</InputLabel>
+								<Controller
+									name="isSplit"
+									render={({ field: { value, ...field } }) => <Switch checked={value} {...field} />}
+								/>
+							</Flex>
+						</Flex>
 					</RegisterExpenseForm>
 				</LayoutBox.Content>
 				<LayoutBox.Footer>

@@ -1,31 +1,37 @@
 import styled from 'styled-components';
+import React from 'react';
 
-interface FlexProps {
-	margin?: string;
-	padding?: string;
+interface FlexProps extends Omit<React.HTMLProps<HTMLDivElement>, 'display'> {
 	flexDirection?: 'row' | 'column';
 	alignItems?: 'center' | 'flex-start' | 'flex-end' | 'baseline' | 'stretch';
 	justifyContent?: 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly';
-	width?: string;
-	height?: string;
 	gap?: string;
+	whiteSpace?: 'nowrap' | 'normal' | 'pre' | 'pre-wrap' | 'pre-line';
 	flex?: number;
+	margin?: string;
+	padding?: string;
 }
 
+const propsToForward = ['flexDirection', 'alignItems', 'justifyContent', 'whiteSpace'];
+
 export const Flex = styled.div.withConfig({
-	shouldForwardProp: props =>
-		!['margin', 'padding', 'flexDirection', 'alignItems', 'justifyContent', 'width', 'height', 'gap', 'flex'].includes(
-			props,
-		),
+	shouldForwardProp: prop => !propsToForward.includes(prop),
 })<FlexProps>`
 	display: flex;
-	margin: ${({ margin }) => margin};
-	padding: ${({ padding }) => padding};
+	flex-direction: ${({ flexDirection }) => flexDirection};
 	align-items: ${({ alignItems }) => alignItems};
 	justify-content: ${({ justifyContent }) => justifyContent};
-	width: ${({ width }) => width};
 	gap: ${({ gap }) => gap};
-	flex: ${({ flex }) => flex};
-	flex-direction: ${({ flexDirection }) => flexDirection};
-	height: ${({ height }) => height};
+	white-space: ${({ whiteSpace }) => whiteSpace};
+	margin: ${({ margin }) => margin};
+	padding: ${({ padding }) => padding};
+`;
+
+export const Row = styled(Flex)`
+	display: flex;
+`;
+
+export const Column = styled(Flex)`
+	display: flex;
+	flex-direction: column;
 `;

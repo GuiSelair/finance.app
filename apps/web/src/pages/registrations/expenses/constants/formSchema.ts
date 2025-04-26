@@ -22,6 +22,7 @@ export const createFormExpenseFormSchema = (isEditMode = false) => {
 			})
 			.required(requiredFieldMessage),
 		isRecurring: Yup.boolean(),
+		isSplit: Yup.boolean(),
 		parcelValue: isEditMode
 			? Yup.number()
 					.typeError('Campo inválido')

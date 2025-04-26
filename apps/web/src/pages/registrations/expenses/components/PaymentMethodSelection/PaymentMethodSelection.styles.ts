@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Column } from '@/components/Form';
+import { Flex } from '@/components';
 
 export const FieldDescription = styled.span`
 	display: block;
@@ -35,7 +35,8 @@ export const FieldDescription = styled.span`
 	}
 `;
 
-export const CardDetails = styled(Column)`
+export const CardDetails = styled(Flex)`
+	flex-direction: column;
 	align-self: flex-start;
 	gap: 1rem;
 

@@ -3,4 +3,4 @@ export * from './Select';
 export * from './InputLabel';
 export * from './PasswordInput';
 export * from './ActionButtons';
-export * from './FormGrid';
+export * from './Switch';
