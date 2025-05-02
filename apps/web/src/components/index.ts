@@ -13,3 +13,6 @@ export * from './Form';
 export * from './Popover';
 export * from './Avatar';
 export * from './LinkText';
+export * from './Divider';
+export * from './Currency';
+export * from './Text';

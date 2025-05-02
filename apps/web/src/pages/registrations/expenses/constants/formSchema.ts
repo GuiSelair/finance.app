@@ -13,6 +13,7 @@ export const createFormExpenseFormSchema = (isEditMode = false) => {
 			: Yup.number()
 					.typeError('Campo inválido')
 					.required(requiredFieldMessage)
+					.positive('Valor inválido')
 					.transform((_, originalValue) => Number(String(originalValue)?.replace(',', '.'))),
 		parcelQuantity: Yup.number().required(requiredFieldMessage),
 		paymentMethod: Yup.object()
@@ -29,6 +30,15 @@ export const createFormExpenseFormSchema = (isEditMode = false) => {
 					.required(requiredFieldMessage)
 					.transform((_, originalValue) => Number(String(originalValue)?.replace(',', '.')))
 			: Yup.number(),
+		sharePeopleExpense: Yup.array().of(
+			Yup.object().shape({
+				person: Yup.object().shape({
+					label: Yup.string().required(),
+					value: Yup.string().required(),
+				}),
+				totalValue: Yup.number().positive('Valor inválido').required(requiredFieldMessage),
+			}),
+		),
 	});
 };
 

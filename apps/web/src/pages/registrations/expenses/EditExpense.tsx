@@ -1,15 +1,12 @@
 import React from 'react';
 import { FormProvider } from 'react-hook-form';
 
-import { LayoutBox } from '@/components/LayoutBox';
-import { TextInput, InputLabel, ActionButtons, Row, Column } from '@/components/Form';
-import { SEO } from '@/components/SEO';
-import { Spinner } from '@/components/Spinner';
-import { Flex } from '@/components/Flex';
+import { LayoutBox, SEO, Flex, Spinner, Divider } from '@/components';
+import { TextInput, InputLabel, ActionButtons } from '@/components/Form';
 
 import { PaymentMethodSelectionSection } from './components/PaymentMethodSelection';
 import { useEditExpense } from './hooks/useEditExpense';
-import { RegisterExpenseForm, Divider, ValueInput } from './ExpenseForm.styles';
+import { RegisterExpenseForm, ValueInput } from './ExpenseForm.styles';
 
 export default function EditExpensePage() {
 	const { editExpenseSubmit, goBack, isEditing, formSchema, isLoading } = useEditExpense();

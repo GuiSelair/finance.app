@@ -5,18 +5,22 @@ import { LayoutBox, Flex, SEO } from '@/components';
 import { TextInput, InputLabel, ActionButtons, Switch } from '@/components/Form';
 
 import { PaymentMethodSelectionSection } from './components/PaymentMethodSelection';
+import { ShareExpenseSection } from './components/ShareExpenseSection';
 import { useCreateExpense } from './hooks/useCreateExpense';
 import { RegisterExpenseForm, ValueInput } from './ExpenseForm.styles';
 
 export default function CreateExpensePage() {
-	const { createExpenseSubmit, isCreatingExpense, formSchema, parcelValue } = useCreateExpense();
+	const { createExpenseSubmit, isCreatingExpense, formSchema } = useCreateExpense();
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		reset,
+		watch,
 	} = formSchema;
+
+	const isSplit = watch('isSplit') || false;
 
 	return (
 		<FormProvider {...formSchema}>
@@ -40,7 +44,7 @@ export default function CreateExpensePage() {
 
 						<PaymentMethodSelectionSection />
 
-						<Flex gap="1rem" alignItems="flex-start">
+						<Flex gap="1rem" alignItems="flex-start" margin="1rem 0 0 0">
 							<div>
 								<InputLabel>
 									Valor total:
@@ -61,7 +65,7 @@ export default function CreateExpensePage() {
 							<div>
 								<InputLabel>
 									Valor por parcela:
-									<ValueInput prefix="R$" disabled value={parcelValue} />
+									<ValueInput prefix="R$" disabled {...register('parcelValue')} />
 								</InputLabel>
 							</div>
 							<Flex flexDirection="column" gap="0.5rem" whiteSpace="nowrap">
@@ -79,6 +83,7 @@ export default function CreateExpensePage() {
 								/>
 							</Flex>
 						</Flex>
+						{isSplit && <ShareExpenseSection />}
 					</RegisterExpenseForm>
 				</LayoutBox.Content>
 				<LayoutBox.Footer>

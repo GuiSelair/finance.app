@@ -13,7 +13,15 @@ interface GridProps extends Omit<React.HTMLProps<HTMLDivElement>, 'display'> {
 	gap?: string;
 }
 
-const propsToForward = ['gridTemplateColumns', 'gridTemplateRows', 'alignItems', 'justifyContent'];
+const propsToForward = [
+	'gridTemplateColumns',
+	'gridTemplateRows',
+	'alignItems',
+	'justifyContent',
+	'gap',
+	'margin',
+	'padding',
+];
 
 export const Grid = styled.div.withConfig({
 	shouldForwardProp: props => !propsToForward.includes(props),

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { getMonth, getYear } from 'date-fns';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,11 +12,13 @@ export function useCreateExpense() {
 		resolver: yupResolver(createFormExpenseFormSchema(false)),
 		defaultValues: {
 			parcelQuantity: 1,
+			isSplit: false,
+			isRecurring: false,
 			manualExpenseDate: `${getYear(new Date())}-${getMonth(new Date()) + 1}`,
 		},
 	});
 	const { mutateAsync, isLoading: isCreating } = useCreateExpenseApi();
-
+	console.log(formSchema.formState.errors);
 	const calculateParcelValue = useCallback((value: number, parcels: number) => {
 		if (!value || !parcels) return 0;
 
@@ -32,6 +34,7 @@ export function useCreateExpense() {
 			isRecurring: data.isRecurring,
 			purchaseDate: data.purchaseDate,
 			manualExpenseDate: data.manualExpenseDate!,
+			sharePeopleExpense: data.sharePeopleExpense,
 		});
 		toast.success('Despesa criada com sucesso!');
 		formSchema.resetField('name');
@@ -40,6 +43,8 @@ export function useCreateExpense() {
 		formSchema.resetField('isRecurring');
 		formSchema.resetField('parcelQuantity');
 		formSchema.resetField('parcelValue');
+		formSchema.resetField('isSplit', { defaultValue: false });
+		formSchema.resetField('sharePeopleExpense');
 		formSchema.setFocus('name');
 	}
 
@@ -50,8 +55,13 @@ export function useCreateExpense() {
 			formSchema.watch('parcelQuantity'),
 		) ?? 0;
 
+	useEffect(() => {
+		if (parcelValue) {
+			formSchema.setValue('parcelValue', parcelValue);
+		}
+	}, [parcelValue]);
+
 	return {
-		parcelValue,
 		createExpenseSubmit,
 		isCreatingExpense: isCreating,
 		formSchema,

@@ -12,7 +12,7 @@ interface FlexProps extends Omit<React.HTMLProps<HTMLDivElement>, 'display'> {
 	padding?: string;
 }
 
-const propsToForward = ['flexDirection', 'alignItems', 'justifyContent', 'whiteSpace'];
+const propsToForward = ['flexDirection', 'alignItems', 'justifyContent', 'whiteSpace', 'flex', 'margin', 'padding'];
 
 export const Flex = styled.div.withConfig({
 	shouldForwardProp: prop => !propsToForward.includes(prop),
@@ -23,6 +23,7 @@ export const Flex = styled.div.withConfig({
 	justify-content: ${({ justifyContent }) => justifyContent};
 	gap: ${({ gap }) => gap};
 	white-space: ${({ whiteSpace }) => whiteSpace};
+	flex: ${({ flex }) => flex};
 	margin: ${({ margin }) => margin};
 	padding: ${({ padding }) => padding};
 `;
