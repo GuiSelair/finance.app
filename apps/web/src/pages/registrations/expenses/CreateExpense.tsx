@@ -20,7 +20,8 @@ export default function CreateExpensePage() {
 		watch,
 	} = formSchema;
 
-	const isSplit = watch('isSplit') || false;
+	const [isSplit, totalValue, parcelQuantity] = watch(['isSplit', 'totalValue', 'parcelQuantity']) || [];
+	const isExpenseAmountNonFilled = !totalValue || !parcelQuantity;
 
 	return (
 		<FormProvider {...formSchema}>
@@ -48,7 +49,12 @@ export default function CreateExpensePage() {
 							<div>
 								<InputLabel>
 									Valor total:
-									<ValueInput prefix="R$" error={errors.totalValue?.message} {...register('totalValue')} />
+									<ValueInput
+										prefix="R$"
+										error={errors.totalValue?.message}
+										disabled={isSplit}
+										{...register('totalValue')}
+									/>
 								</InputLabel>
 							</div>
 							<div>
@@ -56,6 +62,7 @@ export default function CreateExpensePage() {
 									Parcelas:
 									<ValueInput
 										error={errors.parcelQuantity?.message}
+										disabled={isSplit}
 										{...register('parcelQuantity', {
 											valueAsNumber: true,
 										})}
@@ -79,7 +86,9 @@ export default function CreateExpensePage() {
 								<InputLabel>Compartilhar despesa:</InputLabel>
 								<Controller
 									name="isSplit"
-									render={({ field: { value, ...field } }) => <Switch checked={value} {...field} />}
+									render={({ field: { value, ...field } }) => (
+										<Switch isDisabled={isExpenseAmountNonFilled} checked={value} {...field} />
+									)}
 								/>
 							</Flex>
 						</Flex>

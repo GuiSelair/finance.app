@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Controller, useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Link from 'next/link';
@@ -9,18 +9,24 @@ import { FormExpenseFieldsType } from '../../constants/formSchema';
 import { FieldDescription } from '../PaymentMethodSelection/PaymentMethodSelection.styles';
 import { sharePeopleExpenseSchema, type ShareExpenseFormFields } from './constants/formSchema';
 import { useFetchSharePeopleApi } from '@/hooks/api/sharePeople/useFetchSharePeople.api';
+
 export function ShareExpenseSection() {
 	const {
 		control,
 		register,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors, isValid },
 		reset,
 		setError,
 	} = useForm<ShareExpenseFormFields>({
 		resolver: yupResolver(sharePeopleExpenseSchema),
 	});
-	const { control: externalFormControl, watch } = useFormContext<FormExpenseFieldsType>();
+	const {
+		control: externalFormControl,
+		watch,
+		unregister,
+		formState: { errors: externalErrors },
+	} = useFormContext<FormExpenseFieldsType>();
 	const { fields, append, remove } = useFieldArray({
 		control: externalFormControl,
 		name: 'sharePeopleExpense',
@@ -28,11 +34,14 @@ export function ShareExpenseSection() {
 	const { data: sharePeople, isLoading: isLoadingSharePeople } = useFetchSharePeopleApi();
 
 	const expenseParcelValue = watch('parcelValue') || 0;
-	const isExpenseAmountNonFilled = Number(expenseParcelValue) === 0;
-	const totalAvailableToSplit = expenseParcelValue - fields.reduce((acc, field) => acc + field.totalValue, 0);
+	const hasSharePeopleError = !!externalErrors.sharePeopleExpense;
+
+	const totalAvailableToSplit = useMemo(() => {
+		return expenseParcelValue - fields.reduce((acc, field) => acc + field.amount, 0);
+	}, [expenseParcelValue, fields]);
 
 	const youMustPay = useMemo(() => {
-		const totalSplitted = fields.reduce((acc, field) => acc + field.totalValue, 0);
+		const totalSplitted = fields.reduce((acc, field) => acc + field.amount, 0);
 		const youAmount = expenseParcelValue - totalSplitted;
 		return youAmount;
 	}, [fields, expenseParcelValue]);
@@ -42,8 +51,8 @@ export function ShareExpenseSection() {
 	}, [sharePeople]);
 
 	function handleAddSharePerson(data: ShareExpenseFormFields) {
-		if (data.totalValue > totalAvailableToSplit) {
-			setError('totalValue', { message: 'O valor é maior que o valor disponível para dividir' });
+		if (data.amount > totalAvailableToSplit) {
+			setError('amount', { message: 'O valor é maior que o valor disponível para dividir' });
 			return;
 		}
 
@@ -51,9 +60,20 @@ export function ShareExpenseSection() {
 		reset({
 			// @ts-expect-error - Resetting the form to the initial state
 			person: null,
-			totalValue: 0,
+			amount: 0,
 		});
 	}
+
+	/**
+	 * Effect responsável por limpar o estado do form quando o componente for desmontado, isso é feito
+	 * quando o usuário desmarca a opção de dividir a despesa.
+	 */
+	useEffect(() => {
+		return () => {
+			unregister('sharePeopleExpense');
+			remove();
+		};
+	}, []);
 
 	return (
 		<>
@@ -94,9 +114,8 @@ export function ShareExpenseSection() {
 									prefix="R$"
 									type="number"
 									step="0.01"
-									error={isExpenseAmountNonFilled ? 'Preencha o valor total da despesa' : errors.totalValue?.message}
-									disabled={isExpenseAmountNonFilled}
-									{...register('totalValue')}
+									error={errors.amount?.message}
+									{...register('amount')}
 								/>
 								<FieldDescription>
 									Disponível para dividir: <Currency weight={500} value={totalAvailableToSplit} />
@@ -107,8 +126,9 @@ export function ShareExpenseSection() {
 					<Button
 						size="sm"
 						type="button"
+						variant="outline"
 						onClick={handleSubmit(handleAddSharePerson)}
-						isDisabled={isExpenseAmountNonFilled}
+						isDisabled={!isValid}
 					>
 						Adicionar
 					</Button>
@@ -118,16 +138,21 @@ export function ShareExpenseSection() {
 					<Divider />
 
 					<Flex flexDirection="column" gap="0.5rem">
-						{fields.length === 0 && (
+						{!hasSharePeopleError && fields.length === 0 && (
 							<Text size="small" color="gray300">
 								Nenhuma pessoa a ser cobrada
+							</Text>
+						)}
+						{hasSharePeopleError && (
+							<Text size="small" color="red500">
+								{externalErrors.sharePeopleExpense?.message}
 							</Text>
 						)}
 						{fields.map((field, index) => (
 							<Flex key={field.person.label} alignItems="center" justifyContent="space-between" width="100%" gap="1rem">
 								<Text textAlign="left">{field.person.label}</Text>
 								<Flex alignItems="center" gap="1rem">
-									<Currency value={field.totalValue} />
+									<Currency value={field.amount} />
 									<Button size="sm" type="button" variant="dangerGhost" onClick={() => remove(index)}>
 										<TrashIcon />
 									</Button>

@@ -18,7 +18,7 @@ export function useCreateExpense() {
 		},
 	});
 	const { mutateAsync, isLoading: isCreating } = useCreateExpenseApi();
-	console.log(formSchema.formState.errors);
+
 	const calculateParcelValue = useCallback((value: number, parcels: number) => {
 		if (!value || !parcels) return 0;
 

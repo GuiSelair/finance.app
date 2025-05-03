@@ -15,7 +15,7 @@ interface ICreateExpenseParams {
 			label: string;
 			value: string;
 		};
-		totalValue: number;
+		amount: number;
 	}[];
 }
 
@@ -34,7 +34,7 @@ export function useCreateExpenseApi() {
 					manual_expense_date: newExpense.manualExpenseDate,
 					share_expense_people: newExpense.sharePeopleExpense?.map(person => ({
 						share_expense_person_id: Number(person.person.value),
-						amount: person.totalValue,
+						amount: person.amount,
 					})),
 				},
 			});

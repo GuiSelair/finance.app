@@ -17,6 +17,11 @@ export const SwitchContainer = styled(RadixSwitch.Root)`
 		outline: 3px solid ${({ theme }) => theme.colors.green800};
 		outline-offset: 1px;
 	}
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
 `;
 
 export const SwitchThumb = styled(RadixSwitch.Thumb)`

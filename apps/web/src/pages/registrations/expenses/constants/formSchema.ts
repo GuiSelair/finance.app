@@ -30,15 +30,21 @@ export const createFormExpenseFormSchema = (isEditMode = false) => {
 					.required(requiredFieldMessage)
 					.transform((_, originalValue) => Number(String(originalValue)?.replace(',', '.')))
 			: Yup.number(),
-		sharePeopleExpense: Yup.array().of(
-			Yup.object().shape({
-				person: Yup.object().shape({
-					label: Yup.string().required(),
-					value: Yup.string().required(),
-				}),
-				totalValue: Yup.number().positive('Valor inválido').required(requiredFieldMessage),
-			}),
-		),
+		sharePeopleExpense: Yup.array().when(['isSplit'], ([isSplit], schema) => {
+			return isSplit
+				? schema
+						.of(
+							Yup.object().shape({
+								person: Yup.object().shape({
+									label: Yup.string().required(),
+									value: Yup.string().required(),
+								}),
+								amount: Yup.number().positive('Valor inválido').required(requiredFieldMessage),
+							}),
+						)
+						.min(1, 'Pelo menos uma pessoa deve ser adicionada')
+				: schema;
+		}),
 	});
 };
 

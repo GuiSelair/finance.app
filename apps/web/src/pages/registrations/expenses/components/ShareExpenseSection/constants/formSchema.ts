@@ -6,7 +6,7 @@ export const sharePeopleExpenseSchema = yup.object().shape({
 		label: yup.string().required(),
 		value: yup.string().required(),
 	}),
-	totalValue: yup.number().typeError('Valor inválido').positive('Valor inválido').required('Campo obrigatório'),
+	amount: yup.number().typeError('Valor inválido').positive('Valor inválido').required('Campo obrigatório'),
 });
 
 export type ShareExpenseFormFields = InferType<typeof sharePeopleExpenseSchema>;
