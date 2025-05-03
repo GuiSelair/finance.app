@@ -27,12 +27,3 @@ export const Flex = styled.div.withConfig({
 	margin: ${({ margin }) => margin};
 	padding: ${({ padding }) => padding};
 `;
-
-export const Row = styled(Flex)`
-	display: flex;
-`;
-
-export const Column = styled(Flex)`
-	display: flex;
-	flex-direction: column;
-`;

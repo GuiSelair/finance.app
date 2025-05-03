@@ -1,9 +1,8 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-import { LayoutBox } from '@/components/LayoutBox';
-import { ActionButtons, Column, InputLabel, Row, Select, TextInput } from '@/components/Form';
-import { SEO } from '@/components/SEO';
+import { LayoutBox, SEO, Flex } from '@/components';
+import { ActionButtons, InputLabel, Select, TextInput } from '@/components/Form';
 
 import { useCreateCards } from './hooks/useCreateCards';
 import { RegisterCardsForm, CreditCardIcon } from './CreateCardsPage.styles';
@@ -27,7 +26,7 @@ export default function CreateCardsPage() {
 				</LayoutBox.Header>
 				<LayoutBox.Content>
 					<RegisterCardsForm>
-						<Row>
+						<Flex>
 							<InputLabel>
 								Apelido:
 								<TextInput
@@ -36,28 +35,26 @@ export default function CreateCardsPage() {
 									{...register('name')}
 								/>
 							</InputLabel>
-						</Row>
-						<Row flex={4} gap="1.5rem" padding="0 65px 0 0">
-							<Column flex={2}>
-								<Row>
-									<InputLabel>
-										Bandeira:
-										<Controller
-											name="flag"
-											control={control}
-											render={({ field }) => (
-												<Select
-													placeholder="Selecione a bandeira do cartão..."
-													options={availableCardsOptions}
-													{...field}
-												/>
-											)}
-										/>
-									</InputLabel>
-									<CreditCardIcon />
-								</Row>
-							</Column>
-							<Column flex={1}>
+						</Flex>
+						<Flex gap="1.5rem">
+							<Flex flex={2} alignItems="center" gap="1rem">
+								<InputLabel>
+									Bandeira:
+									<Controller
+										name="flag"
+										control={control}
+										render={({ field }) => (
+											<Select
+												placeholder="Selecione a bandeira do cartão..."
+												options={availableCardsOptions}
+												{...field}
+											/>
+										)}
+									/>
+								</InputLabel>
+								<CreditCardIcon />
+							</Flex>
+							<Flex flex={1}>
 								<InputLabel>
 									Dia de melhor compra:
 									<TextInput
@@ -67,8 +64,8 @@ export default function CreateCardsPage() {
 										{...register('turningDay', { valueAsNumber: true })}
 									/>
 								</InputLabel>
-							</Column>
-							<Column flex={1}>
+							</Flex>
+							<Flex flex={1}>
 								<InputLabel>
 									Dia de vencimento:
 									<TextInput
@@ -78,8 +75,8 @@ export default function CreateCardsPage() {
 										{...register('dueDay', { valueAsNumber: true })}
 									/>
 								</InputLabel>
-							</Column>
-						</Row>
+							</Flex>
+						</Flex>
 					</RegisterCardsForm>
 				</LayoutBox.Content>
 				<LayoutBox.Footer>
