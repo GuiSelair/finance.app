@@ -33,7 +33,7 @@ export class ShareExpensePersonMapper {
   @DeleteDateColumn()
   deleted_at?: Date;
 
-  static toModel(data: ShareExpensePersonMapper) {
+  static toModel(data: ShareExpensePersonMapper): ShareExpensePerson {
     return new ShareExpensePerson({
       id: data.id,
       name: data.name,

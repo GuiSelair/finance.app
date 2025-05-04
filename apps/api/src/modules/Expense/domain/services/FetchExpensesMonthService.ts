@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
 import { ExpenseMonthMapper } from '../../infra/typeorm/entities/ExpenseMonthMapper';
-import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '../repositories/IExpensesMonthRepository';
 
 export interface IFetchExpensesMonthServiceDTO {
   month: number;

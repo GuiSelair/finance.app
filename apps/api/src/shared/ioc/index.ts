@@ -10,7 +10,7 @@ import { CardsRepository } from '@modules/Card/infra/typeorm/repositories/CardsR
 import type { IExpensesRepository } from '@modules/Expense/domain/repositories/IExpensesRepository';
 import { ExpensesRepository } from '@modules/Expense/infra/typeorm/repositories/ExpensesRepository';
 
-import type { IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
+import type { IExpensesMonthRepository } from '@modules/Expense/domain/repositories/IExpensesMonthRepository';
 import { ExpensesMonthRepository } from '@modules/Expense/infra/typeorm/repositories/ExpensesMonthRepository';
 
 import type { IIncomesRepository } from '@modules/Settings/domain/repositories/IIncomeRepository';
@@ -18,6 +18,9 @@ import { IncomesRepository } from '@modules/Settings/infra/typeorm/repositories/
 
 import type { IShareExpensesPersonRepository } from '@modules/ShareExpensePerson/domain/repositories/IShareExpensesPersonRepository';
 import { ShareExpensesPersonRepository } from '@modules/ShareExpensePerson/infra/typeorm/repositories/ShareExpensesPersonRepository';
+
+import type { IExpensesSharedRepository } from '@modules/Expense/domain/repositories/IExpensesSharedRepository';
+import { ExpensesSharedRepository } from '@modules/Expense/infra/typeorm/repositories/ExpensesSharedRepository';
 
 container.registerSingleton<IUsersRepository>('UsersRepository', UsersRepository);
 container.registerSingleton<ICardsRepository>('CardsRepository', CardsRepository);
@@ -28,6 +31,7 @@ container.registerSingleton<IExpensesMonthRepository>(
 );
 container.registerSingleton<IIncomesRepository>('IncomesRepository', IncomesRepository)
 container.registerSingleton<IShareExpensesPersonRepository>('ShareExpensesPersonRepository', ShareExpensesPersonRepository)
+container.registerSingleton<IExpensesSharedRepository>('ExpensesSharedRepository', ExpensesSharedRepository)
 
 /** Providers register */
 import type { IHashProvider } from '@shared/providers/HashProvider/interfaces/IHashProvider';

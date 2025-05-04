@@ -2,7 +2,7 @@ import { injectable, inject } from 'tsyringe';
 import { addMonths, getMonth, getYear } from 'date-fns';
 
 import { IExpensesRepository } from '../repositories/IExpensesRepository';
-import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '../repositories/IExpensesMonthRepository';
 import { ExpenseMonth } from '../models/ExpenseMonth';
 
 @injectable()

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import React from 'react';
 
-interface GridProps {
+interface GridProps extends Omit<React.HTMLProps<HTMLDivElement>, 'display'> {
 	margin?: string;
 	padding?: string;
 	gridTemplateColumns?: string;
@@ -12,19 +13,18 @@ interface GridProps {
 	gap?: string;
 }
 
+const propsToForward = [
+	'gridTemplateColumns',
+	'gridTemplateRows',
+	'alignItems',
+	'justifyContent',
+	'gap',
+	'margin',
+	'padding',
+];
+
 export const Grid = styled.div.withConfig({
-	shouldForwardProp: props =>
-		![
-			'margin',
-			'padding',
-			'gridTemplateColumns',
-			'alignItems',
-			'justifyContent',
-			'width',
-			'height',
-			'gap',
-			'gridTemplateRows',
-		].includes(props),
+	shouldForwardProp: props => !propsToForward.includes(props),
 })<GridProps>`
 	display: grid;
 	margin: ${({ margin }) => margin};

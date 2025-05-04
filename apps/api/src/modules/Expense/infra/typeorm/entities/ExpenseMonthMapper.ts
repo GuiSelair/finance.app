@@ -8,8 +8,9 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { ExpenseMapper } from './ExpenseMapper';
+import { ExpenseMonth } from '@modules/Expense/domain/models/ExpenseMonth';
 
-@Entity('expenses-month')
+@Entity('expenses_month')
 export class ExpenseMonthMapper {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -48,4 +49,20 @@ export class ExpenseMonthMapper {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  static toModel(data: ExpenseMonthMapper): ExpenseMonth {
+    return new ExpenseMonth({
+      id: data.id,
+      expense_id: data.expense_id,
+      expense: data.expense,
+      number_current_of_parcel: data.number_current_of_parcel,
+      number_total_of_parcel: data.number_total_of_parcel,
+      month: data.month,
+      year: data.year,
+      value_of_parcel: data.value_of_parcel,
+      is_paid: data.is_paid,
+      created_at: data.created_at,
+      updated_at: data.updated_at,
+    });
+  }
 }

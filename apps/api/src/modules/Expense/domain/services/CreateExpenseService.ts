@@ -6,6 +6,7 @@ import { ExpenseMapper } from '../../infra/typeorm/entities/ExpenseMapper';
 import { IExpensesRepository } from '../repositories/IExpensesRepository';
 import { Expense } from '../models/Expense';
 import { CreateExpenseMonthService } from './CreateExpenseMonthService';
+import { ShareExpensePeopleInput } from './CreateExpenseSharedService';
 
 export interface ICreateExpenseInput {
   name: string;
@@ -18,6 +19,7 @@ export interface ICreateExpenseInput {
   description?: string;
   due_date?: string;
   is_recurring?: boolean;
+  share_expense_people?: ShareExpensePeopleInput[];
 }
 
 @injectable()
@@ -37,7 +39,6 @@ export class CreateExpenseService {
 
   public async execute(expenseInput: ICreateExpenseInput): Promise<ExpenseMapper> {
     const expenseToCreate = this.makeExpenseModel(expenseInput);
-
     const cardFound = await this.cardsRepository.findById(
       expenseToCreate.card_id!,
       expenseToCreate.user_id!,
@@ -49,12 +50,11 @@ export class CreateExpenseService {
     const newExpense = await this.expensesRepository.create(expenseToCreate);
     try {
       const createExpenseMonthService = container.resolve(CreateExpenseMonthService);
-      await createExpenseMonthService.execute(
-        new Expense({
-          ...newExpense,
-          manual_expense_date: expenseToCreate.manual_expense_date,
-        }),
-      );
+      await createExpenseMonthService.execute({
+        expense: newExpense,
+        share_expense_people: expenseInput.share_expense_people,
+        manual_expense_date: expenseInput.manual_expense_date,
+      });
     } catch (err) {
       await this.expensesRepository.remove({ id: newExpense.id });
       throw new AppError(err);
@@ -63,30 +63,19 @@ export class CreateExpenseService {
     return newExpense;
   }
 
-  private makeExpenseModel({
-    name,
-    description,
-    amount,
-    due_date,
-    card_id,
-    user_id,
-    purchase_date,
-    parcel = 1,
-    is_recurring = false,
-    manual_expense_date,
-  }: ICreateExpenseInput) {
+  private makeExpenseModel(args: ICreateExpenseInput) {
     return new Expense(
       {
-        name,
-        description,
-        amount,
-        due_date,
-        card_id,
-        user_id,
-        parcel,
-        purchase_date,
-        is_recurring,
-        manual_expense_date,
+        name: args.name,
+        description: args.description,
+        amount: args.amount,
+        due_date: args.due_date,
+        card_id: args.card_id,
+        user_id: args.user_id,
+        parcel: args.parcel || 1,
+        purchase_date: args.purchase_date,
+        is_recurring: args.is_recurring || false,
+        is_splitted: !!args.share_expense_people?.length,
       },
       'create',
     );

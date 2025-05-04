@@ -10,6 +10,7 @@ import {
 
 import { CardMapper } from '@modules/Card/infra/typeorm/entities/CardMapper';
 import { UserMapper } from '@modules/User/infra/typeorm/entities/UserMapper';
+import { Expense } from '@modules/Expense/domain/models/Expense';
 
 @Entity('expenses')
 export class ExpenseMapper {
@@ -41,6 +42,9 @@ export class ExpenseMapper {
   is_recurring: boolean;
 
   @Column()
+  is_splitted: boolean;
+
+  @Column()
   card_id: string;
 
   @ManyToOne(() => CardMapper, { cascade: true })
@@ -62,4 +66,22 @@ export class ExpenseMapper {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  static toModel(data: ExpenseMapper): Expense {
+    return new Expense({
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      purchase_date: data.purchase_date,
+      due_date: data.due_date,
+      amount: data.amount,
+      is_recurring: data.is_recurring,
+      is_splitted: data.is_splitted,
+      card_id: data.card_id,
+      user_id: data.user_id,
+      parcel: data.parcel,
+      created_at: data.created_at,
+      updated_at: data.updated_at,
+    });
+  }
 }

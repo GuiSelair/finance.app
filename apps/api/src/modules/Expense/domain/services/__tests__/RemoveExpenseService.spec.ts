@@ -2,7 +2,7 @@ import 'reflect-metadata';
 
 import { RemoveExpenseService } from '../RemoveExpenseService';
 import { IExpensesRepository } from '../../repositories/IExpensesRepository';
-import { IExpensesMonthRepository } from '../../repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '../../repositories/IExpensesMonthRepository';
 import AppError from '@shared/errors/AppError';
 
 const expensesRepositoryMocked = {

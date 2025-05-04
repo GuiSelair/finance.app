@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { v4 } from 'uuid';
 
-import { IExpensesMonthRepository } from '../../repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '../../repositories/IExpensesMonthRepository';
 import { IExpensesRepository } from '../../repositories/IExpensesRepository';
 
 import { InsertRecurringExpensesService } from '../InsertRecurringExpensesService';

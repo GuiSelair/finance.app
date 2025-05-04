@@ -1,8 +1,7 @@
 import 'reflect-metadata';
 import { v4 } from 'uuid';
 
-import { ICardsRepository } from '@modules/Card/domain/repositories/ICardsRepository';
-import { IExpensesMonthRepository } from '../../repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '../../repositories/IExpensesMonthRepository';
 import { CreateExpenseMonthService } from '../CreateExpenseMonthService';
 import { Expense } from '../../models/Expense';
 import { ExpenseMonth } from '../../models/ExpenseMonth';
@@ -10,19 +9,15 @@ import { ExpenseMonth } from '../../models/ExpenseMonth';
 const expensesMonthRepositoryMocked = {
   create: jest.fn(),
 };
-const cardsRepositoryMocked = {
-  findById: jest.fn().mockResolvedValue({ id: 'fake-card-id', turning_day: 20 }),
-};
 const createExpenseMonthService = new CreateExpenseMonthService(
   expensesMonthRepositoryMocked as unknown as IExpensesMonthRepository,
-  cardsRepositoryMocked as unknown as ICardsRepository,
 );
 
 describe('CreateExpenseMonthService use case - Unit test', () => {
   it('should be able to create correctly parcel of expense', async () => {
     const expenseId = v4();
-    await createExpenseMonthService.execute(
-      new Expense(
+    await createExpenseMonthService.execute({
+      expense: new Expense(
         {
           id: expenseId,
           name: 'fake-expense-name',
@@ -31,11 +26,12 @@ describe('CreateExpenseMonthService use case - Unit test', () => {
           card_id: v4(),
           user_id: v4(),
           purchase_date: '2024-09-15',
-          manual_expense_date: '2024-10',
+          is_splitted: false,
         },
         'partial',
       ),
-    );
+      manual_expense_date: '2024-09',
+    });
 
     expect(expensesMonthRepositoryMocked.create).toHaveBeenCalledWith([
       new ExpenseMonth(
@@ -67,8 +63,8 @@ describe('CreateExpenseMonthService use case - Unit test', () => {
 
   it.skip('should be able to create expense in next month if card turning day was past', async () => {
     const expenseId = v4();
-    await createExpenseMonthService.execute(
-      new Expense(
+    await createExpenseMonthService.execute({
+      expense: new Expense(
         {
           id: expenseId,
           name: 'fake-expense-name',
@@ -80,7 +76,8 @@ describe('CreateExpenseMonthService use case - Unit test', () => {
         },
         'partial',
       ),
-    );
+      manual_expense_date: '2024-09',
+    });
 
     expect(expensesMonthRepositoryMocked.create).toHaveBeenCalledWith([
       new ExpenseMonth(
@@ -112,8 +109,8 @@ describe('CreateExpenseMonthService use case - Unit test', () => {
 
   it.skip('should be able to create expense in current month if card turning day not was past', async () => {
     const expenseId = v4();
-    await createExpenseMonthService.execute(
-      new Expense(
+    await createExpenseMonthService.execute({
+      expense: new Expense(
         {
           id: expenseId,
           name: 'fake-expense-name',
@@ -125,7 +122,8 @@ describe('CreateExpenseMonthService use case - Unit test', () => {
         },
         'partial',
       ),
-    );
+      manual_expense_date: '2024-09',
+    });
 
     expect(expensesMonthRepositoryMocked.create).toHaveBeenCalledWith([
       new ExpenseMonth(

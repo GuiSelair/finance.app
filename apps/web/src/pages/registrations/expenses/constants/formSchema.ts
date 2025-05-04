@@ -13,6 +13,7 @@ export const createFormExpenseFormSchema = (isEditMode = false) => {
 			: Yup.number()
 					.typeError('Campo inválido')
 					.required(requiredFieldMessage)
+					.positive('Valor inválido')
 					.transform((_, originalValue) => Number(String(originalValue)?.replace(',', '.'))),
 		parcelQuantity: Yup.number().required(requiredFieldMessage),
 		paymentMethod: Yup.object()
@@ -22,12 +23,28 @@ export const createFormExpenseFormSchema = (isEditMode = false) => {
 			})
 			.required(requiredFieldMessage),
 		isRecurring: Yup.boolean(),
+		isSplit: Yup.boolean(),
 		parcelValue: isEditMode
 			? Yup.number()
 					.typeError('Campo inválido')
 					.required(requiredFieldMessage)
 					.transform((_, originalValue) => Number(String(originalValue)?.replace(',', '.')))
 			: Yup.number(),
+		sharePeopleExpense: Yup.array().when(['isSplit'], ([isSplit], schema) => {
+			return isSplit
+				? schema
+						.of(
+							Yup.object().shape({
+								person: Yup.object().shape({
+									label: Yup.string().required(),
+									value: Yup.string().required(),
+								}),
+								amount: Yup.number().positive('Valor inválido').required(requiredFieldMessage),
+							}),
+						)
+						.min(1, 'Pelo menos uma pessoa deve ser adicionada')
+				: schema;
+		}),
 	});
 };
 

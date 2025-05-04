@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe'
 
-import { IExpensesMonthRepository } from '../repositories/IExpensesInMonthRepository';
+import { IExpensesMonthRepository } from '../repositories/IExpensesMonthRepository';
 import { ExpenseMonth } from '../models/ExpenseMonth';
 
 interface IFindExpenseMonthDTO {

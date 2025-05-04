@@ -10,6 +10,13 @@ interface ICreateExpenseParams {
 	isRecurring?: boolean;
 	purchaseDate: string;
 	manualExpenseDate: string;
+	sharePeopleExpense?: {
+		person: {
+			label: string;
+			value: string;
+		};
+		amount: number;
+	}[];
 }
 
 export function useCreateExpenseApi() {
@@ -25,6 +32,10 @@ export function useCreateExpenseApi() {
 					is_recurring: newExpense.isRecurring,
 					purchase_date: newExpense.purchaseDate,
 					manual_expense_date: newExpense.manualExpenseDate,
+					share_expense_people: newExpense.sharePeopleExpense?.map(person => ({
+						share_expense_person_id: Number(person.person.value),
+						amount: person.amount,
+					})),
 				},
 			});
 

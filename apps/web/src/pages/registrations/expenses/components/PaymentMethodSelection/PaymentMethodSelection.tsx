@@ -3,9 +3,11 @@ import Link from 'next/link';
 import { ArrowSquareOut as ArrowSquareOutIcon } from 'phosphor-react';
 import { useFormContext, Controller } from 'react-hook-form';
 
-import { InputLabel, Select, GridColumn, TextInput } from '@/components/Form';
+import { InputLabel, Select, TextInput } from '@/components/Form';
+import { Grid } from '@/components';
 import { FieldDescription } from './PaymentMethodSelection.styles';
 import { useListCardsApi } from '@/hooks/api/cards/useListCards.api';
+
 import { FormExpenseFieldsType } from '../../constants/formSchema';
 
 interface PaymentMethodSelectionSectionProps {
@@ -28,7 +30,7 @@ export default function PaymentMethodSelectionSection({ isEditMode }: PaymentMet
 	}, [userAllPaymentMethods]);
 
 	return (
-		<GridColumn gridTemplateColumns={isEditMode ? '200px 1fr' : '200px 418px 1fr'} margin="0.5rem 0 0 0" gap="1.5rem">
+		<Grid gridTemplateColumns={isEditMode ? '200px 1fr' : '200px 418px 1fr'} margin="0.5rem 0 0 0" gap="1.5rem">
 			<InputLabel>
 				Data de compra:
 				<TextInput type="date" max={maxDateLimit} {...register('purchaseDate')} disabled={isEditMode} />
@@ -65,6 +67,6 @@ export default function PaymentMethodSelectionSection({ isEditMode }: PaymentMet
 					</FieldDescription>
 				</div>
 			</InputLabel>
-		</GridColumn>
+		</Grid>
 	);
 }

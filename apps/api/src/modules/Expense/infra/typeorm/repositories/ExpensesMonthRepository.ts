@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 
 import { DataSourceConfiguration } from '@shared/infra/typeorm/bootstrap';
-import { FetchByExpenseIdInput, FetchByExpenseIdOutput, FindByIdInput, FindByIdOutput, IExpensesMonthRepository, RemoveExpenseMonthInput, UpdateExpenseMonthInput } from '@modules/Expense/domain/repositories/IExpensesInMonthRepository';
+import { FetchByExpenseIdInput, FetchByExpenseIdOutput, FindByIdInput, FindByIdOutput, IExpensesMonthRepository, RemoveExpenseMonthInput, UpdateExpenseMonthInput } from '@modules/Expense/domain/repositories/IExpensesMonthRepository';
 import { ExpenseMonthMapper } from '../entities/ExpenseMonthMapper';
 import { ExpenseMonth } from '@modules/Expense/domain/models/ExpenseMonth';
 
