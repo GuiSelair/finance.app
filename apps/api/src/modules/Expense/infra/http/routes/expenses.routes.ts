@@ -14,5 +14,6 @@ expensesRouter.get('/balance', expensesController.balance);
 expensesRouter.get('/fetch', expensesController.fetch);
 expensesRouter.put('/:id/edit', expensesController.edit);
 expensesRouter.delete('/:id', expensesController.delete);
+expensesRouter.get('/fetch-shared-totalizer-by-person', expensesController.fetchSharedTotalizerByPerson);
 
 export default expensesRouter;
