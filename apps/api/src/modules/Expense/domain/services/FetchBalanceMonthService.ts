@@ -2,6 +2,7 @@ import { injectable, inject } from 'tsyringe';
 
 import { IExpensesMonthRepository } from '../repositories/IExpensesMonthRepository';
 import { IIncomesRepository } from '@modules/Settings/domain/repositories/IIncomeRepository';
+import { IExpensesSharedRepository } from '../repositories/IExpensesSharedRepository';
 
 interface IBalanceOutput {
   totalOfExpenses: number;
@@ -21,27 +22,35 @@ export class FetchBalanceMonthService {
     @inject('ExpensesMonthRepository')
     private readonly expensesMonthRepository: IExpensesMonthRepository,
     @inject('IncomesRepository')
-    private readonly incomesRepository: IIncomesRepository
+    private readonly incomesRepository: IIncomesRepository,
+    @inject('ExpensesSharedRepository')
+    private readonly expensesSharedRepository: IExpensesSharedRepository,
   ) {}
 
   async execute({ month, user_id, year }: IFetchBalanceInput): Promise<IBalanceOutput> {
-    const allExpensesInMonth =
-      (await this.expensesMonthRepository.fetchByMonthAndYear(month, year, user_id)) || [];
+    const [allExpensesInMonth = [], incomeFound] = await Promise.all([
+      this.expensesMonthRepository.fetchByMonthAndYear(month, year, user_id),
+      this.incomesRepository.findByMonthAndYear({ month, year, user_id })
+    ])
 
-    const { totalOfExpenses, totalPayable } = allExpensesInMonth.reduce(
+    const expenseSharedIds = allExpensesInMonth.map((expense) => expense.id)
+    const expenseSharedFound = await this.expensesSharedRepository.fetchByExpenseMonthIds(expenseSharedIds)
+
+    const totalOfExpenses = allExpensesInMonth.reduce(
       (accumulator, expense) => {
-        return {
-          totalOfExpenses: accumulator.totalOfExpenses + expense.value_of_parcel,
-          totalPayable: accumulator.totalPayable + expense.value_of_parcel,
-        };
+        return accumulator + expense.value_of_parcel
       },
-      {
-        totalOfExpenses: 0,
-        totalPayable: 0,
-      },
+      0
     );
 
-    const incomeFound = await this.incomesRepository.findByMonthAndYear({ month, year, user_id })
+    const totalPayable = expenseSharedFound.reduce(
+      (accumulator, expense) => {
+        return accumulator - expense.amount!
+      },
+      totalOfExpenses
+    )
+
+
     const economyCalculated = Number(incomeFound?.value) - totalPayable
 
     return {

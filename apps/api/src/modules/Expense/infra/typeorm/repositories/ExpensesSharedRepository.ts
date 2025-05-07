@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { DataSourceConfiguration } from '@shared/infra/typeorm/bootstrap';
 import { ExpenseSharedMapper } from '../entities/ExpenseSharedMapper';
@@ -20,5 +20,15 @@ export class ExpensesSharedRepository implements IExpensesSharedRepository {
     const expenseSharedMapper = input.map(this.makeExpenseSharedMapper);
     const expenseSharedToCreate = this.repository.create(expenseSharedMapper);
     await this.repository.save(expenseSharedToCreate);
+  }
+
+  public async fetchByExpenseMonthIds(expense_month_ids: string[]): Promise<ExpenseShared[]> {
+    const expenseSharedFound = await this.repository.find({
+      where: {
+        expense_month_id: In(expense_month_ids),
+      },
+    });
+
+    return expenseSharedFound;
   }
 }
