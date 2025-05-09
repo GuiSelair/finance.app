@@ -64,12 +64,12 @@ export const navigationMapper = {
 		navigation: [
 			{
 				name: 'Total p/Pessoa',
-				path: '',
+				path: 'total-per-person',
+				defaultActive: true,
 			},
 			{
 				name: 'Cadastros',
 				path: 'share-people',
-				defaultActive: true,
 			},
 		],
 	},

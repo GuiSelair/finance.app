@@ -27,6 +27,9 @@ export class ExpensesSharedRepository implements IExpensesSharedRepository {
       where: {
         expense_month_id: In(expense_month_ids),
       },
+      relations: {
+        share_expense_person: true,
+      }
     });
 
     return expenseSharedFound;
