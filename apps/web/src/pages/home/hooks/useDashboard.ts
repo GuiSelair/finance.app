@@ -5,13 +5,18 @@ import { selectedMonthYearContext } from '@/contexts';
 import { useFetchExpensesSummaryApi } from '@/hooks/api/expenses/useFetchExpensesSummary.api';
 import { useFetchExpensesMonthApi } from '@/hooks/api/expenses/useFetchExpensesMonth.api';
 import { useDeleteExpenseApi, UseDeleteExpenseApiInput } from '@/hooks/api/expenses/useDeleteExpense.api';
+import { ExpenseInMonth } from '@/models/ExpenseInMonth';
 
 import type { IFetchSummaryResponse } from '../components/Summary';
-import type { IFetchExpensesResponse } from '../components/ExpensesTable';
 
 export type DeleteExpenseFunction = () => {
 	isDeleting: boolean;
 	executeDelete: (args: UseDeleteExpenseApiInput) => Promise<void>;
+};
+
+export type FetchExpensesFunction = () => {
+	isFetchingExpenses: boolean;
+	expensesInMonth?: ExpenseInMonth[] | undefined;
 };
 
 export function useDashboard() {
@@ -31,14 +36,14 @@ export function useDashboard() {
 		};
 	}
 
-	function fetchExpenses(): IFetchExpensesResponse {
+	const fetchExpenses: FetchExpensesFunction = () => {
 		const { data, isLoading } = useFetchExpensesMonthApi();
 
 		return {
 			expensesInMonth: data,
 			isFetchingExpenses: isLoading,
 		};
-	}
+	};
 
 	const deleteExpense: DeleteExpenseFunction = () => {
 		const { mutateAsync, isLoading } = useDeleteExpenseApi();

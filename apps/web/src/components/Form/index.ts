@@ -4,3 +4,4 @@ export * from './InputLabel';
 export * from './PasswordInput';
 export * from './ActionButtons';
 export * from './Switch';
+export * from './Checkbox';
