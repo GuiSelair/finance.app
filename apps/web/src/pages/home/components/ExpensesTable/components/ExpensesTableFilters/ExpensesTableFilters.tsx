@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
 import { Funnel as FunnelIcon, MagnifyingGlass as MagnifyingGlassIcon } from 'phosphor-react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { TextInput } from '@/components/Form/TextInput';
-import { Button, Checkbox, Flex, Popover, Spinner, Text } from '@/components';
+import { Button, Checkbox, Flex, Popover, Spinner, Text, RadioGroup } from '@/components';
 
 import {
 	FilterButton,
@@ -10,40 +12,45 @@ import {
 	FilterMenuContent,
 	FilterMenuHeader,
 } from './ExpensesTableFilters.styles';
-import { useEffect, useState } from 'react';
 import { useDebounce } from '@/hooks/useDebounce';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useListCardsApi } from '@/hooks/api/cards/useListCards.api';
+import { EExpensesTypesFilter } from '../../../../constants/expensesFilters';
 
 type Filter = {
-	type: 'search';
+	type: 'search' | 'cards' | 'expenses';
 	value: string;
 };
 
-type OnModifyFilterOnSearchParams = (filter: Filter) => void;
+type OnModifyFilterOnSearchParams = (filters: Filter[]) => void;
 
 export function ExpensesFilters() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 
-	function handleModifyFilterOnSearchParams(filter: Filter) {
+	function handleModifyFilterOnSearchParams(filters: Filter[]) {
 		const params = new URLSearchParams(searchParams.toString());
-		const isValueEmptyOrRemoved = !filter.value?.trim();
 
-		if (isValueEmptyOrRemoved) {
-			params.delete(filter.type);
-		} else {
-			params.set(filter.type, filter.value);
-		}
+		filters.forEach(filter => {
+			const isValueEmptyOrRemoved = !filter.value?.trim();
+			if (isValueEmptyOrRemoved) {
+				params.delete(filter.type);
+			} else {
+				params.set(filter.type, filter.value);
+			}
+		});
 
 		const hasFilters = params.toString() !== '';
-		router.push(hasFilters ? `?${params.toString()}` : '');
+		router.push(hasFilters ? `?${params.toString()}` : '', { scroll: false });
 	}
 
 	return (
 		<FilterContainer>
 			<SearchBar onModifyFilterOnSearchParams={handleModifyFilterOnSearchParams} />
-			<Popover overlay={<FilterMenu />} sideOffset={8} maxWidth={800}>
+			<Popover
+				overlay={<FilterMenu onModifyFilterOnSearchParams={handleModifyFilterOnSearchParams} />}
+				sideOffset={8}
+				maxWidth={800}
+			>
 				<FilterButton type="button">
 					<FunnelIcon size={24} />
 					Filtros
@@ -59,7 +66,7 @@ function SearchBar({ onModifyFilterOnSearchParams }: { onModifyFilterOnSearchPar
 	const debouncedSearch = useDebounce(search, 700);
 
 	useEffect(() => {
-		onModifyFilterOnSearchParams({ type: 'search', value: debouncedSearch });
+		onModifyFilterOnSearchParams([{ type: 'search', value: debouncedSearch.toLowerCase() }]);
 	}, [debouncedSearch]);
 
 	return (
@@ -72,8 +79,52 @@ function SearchBar({ onModifyFilterOnSearchParams }: { onModifyFilterOnSearchPar
 	);
 }
 
-function FilterMenu() {
+function FilterMenu({ onModifyFilterOnSearchParams }: { onModifyFilterOnSearchParams: OnModifyFilterOnSearchParams }) {
+	const searchParams = useSearchParams();
 	const { data: cards, isLoading: isLoadingCards } = useListCardsApi();
+
+	const isCardsEmpty = !isLoadingCards && !cards?.length;
+
+	function handleApplyFilters(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		const formData = new FormData(e.target as HTMLFormElement);
+		const activeCardsFilters = Array.from(formData.keys()).reduce((acc, key) => {
+			const [category, value] = key.split('-');
+
+			if (!acc[category]) {
+				acc[category] = [];
+			}
+
+			acc[category].push(value);
+			return acc;
+		}, {} as Record<string, string[]>);
+
+		const filtersToApply: Filter[] = [];
+
+		if (activeCardsFilters?.cards?.length) {
+			filtersToApply.push({ type: 'cards', value: activeCardsFilters.cards.join(',') });
+		} else {
+			filtersToApply.push({ type: 'cards', value: '' });
+		}
+
+		if (formData.get('expenses')) {
+			filtersToApply.push({ type: 'expenses', value: formData.get('expenses') as string });
+		} else {
+			filtersToApply.push({ type: 'expenses', value: '' });
+		}
+
+		onModifyFilterOnSearchParams(filtersToApply);
+	}
+
+	function checkIfFilterIsActive(filter: Filter) {
+		const filterValue = searchParams.get(filter.type);
+
+		if (filterValue && filterValue.includes(filter.value)) {
+			return true;
+		}
+
+		return false;
+	}
 
 	return (
 		<FilterMenuContainer>
@@ -81,37 +132,46 @@ function FilterMenu() {
 				<Text size="medium" weight="600" color="green800">
 					Filtros
 				</Text>
-				<Button type="button" size="sm" variant="ghost">
+				<Button form="filter-form" type="submit" size="sm" variant="ghost">
 					Aplicar
 				</Button>
 			</FilterMenuHeader>
-			<FilterMenuContent>
+			<FilterMenuContent as="form" id="filter-form" onSubmit={handleApplyFilters}>
+				{!isCardsEmpty && (
+					<Flex flexDirection="column" gap="0.5rem">
+						<Text size="small">Meios de pagamentos:</Text>
+						{isLoadingCards ? (
+							<Spinner size="sm" />
+						) : (
+							<Flex flexDirection="column" gap="0.25rem">
+								{cards?.map(card => (
+									<Checkbox
+										key={card.id}
+										id={card.id}
+										name={`cards-${card.slug}`}
+										defaultChecked={checkIfFilterIsActive({ type: 'cards', value: card.slug })}
+									>
+										<Checkbox.Label>{card.name}</Checkbox.Label>
+									</Checkbox>
+								))}
+							</Flex>
+						)}
+					</Flex>
+				)}
 				<Flex flexDirection="column" gap="0.5rem">
-					<Text size="xs">Meios de pagamentos:</Text>
-					{isLoadingCards ? (
-						<Spinner size="sm" />
-					) : (
-						<Flex flexDirection="column" gap="0.25rem">
-							{cards?.map(card => (
-								<Checkbox key={card.id} id={card.id}>
-									<Checkbox.Label>{card.name}</Checkbox.Label>
-								</Checkbox>
-							))}
-						</Flex>
-					)}
-				</Flex>
-				<Flex flexDirection="column" gap="0.5rem">
-					<Text size="xs">Exibir despesas:</Text>
+					<Text size="small">Exibir despesas:</Text>
 					<Flex flexDirection="column" gap="0.25rem">
-						<Checkbox id="unique">
-							<Checkbox.Label>Únicas</Checkbox.Label>
-						</Checkbox>
-						<Checkbox id="multiple">
-							<Checkbox.Label>Recorrentes</Checkbox.Label>
-						</Checkbox>
-						<Checkbox id="fixed">
-							<Checkbox.Label>Fixas</Checkbox.Label>
-						</Checkbox>
+						<RadioGroup name="expenses">
+							<RadioGroup.Item value={EExpensesTypesFilter.UNIQUE} id="unique">
+								<RadioGroup.Label>Únicas</RadioGroup.Label>
+							</RadioGroup.Item>
+							<RadioGroup.Item value={EExpensesTypesFilter.MULTIPLE} id="multiple">
+								<RadioGroup.Label>Parceladas</RadioGroup.Label>
+							</RadioGroup.Item>
+							<RadioGroup.Item value={EExpensesTypesFilter.FIXED} id="fixed">
+								<RadioGroup.Label>Recorrentes</RadioGroup.Label>
+							</RadioGroup.Item>
+						</RadioGroup>
 					</Flex>
 				</Flex>
 			</FilterMenuContent>
