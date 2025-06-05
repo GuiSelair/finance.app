@@ -27,6 +27,6 @@ export const TableCell = styled.td`
 
 export const TableRow = styled.tr`
 	&:nth-child(even) {
-		background-color: #f0f3f4;
+		background-color: #fafafa;
 	}
 `;

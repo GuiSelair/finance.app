@@ -10,6 +10,7 @@ export interface CardProps {
 	createdAt?: string;
 	updatedAt?: string;
 	total?: number;
+	slug?: string;
 }
 
 export class Card {
@@ -22,6 +23,7 @@ export class Card {
 	createdAt?: Date;
 	updatedAt?: Date;
 	total?: number;
+	slug: string;
 
 	constructor(data: CardProps) {
 		this.id = data.id;
@@ -33,5 +35,18 @@ export class Card {
 		this.createdAt = data.createdAt ? parseISO(data.createdAt) : undefined;
 		this.updatedAt = data.updatedAt ? parseISO(data.updatedAt) : undefined;
 		this.total = data.total || 0;
+		this.slug = data.slug || this.generateSlug();
+	}
+
+	private generateSlug() {
+		return this.name
+			.normalize('NFKD')
+			.toLowerCase()
+			.trim()
+			.replace(/\s+/g, '-')
+			.replace(/[^\w-]+/g, '')
+			.replace(/_/g, '-')
+			.replace(/--+/g, '-')
+			.replace(/-$/g, '');
 	}
 }

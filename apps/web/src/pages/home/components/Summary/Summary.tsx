@@ -1,9 +1,8 @@
 import { Coins as CoinsIcon, CoinVertical as CoinVerticalIcon, Wallet as WalletIcon } from 'phosphor-react';
 
-import { SummaryCard } from '../SummaryCard';
-
-import { SummaryContainer } from './Summary.styles';
 import { FormIncomePopover } from '../FormIncomePopover';
+import { SummaryCard } from './components/SummaryCard';
+import { SummaryContainer } from './Summary.styles';
 
 export interface IExpensesSummary {
 	economy: number;
