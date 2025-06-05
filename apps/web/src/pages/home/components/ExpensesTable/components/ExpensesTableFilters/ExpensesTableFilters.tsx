@@ -8,8 +8,10 @@ import { Button, Checkbox, Flex, Popover, Spinner, Text, RadioGroup } from '@/co
 import {
 	FilterButton,
 	FilterContainer,
+	FilterMenuClearButton,
 	FilterMenuContainer,
 	FilterMenuContent,
+	FilterMenuCountContainer,
 	FilterMenuHeader,
 } from './ExpensesTableFilters.styles';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -54,6 +56,13 @@ export function ExpensesFilters() {
 				<FilterButton type="button">
 					<FunnelIcon size={24} />
 					Filtros
+					{searchParams.size > 0 && (
+						<FilterMenuCountContainer>
+							<Text size="xs" weight="600" color="white">
+								{searchParams.size}
+							</Text>
+						</FilterMenuCountContainer>
+					)}
 				</FilterButton>
 			</Popover>
 		</FilterContainer>
@@ -126,15 +135,27 @@ function FilterMenu({ onModifyFilterOnSearchParams }: { onModifyFilterOnSearchPa
 		return false;
 	}
 
+	function handleClearFilters() {
+		onModifyFilterOnSearchParams([
+			{ type: 'cards', value: '' },
+			{ type: 'expenses', value: '' },
+		]);
+	}
+
 	return (
 		<FilterMenuContainer>
 			<FilterMenuHeader>
 				<Text size="medium" weight="600" color="green800">
 					Filtros
 				</Text>
-				<Button form="filter-form" type="submit" size="sm" variant="ghost">
-					Aplicar
-				</Button>
+				<Flex gap="0.5rem">
+					<FilterMenuClearButton size="xs" variant="link" onClick={handleClearFilters}>
+						Limpar filtros
+					</FilterMenuClearButton>
+					<Button form="filter-form" type="submit" size="sm" variant="ghost">
+						Aplicar
+					</Button>
+				</Flex>
 			</FilterMenuHeader>
 			<FilterMenuContent as="form" id="filter-form" onSubmit={handleApplyFilters}>
 				{!isCardsEmpty && (
@@ -161,7 +182,7 @@ function FilterMenu({ onModifyFilterOnSearchParams }: { onModifyFilterOnSearchPa
 				<Flex flexDirection="column" gap="0.5rem">
 					<Text size="small">Exibir despesas:</Text>
 					<Flex flexDirection="column" gap="0.25rem">
-						<RadioGroup name="expenses">
+						<RadioGroup name="expenses" defaultValue={searchParams.get('expenses') || ''}>
 							<RadioGroup.Item value={EExpensesTypesFilter.UNIQUE} id="unique">
 								<RadioGroup.Label>Únicas</RadioGroup.Label>
 							</RadioGroup.Item>

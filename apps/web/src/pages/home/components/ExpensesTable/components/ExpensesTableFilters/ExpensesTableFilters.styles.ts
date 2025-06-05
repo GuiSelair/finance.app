@@ -41,3 +41,21 @@ export const FilterMenuContent = styled(Flex)`
 	gap: 0.5rem;
 	margin-top: 0.5rem;
 `;
+
+export const FilterMenuCountContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: ${props => props.theme.colors.green500};
+	width: 20px;
+	height: 20px;
+	border-radius: 100%;
+`;
+
+export const FilterMenuClearButton = styled(Button)`
+	color: ${props => props.theme.colors.red500};
+
+	&:not(:disabled):hover {
+		background-color: ${props => props.theme.colors.red100};
+	}
+`;
