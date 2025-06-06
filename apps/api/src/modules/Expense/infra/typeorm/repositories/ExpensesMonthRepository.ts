@@ -40,6 +40,12 @@ export class ExpensesMonthRepository implements IExpensesMonthRepository {
         }),
       },
       relations: ['expense', 'expense.card'],
+      order: {
+        expense: {
+          is_recurring: 'DESC',
+          created_at: 'ASC'
+        }
+      }
     });
 
     return expensesInMonth;
