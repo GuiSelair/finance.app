@@ -6,9 +6,11 @@ import {
   CreateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { ExpenseMapper } from './ExpenseMapper';
 import { ExpenseMonth } from '@modules/Expense/domain/models/ExpenseMonth';
+import { ExpenseSharedMapper } from './ExpenseSharedMapper';
 
 @Entity('expenses_month')
 export class ExpenseMonthMapper {
@@ -21,6 +23,9 @@ export class ExpenseMonthMapper {
   @ManyToOne(() => ExpenseMapper, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'expense_id' })
   expense: ExpenseMapper;
+
+  @OneToMany(() => ExpenseSharedMapper, (expenseShared) => expenseShared.expense_month)
+  expenses_month_share_people: ExpenseSharedMapper[];
 
   @Column()
   number_current_of_parcel: number;
