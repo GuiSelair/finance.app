@@ -39,7 +39,12 @@ export class ExpensesMonthRepository implements IExpensesMonthRepository {
           },
         }),
       },
-      relations: ['expense', 'expense.card'],
+      relations: [
+        'expense',
+        'expense.card',
+        'expenses_month_share_people',
+        'expenses_month_share_people.share_expense_person',
+      ],
     });
 
     return expensesInMonth;
@@ -53,7 +58,12 @@ export class ExpensesMonthRepository implements IExpensesMonthRepository {
           user_id
         }
        },
-       relations: ['expense', 'expense.card', 'expenses_month_share_people', 'expenses_month_share_people.share_expense_person'],
+       relations: [
+        'expense',
+        'expense.card',
+        'expenses_month_share_people',
+        'expenses_month_share_people.share_expense_person',
+      ],
     });
     return expense || undefined
   }
