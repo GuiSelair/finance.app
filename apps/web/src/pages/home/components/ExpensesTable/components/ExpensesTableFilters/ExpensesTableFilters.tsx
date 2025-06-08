@@ -98,7 +98,7 @@ function FilterMenu({ onModifyFilterOnSearchParams }: { onModifyFilterOnSearchPa
 		e.preventDefault();
 		const formData = new FormData(e.target as HTMLFormElement);
 		const activeCardsFilters = Array.from(formData.keys()).reduce((acc, key) => {
-			const [category, value] = key.split('-');
+			const [category, value] = key.split(':');
 
 			if (!acc[category]) {
 				acc[category] = [];
@@ -149,7 +149,7 @@ function FilterMenu({ onModifyFilterOnSearchParams }: { onModifyFilterOnSearchPa
 					Filtros
 				</Text>
 				<Flex gap="0.5rem">
-					<FilterMenuClearButton size="xs" variant="link" onClick={handleClearFilters}>
+					<FilterMenuClearButton form="filter-form" type="reset" size="xs" variant="link" onClick={handleClearFilters}>
 						Limpar filtros
 					</FilterMenuClearButton>
 					<Button form="filter-form" type="submit" size="sm" variant="ghost">
@@ -169,7 +169,7 @@ function FilterMenu({ onModifyFilterOnSearchParams }: { onModifyFilterOnSearchPa
 									<Checkbox
 										key={card.id}
 										id={card.id}
-										name={`cards-${card.slug}`}
+										name={`cards:${card.slug}`}
 										defaultChecked={checkIfFilterIsActive({ type: 'cards', value: card.slug })}
 									>
 										<Checkbox.Label>{card.name}</Checkbox.Label>

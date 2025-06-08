@@ -77,7 +77,9 @@ export function useDashboard() {
 		if (filters?.expenses) {
 			switch (filters.expenses) {
 				case EExpensesTypesFilter.UNIQUE:
-					expensesFiltered = expensesFiltered?.filter(expense => expense.quantityParcel === 1);
+					expensesFiltered = expensesFiltered?.filter(
+						expense => expense.quantityParcel === 1 && !expense.expense.isRecurring,
+					);
 					break;
 				case EExpensesTypesFilter.MULTIPLE:
 					expensesFiltered = expensesFiltered?.filter(expense => expense.quantityParcel > 1);
