@@ -45,6 +45,12 @@ export class ExpensesMonthRepository implements IExpensesMonthRepository {
         'expenses_month_share_people',
         'expenses_month_share_people.share_expense_person',
       ],
+      order: {
+        expense: {
+          is_recurring: 'DESC',
+          created_at: 'ASC'
+        }
+      }
     });
 
     return expensesInMonth;

@@ -1,26 +1,23 @@
 import { useMemo, useState } from 'react';
 import {
 	MagnifyingGlass as MagnifyingGlassIcon,
-	Funnel as FunnelIcon,
-	ArrowCircleDown as ArrowCircleDownIcon,
 	TrashSimple as TrashIcon,
 	PencilSimple as PencilSimpleIcon,
 } from 'phosphor-react';
 import Link from 'next/link';
 
-import { TextInput } from '@/components/Form/TextInput';
 import { DataTable, Spinner, Flex, Button } from '@/components';
 import { ExpenseInMonth } from '@/models/ExpenseInMonth';
 import { formatCurrency } from '@/helpers/formatCurrency';
 import { formatParcel } from '@/helpers/formatParcel';
-
-import { ExpenseDetailsModal } from '../ExpenseDetailsModal';
-import { expensesTableColumns } from '../../constants/tableColumns';
-
-import { DeleteOptionButton, FilterButton, FilterContainer, OptionButtonsContainer } from './ExpensesTable.styles';
-import { DeleteExpenseFunction } from '../../hooks/useDashboard';
 import { useModal } from '@/hooks/useModal';
-import { ConfirmDeleteExpenseModal } from '../ConfirmDeleteExpenseModal/ConfirmDeleteExpenseModal';
+
+import { expensesTableColumns } from '../../constants/tableColumns';
+import type { DeleteExpenseFunction, FetchExpensesFunction } from '../../hooks/useDashboard';
+import { ConfirmDeleteExpenseModal } from '../ConfirmDeleteExpenseModal';
+import { ExpenseDetailsModal } from '../ExpenseDetailsModal';
+import { DeleteOptionButton, OptionButtonsContainer } from './ExpensesTable.styles';
+import { ExpensesFilters } from './components/ExpensesTableFilters';
 
 export interface IExpensesTableData {
 	name: string;
@@ -32,12 +29,8 @@ export interface IExpensesTableData {
 	options: JSX.Element | string;
 }
 
-export interface IFetchExpensesResponse {
-	isFetchingExpenses: boolean;
-	expensesInMonth?: ExpenseInMonth[];
-}
 interface IExpensesTableProps {
-	fetchExpenses: () => IFetchExpensesResponse;
+	fetchExpenses: FetchExpensesFunction;
 	deleteExpense: DeleteExpenseFunction;
 }
 
@@ -117,17 +110,7 @@ export default function ExpensesTable({ fetchExpenses, deleteExpense }: Readonly
 
 	return (
 		<>
-			<FilterContainer>
-				<TextInput icon={() => <MagnifyingGlassIcon size={24} />} placeholder="Pesquise pelo nome da despesa" />
-				<FilterButton>
-					<FunnelIcon size={24} />
-					Filtros
-				</FilterButton>
-				<FilterButton>
-					<ArrowCircleDownIcon size={24} />
-					Exportar
-				</FilterButton>
-			</FilterContainer>
+			<ExpensesFilters />
 			<DataTable columns={expensesTableColumns} data={expensesTableData} />
 			<ExpenseDetailsModal
 				isOpenModal={isOpenExpenseDetailsModal}
