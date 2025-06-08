@@ -1,5 +1,8 @@
 import { createColumnHelper } from '@tanstack/react-table';
-import { CheckSquare as CheckSquareIcon } from 'phosphor-react';
+import { CheckCircle as CheckCircleIcon } from 'phosphor-react';
+
+import { Flex } from '@/components';
+
 import { IExpensesTableData } from '../components/ExpensesTable/ExpensesTable';
 
 const columnBuilder = createColumnHelper<IExpensesTableData>();
@@ -28,13 +31,23 @@ export const expensesTableColumns = [
 	columnBuilder.display({
 		id: 'is-shared',
 		header: 'Compra dividida?',
-		cell: ({ row }) => row.original.isShared && <CheckSquareIcon weight="fill" size={24} color="#248277" />,
+		cell: ({ row }) =>
+			row.original.isShared && (
+				<Flex alignItems="center" justifyContent="center">
+					<CheckCircleIcon size={20} color="#036666" />
+				</Flex>
+			),
 		size: 500,
 	}),
 	columnBuilder.display({
 		id: 'is-recurring',
 		header: 'Despesa fixa?',
-		cell: ({ row }) => row.original.isRecurring && <CheckSquareIcon weight="fill" size={24} color="#248277" />,
+		cell: ({ row }) =>
+			row.original.isRecurring && (
+				<Flex alignItems="center" justifyContent="center">
+					<CheckCircleIcon size={20} color="#036666" />
+				</Flex>
+			),
 		size: 400,
 	}),
 	columnBuilder.display({
