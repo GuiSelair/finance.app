@@ -1,6 +1,8 @@
 import { CheckCircle, Trash } from 'phosphor-react';
 import styled from 'styled-components';
 
+import { Text } from '@/components';
+
 interface IExpensePaidIconProps {
 	isPaid: boolean;
 }
@@ -134,14 +136,6 @@ export const ExpenseCard = styled.div`
 	}
 `;
 
-export const Divider = styled.hr`
-	display: block;
-	border: 0;
-	border-top: 1px solid ${props => props.theme.colors.gray100};
-	margin: 1rem 0;
-	padding: 0;
-`;
-
 export const ExpensePaidIcon = styled(CheckCircle).attrs({
 	fill: 'fill',
 })<IExpensePaidIconProps>`
@@ -152,4 +146,29 @@ export const DeleteExpenseIcon = styled(Trash).attrs({
 	fill: 'fill',
 })`
 	color: ${props => props.theme.colors.red500};
+`;
+
+export const SharedExpensesTitle = styled(Text)`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	font-weight: 500;
+	color: ${props => props.theme.colors.gray400};
+
+	&::before,
+	&::after {
+		content: '';
+		flex: 1;
+		border-top: 1px solid ${props => props.theme.colors.gray100};
+		height: 0;
+	}
+
+	&::before {
+		margin-right: 1rem;
+	}
+
+	&::after {
+		margin-left: 1rem;
+	}
 `;

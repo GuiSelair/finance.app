@@ -2,14 +2,13 @@ import React from 'react';
 import { Link as LinkIcon } from 'phosphor-react';
 import Link from 'next/link';
 
-import { BaseModal } from '@/components/BaseModal';
+import { Flex, Text, BaseModal, Currency } from '@/components';
 import { ExpenseInMonth } from '@/models/ExpenseInMonth';
 import { formatCurrency } from '@/helpers/formatCurrency';
 import { dateFormat } from '@/helpers/dateFormat';
 import { formatParcel } from '@/helpers/formatParcel';
 
 import {
-	Divider,
 	ExpenseAmountDetails,
 	ExpenseAmountDetailsItem,
 	ExpenseBaseDetails,
@@ -17,6 +16,7 @@ import {
 	ExpenseDescription,
 	ExpenseDescriptionAndCardDetails,
 	ExpensePaidIcon,
+	SharedExpensesTitle,
 } from './ExpenseDetailsModal.styles';
 
 interface IExpenseDetailsModalProps {
@@ -39,6 +39,8 @@ export default function ExpenseDetailsModal({
 	const parcelsFormatted = formatParcel(expenseInMonth?.currentParcel, expenseInMonth?.quantityParcel);
 	const expenseCreatedAtFormatted = dateFormat(new Date(expense?.createdAt ?? new Date()), 'dd/MM/yyyy');
 	const expenseIdCut = `${expenseInMonth?.expenseId?.slice(0, 20)}...`;
+	const isSharedExpense = (expenseInMonth?.sharedExpenses?.length ?? 0) > 0;
+	const youMustPay = expenseInMonth?.sharedExpenses?.reduce((acc, sharedExpense) => acc + sharedExpense.total, 0) ?? 0;
 
 	function makeParcelSection() {
 		if (expense?.isRecurring) {
@@ -91,7 +93,6 @@ export default function ExpenseDetailsModal({
 					<p>{expenseCreatedAtFormatted}</p>
 				</ExpenseAmountDetailsItem>
 			</ExpenseAmountDetails>
-			<Divider />
 			<ExpenseDescriptionAndCardDetails>
 				<ExpenseDescription>
 					<span>Descrição</span>
@@ -109,6 +110,36 @@ export default function ExpenseDetailsModal({
 					</div>
 				</ExpenseCard>
 			</ExpenseDescriptionAndCardDetails>
+			{isSharedExpense && (
+				<Flex flexDirection="column" gap="0.5rem">
+					<SharedExpensesTitle size="semi-medium">Divisões</SharedExpensesTitle>
+
+					<Flex flexDirection="column" gap="0.5rem">
+						<Flex alignItems="center" justifyContent="space-between" width="100%" gap="0.5rem">
+							<Text textAlign="left" color="gray300">
+								Você
+							</Text>
+							<Flex alignItems="center" gap="1rem">
+								<Currency value={youMustPay} weight="500" color="gray300" />
+							</Flex>
+						</Flex>
+						{expenseInMonth?.sharedExpenses?.map(sharedExpense => (
+							<Flex
+								key={sharedExpense.person.id}
+								alignItems="center"
+								justifyContent="space-between"
+								width="100%"
+								gap="0.5rem"
+							>
+								<Text textAlign="left">{sharedExpense.person.name}</Text>
+								<Flex alignItems="center" gap="1rem">
+									<Currency value={sharedExpense.total} weight="500" />
+								</Flex>
+							</Flex>
+						))}
+					</Flex>
+				</Flex>
+			)}
 		</BaseModal>
 	);
 }
