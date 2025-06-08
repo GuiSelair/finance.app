@@ -1,6 +1,7 @@
 import { Card } from '@/models/Card';
 import { Expense } from '@/models/Expense';
 import { ExpenseInMonth } from '@/models/ExpenseInMonth';
+import { SharedExpense } from '@/models/SharedExpense';
 import { RawCard } from './makeCardModel';
 
 export interface RawExpensesMonth {
@@ -15,6 +16,17 @@ export interface RawExpensesMonth {
 	created_at: string;
 	updated_at: string;
 	expense: RawExpense;
+	expenses_month_share_people: RawSharedExpense[];
+}
+
+export interface RawSharedExpense {
+	id: number;
+	name: string;
+	amount: number;
+	share_expense_person: {
+		id: number;
+		name: string;
+	};
 }
 
 export interface RawExpense {
@@ -25,6 +37,7 @@ export interface RawExpense {
 	due_date: string;
 	amount: number;
 	is_recurring: boolean;
+	is_splitted: boolean;
 	card_id: string;
 	user_id: string;
 	parcel: number;
@@ -56,6 +69,7 @@ export function makeExpenseModel(data: RawExpensesMonth) {
 			description: data.expense.description,
 			dueDate: data.expense.due_date,
 			isRecurring: data.expense.is_recurring,
+			isSplitedExpense: data.expense.is_splitted,
 			purchaseDate: data.expense.purchase_date,
 			card: new Card({
 				id: data.expense.card.id,
@@ -67,6 +81,17 @@ export function makeExpenseModel(data: RawExpensesMonth) {
 				updatedAt: data.expense.card.updated_at,
 				userId: data.expense.card.user_id,
 			}),
+		}),
+		sharedExpenses: data.expenses_month_share_people.map(expense => {
+			return new SharedExpense({
+				person: {
+					id: expense.share_expense_person.id,
+					name: expense.share_expense_person.name,
+				},
+				total: expense.amount,
+				month: data.month,
+				year: data.year,
+			});
 		}),
 	});
 }
