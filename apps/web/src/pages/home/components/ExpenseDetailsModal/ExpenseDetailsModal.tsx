@@ -37,7 +37,7 @@ export default function ExpenseDetailsModal({
 	const expenseTotalAmountFormatted = formatCurrency(expense?.amount);
 	const expenseParcelAmountFormatted = formatCurrency(expenseInMonth?.valueParcel);
 	const parcelsFormatted = formatParcel(expenseInMonth?.currentParcel, expenseInMonth?.quantityParcel);
-	const expenseCreatedAtFormatted = dateFormat(new Date(expense?.createdAt ?? new Date()), 'dd/MM/yyyy');
+	const expenseCreatedAtFormatted = dateFormat(new Date(expense?.purchaseDate ?? new Date()), 'dd/MM/yyyy');
 	const expenseIdCut = `${expenseInMonth?.expenseId?.slice(0, 20)}...`;
 	const isSharedExpense = (expenseInMonth?.sharedExpenses?.length ?? 0) > 0;
 	const youMustPay = expenseInMonth?.sharedExpenses?.reduce((acc, sharedExpense) => acc + sharedExpense.total, 0) ?? 0;
