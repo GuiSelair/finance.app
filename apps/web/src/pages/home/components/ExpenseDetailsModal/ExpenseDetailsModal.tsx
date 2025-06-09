@@ -40,7 +40,9 @@ export default function ExpenseDetailsModal({
 	const expenseCreatedAtFormatted = dateFormat(new Date(expense?.purchaseDate ?? new Date()), 'dd/MM/yyyy');
 	const expenseIdCut = `${expenseInMonth?.expenseId?.slice(0, 20)}...`;
 	const isSharedExpense = (expenseInMonth?.sharedExpenses?.length ?? 0) > 0;
-	const youMustPay = expenseInMonth?.sharedExpenses?.reduce((acc, sharedExpense) => acc + sharedExpense.total, 0) ?? 0;
+	const youMustPay =
+		expense.amount -
+		(expenseInMonth?.sharedExpenses?.reduce((acc, sharedExpense) => acc + sharedExpense.total, 0) ?? 0);
 
 	function makeParcelSection() {
 		if (expense?.isRecurring) {
