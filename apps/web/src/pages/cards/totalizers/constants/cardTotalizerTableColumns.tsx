@@ -1,6 +1,5 @@
 import { DataTableColumn } from '@/components/DataTable';
 
-import { Button } from '@/components/Button';
 import { CardTotalizerHighlightValue } from '../CardTotalizer.styles';
 
 type CartTotalizerTableColumns = DataTableColumn<
@@ -41,14 +40,5 @@ export const CARD_TOTALIZER_TABLE_COLUMNS: CartTotalizerTableColumns = [
 		accessorKey: 'total',
 		size: 300,
 		cell: ({ row }) => <CardTotalizerHighlightValue>{row.original.total}</CardTotalizerHighlightValue>,
-	},
-	{
-		header: 'Ações',
-		accessorKey: 'actions',
-		cell: () => (
-			<Button size="sm" variant="outline" isDisabled>
-				Detalhes
-			</Button>
-		),
 	},
 ];
