@@ -41,7 +41,7 @@ export default function ExpenseDetailsModal({
 	const expenseIdCut = `${expenseInMonth?.expenseId?.slice(0, 20)}...`;
 	const isSharedExpense = (expenseInMonth?.sharedExpenses?.length ?? 0) > 0;
 	const youMustPay =
-		expense.amount -
+		expenseInMonth.valueParcel -
 		(expenseInMonth?.sharedExpenses?.reduce((acc, sharedExpense) => acc + sharedExpense.total, 0) ?? 0);
 
 	function makeParcelSection() {
