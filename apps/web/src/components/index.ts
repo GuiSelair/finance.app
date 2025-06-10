@@ -16,3 +16,4 @@ export * from './LinkText';
 export * from './Divider';
 export * from './Currency';
 export * from './Text';
+export * from './Dropmenu';
