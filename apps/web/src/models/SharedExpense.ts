@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 interface SharedPerson {
 	id: number;
 	name: string;
+	whatsapp: string;
 }
 
 interface SharedExpenseProps {
