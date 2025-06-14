@@ -48,6 +48,14 @@ function throwIfPropertyIsNotUUID(uuid: string | null) {
   return false;
 }
 
+function throwIfPropertyIsNotNumber(number: string) {
+  const numberSchema = z.coerce.number();
+
+  if (!number || !numberSchema.safeParse(number).success) {
+    throw new AppError('Invalid number', 400);
+  }
+}
+
 export const requestValidations = {
   throwIfEmptyBody,
   throwIfIsNaN,
@@ -55,4 +63,5 @@ export const requestValidations = {
   throwIfPropertyMonthIsNotValid,
   throwIfPropertyYearIsNotValid,
   throwIfPropertyIsNotUUID,
+  throwIfPropertyIsNotNumber,
 };

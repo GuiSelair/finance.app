@@ -2,7 +2,7 @@ import { In, Repository } from 'typeorm';
 
 import { DataSourceConfiguration } from '@shared/infra/typeorm/bootstrap';
 import { ExpenseSharedMapper } from '../entities/ExpenseSharedMapper';
-import { IExpensesSharedRepository } from '@modules/Expense/domain/repositories/IExpensesSharedRepository';
+import type { FetchByPersonIdInput, IExpensesSharedRepository } from '@modules/Expense/domain/repositories/IExpensesSharedRepository';
 import { ExpenseShared } from '@modules/Expense/domain/models/ExpenseShared';
 
 export class ExpensesSharedRepository implements IExpensesSharedRepository {
@@ -27,10 +27,44 @@ export class ExpensesSharedRepository implements IExpensesSharedRepository {
       where: {
         expense_month_id: In(expense_month_ids),
       },
-      relations: {
-        share_expense_person: true,
-      }
+      relations: [
+        'share_expense_person',
+      ]
     });
+
+    return expenseSharedFound;
+  }
+
+  public async fetchByPersonId(input: FetchByPersonIdInput): Promise<ExpenseShared[]> {
+    const expenseSharedFound = await this.repository.find({
+      select: {
+        id: true,
+        amount: true,
+        share_expense_person_id: true,
+        expense_month: {
+          id: true,
+          number_current_of_parcel: true,
+          number_total_of_parcel: true,
+          expense: {
+            name: true,
+          }
+        },
+      },
+      where: {
+        share_expense_person_id: input.person_id,
+        expense_month: {
+          expense: {
+            user_id: input.user_id,
+          },
+          month: input.month,
+          year: input.year,
+        },
+      },
+      relations: [
+        'expense_month',
+        'expense_month.expense',
+      ],
+    })
 
     return expenseSharedFound;
   }
