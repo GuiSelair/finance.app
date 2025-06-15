@@ -26,6 +26,7 @@ export interface RawSharedExpense {
 	share_expense_person: {
 		id: number;
 		name: string;
+		whatsapp: string;
 	};
 }
 
@@ -87,6 +88,7 @@ export function makeExpenseModel(data: RawExpensesMonth) {
 				person: {
 					id: expense.share_expense_person.id,
 					name: expense.share_expense_person.name,
+					whatsapp: expense.share_expense_person.whatsapp,
 				},
 				total: expense.amount,
 				month: data.month,
