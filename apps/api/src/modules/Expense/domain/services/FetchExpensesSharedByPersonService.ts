@@ -17,7 +17,6 @@ export type FetchExpensesSharedByPersonOutput = {
     total_parcel: number;
     amount: number;
   }[]
-  totalizer: number;
 } | null;
 
 @injectable()
@@ -47,11 +46,9 @@ export class FetchExpensesSharedByPersonService {
       amount: expenseShared.amount!,
     }))
 
-    const totalizer = expensesSharedFound.reduce((acc, expenseShared) => acc + (expenseShared.amount ?? 0), 0)
 
     return {
       expenses_shared_details: expensesSharedDetails,
-      totalizer,
     }
 	}
 }

@@ -67,7 +67,6 @@ describe('FetchExpensesSharedByPersonService use case - Unit test', () => {
           amount: 50,
         },
       ],
-      totalizer: 100,
     })
   })
 
