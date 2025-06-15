@@ -24,9 +24,16 @@ export const totalPerPersonColumns = [
 		header: 'Total',
 		cell: ({ row }) => <Text weight="600">{row.original.total}</Text>,
 	},
+	{
+		id: 'actions',
+		header: 'Ações',
+		accessorKey: 'actions',
+		cell: ({ row }) => row.original.actions,
+	},
 ] as DataTableColumn<{
 	name: string;
 	monthYear: string;
 	total: string;
 	avatar: React.ReactNode;
+	actions: React.ReactNode;
 }>;

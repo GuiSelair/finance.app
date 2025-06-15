@@ -13,6 +13,7 @@ interface FetchExpensesSharedTotalizerByPersonServiceOutput {
   people: {
     id: number
     name: string
+    whatsapp: string
     total_value: number
   }[]
 }
@@ -44,14 +45,16 @@ export class FetchExpensesSharedTotalizerByPersonService {
 
       acc[expenseShared.share_expense_person.id!] = {
         name: expenseShared.share_expense_person.name!,
+        whatsapp: expenseShared.share_expense_person.whatsapp!,
         total_value: (acc[expenseShared.share_expense_person.id!]?.total_value || 0) + expenseShared.amount!
       }
       return acc
-    }, {} as Record<string, { name: string, total_value: number }>)
+    }, {} as Record<string, { name: string, whatsapp: string, total_value: number }>)
 
     const output = Object.entries(expensesSharedGroupedByPersonId).map(([id, person]) => ({
       id: Number(id),
       name: person.name,
+      whatsapp: person.whatsapp,
       total_value: person.total_value
     }))
 

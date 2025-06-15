@@ -9,6 +9,7 @@ import { RemoveExpenseService } from '@modules/Expense/domain/services/RemoveExp
 import { FindExpenseMonthService } from '@modules/Expense/domain/services/FindExpenseMonthService';
 import { EditExpenseMonthService } from '@modules/Expense/domain/services/EditExpenseMonthService';
 import { FetchExpensesSharedTotalizerByPersonService } from '@modules/Expense/domain/services/FetchExpensesSharedTotalizerByPersonService';
+import { FetchExpensesSharedByPersonService } from '@modules/Expense/domain/services/FetchExpensesSharedByPersonService';
 
 export class ExpensesController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -128,4 +129,26 @@ export class ExpensesController {
     return response.status(200).json(expensesSharedTotalizerByPerson);
   }
 
+  public async fetchSharedByPerson(request: Request, response: Response): Promise<Response> {
+    requestValidations.throwIfPropertyNotExists(request.query, 'month');
+    requestValidations.throwIfPropertyNotExists(request.query, 'year');
+    requestValidations.throwIfPropertyNotExists(request.query, 'person_id');
+
+    const { id } = request.user;
+    const { month, year, person_id } = request.query;
+
+    requestValidations.throwIfPropertyMonthIsNotValid(Number(month));
+    requestValidations.throwIfPropertyYearIsNotValid(Number(year));
+    requestValidations.throwIfPropertyIsNotNumber(person_id as string)
+
+    const fetchExpensesSharedByPersonService = container.resolve(FetchExpensesSharedByPersonService);
+    const expensesSharedByPerson = await fetchExpensesSharedByPersonService.execute({
+      month: Number(month),
+      year: Number(year),
+      user_id: id,
+      person_id: Number(person_id),
+    });
+
+    return response.status(200).json(expensesSharedByPerson);
+  }
 }
