@@ -52,7 +52,7 @@ export function useTotalPerPerson() {
 			${sharedExpensesByPerson?.expensesSharedDetails
 				.map(
 					(expense, index) =>
-						`_${index + 1}. ${expense.name}[${formatParcel(
+						`_${index + 1}. ${expense.name} [${formatParcel(
 							expense.currentParcel,
 							expense.totalParcel,
 						)}]: R$ ${formatCurrency(expense.amount)}`,
@@ -64,6 +64,7 @@ export function useTotalPerPerson() {
 		`;
 
 		window.open(`${whatsappLink}?text=${template}`, '_blank');
+		setSelectedPersonId(null);
 	}
 
 	const isEmptyState = !totalPerPersonList?.length && !isLoadingTotalPerPerson;
