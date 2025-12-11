@@ -43,24 +43,23 @@ export function useTotalPerPerson() {
 		const sharedExpenseByPerson = totalPerPersonListResponse?.find(expense => expense.person.id === personId);
 		const whatsappLink = `https://wa.me/55${sharedExpenseByPerson?.person.whatsapp}`;
 
-		const template = `
-			Sua conta chegou!%0A\n
-			Valor total:  *${sharedExpenseByPerson?.getTotalFormatted()}*\n\n
-			_Detalhamento:_\n
-			${sharedExpensesByPerson?.expensesSharedDetails
-				.map(
-					(expense, index) =>
-						`\t_${index + 1}. ${expense.name} [${formatParcel(
-							expense.currentParcel,
-							expense.totalParcel,
-						)}]: ${formatCurrency(expense.amount)}`,
-				)
-				.join('\n')}
-			\n
-			______________________________
-			\n
-			_Referente a ${month + 1}/${year}_
-		`;
+		const template = [
+			`Sua conta chegou! _Referente a ${month + 1}/${year}_`,
+			'',
+			`Valor total: *${sharedExpenseByPerson?.getTotalFormatted()}*`,
+			'',
+			'_Detalhamento:_',
+			...(sharedExpensesByPerson?.expensesSharedDetails.map(
+				(expense, index) =>
+					`  _${index + 1}. ${expense.name} [${formatParcel(
+						expense.currentParcel,
+						expense.totalParcel,
+					)}]: ${formatCurrency(expense.amount)}_`,
+			) || []),
+			'______________________________',
+			'',
+			'_-- Enviado pelo finance-app criado por @guiselair --_',
+		].join('%0A');
 
 		window.open(`${whatsappLink}?text=${template}`, '_blank');
 		setSelectedPersonId(null);
