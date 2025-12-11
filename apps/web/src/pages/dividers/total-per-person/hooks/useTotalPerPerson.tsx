@@ -44,7 +44,7 @@ export function useTotalPerPerson() {
 		const whatsappLink = `https://wa.me/55${sharedExpenseByPerson?.person.whatsapp}`;
 
 		const template = `
-			Sua conta chegou!\n\n
+			Sua conta chegou!%0A\n
 			Valor total:  *${sharedExpenseByPerson?.getTotalFormatted()}*\n\n
 			_Detalhamento:_\n
 			${sharedExpensesByPerson?.expensesSharedDetails
