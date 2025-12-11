@@ -44,23 +44,22 @@ export function useTotalPerPerson() {
 		const whatsappLink = `https://wa.me/55${sharedExpenseByPerson?.person.whatsapp}`;
 
 		const template = `
-			Sua conta chegou!
-
-			Valor total:  *${sharedExpenseByPerson?.getTotalFormatted()}*
-
-			_Detalhamento:_
+			Sua conta chegou!\n\n
+			Valor total:  *${sharedExpenseByPerson?.getTotalFormatted()}*\n\n
+			_Detalhamento:_\n
 			${sharedExpensesByPerson?.expensesSharedDetails
 				.map(
 					(expense, index) =>
-						`_${index + 1}. ${expense.name} [${formatParcel(
+						`\t_${index + 1}. ${expense.name} [${formatParcel(
 							expense.currentParcel,
 							expense.totalParcel,
 						)}]: ${formatCurrency(expense.amount)}`,
 				)
 				.join('\n')}
-
-			---------------
-			_Referente ao ${month + 1}/${year}_
+			\n
+			______________________________
+			\n
+			_Referente a ${month + 1}/${year}_
 		`;
 
 		window.open(`${whatsappLink}?text=${template}`, '_blank');
