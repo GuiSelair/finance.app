@@ -30,6 +30,8 @@ export function useEditExpense() {
 		},
 	});
 	const { mutateAsync, isLoading: isEditing } = useEditExpenseApi(expenseId);
+	const parcelQuantity = formSchema.watch('parcelQuantity');
+	const isParceled = (parcelQuantity ?? 1) > 1;
 
 	async function editExpenseSubmit(data: FormExpenseFieldsType): Promise<void> {
 		const { dirtyFields } = formSchema.formState;
@@ -60,5 +62,6 @@ export function useEditExpense() {
 		isLoading,
 		goBack,
 		formSchema,
+		isParceled,
 	};
 }

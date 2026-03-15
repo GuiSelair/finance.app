@@ -9,7 +9,7 @@ import { useEditExpense } from './hooks/useEditExpense';
 import { RegisterExpenseForm, ValueInput } from './ExpenseForm.styles';
 
 export default function EditExpensePage() {
-	const { editExpenseSubmit, goBack, isEditing, formSchema, isLoading } = useEditExpense();
+	const { editExpenseSubmit, goBack, isEditing, formSchema, isLoading, isParceled } = useEditExpense();
 
 	const {
 		register,
@@ -62,7 +62,12 @@ export default function EditExpensePage() {
 							<div>
 								<InputLabel>
 									Valor total:
-									<ValueInput prefix="R$" error={errors.totalValue?.message} {...register('totalValue')} />
+									<ValueInput
+										prefix="R$"
+										error={errors.totalValue?.message}
+										disabled={isParceled}
+										{...register('totalValue')}
+									/>
 								</InputLabel>
 							</div>
 							<div>
