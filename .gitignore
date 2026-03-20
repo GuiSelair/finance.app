@@ -3,3 +3,6 @@ apps/**/dist
 .turbo
 .vscode
 .idea
+.cursor/
+docs/plans/
+.DS_Store

@@ -6,7 +6,7 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "npm eslint --fix"
+		"lint": "npx eslint . --fix"
 	},
 	"dependencies": {
 		"@finance-app/helpers": "file:../../packages/helpers",
