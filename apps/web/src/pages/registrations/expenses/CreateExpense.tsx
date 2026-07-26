@@ -6,15 +6,17 @@ import { TextInput, InputLabel, ActionButtons, Switch } from '@/components/Form'
 
 import { PaymentMethodSelectionSection } from './components/PaymentMethodSelection';
 import { ShareExpenseSection } from './components/ShareExpenseSection';
+import { CREATE_EXPENSE_TAB_ORDER } from './constants/tabOrder';
 import { useCreateExpense } from './hooks/useCreateExpense';
 import { RegisterExpenseForm, ValueInput } from './ExpenseForm.styles';
 
+const CREATE_EXPENSE_FORM_ID = 'create-expense-form';
+
 export default function CreateExpensePage() {
-	const { createExpenseSubmit, isCreatingExpense, formSchema } = useCreateExpense();
+	const { onSubmitCreateExpense, isCreatingExpense, formSchema, submitShortcutLabel } = useCreateExpense();
 
 	const {
 		register,
-		handleSubmit,
 		formState: { errors },
 		reset,
 		watch,
@@ -31,13 +33,20 @@ export default function CreateExpensePage() {
 					<LayoutBox.HeaderTitle>Adicionar despesa</LayoutBox.HeaderTitle>
 				</LayoutBox.Header>
 				<LayoutBox.Content>
-					<RegisterExpenseForm>
+					<RegisterExpenseForm
+						id={CREATE_EXPENSE_FORM_ID}
+						onSubmit={event => {
+							event.preventDefault();
+							onSubmitCreateExpense();
+						}}
+					>
 						<Flex>
 							<InputLabel>
 								Nome:
 								<TextInput
 									placeholder="Insira o nome de sua despesa aqui"
 									error={errors.name?.message}
+									tabIndex={CREATE_EXPENSE_TAB_ORDER.name}
 									{...register('name')}
 								/>
 							</InputLabel>
@@ -53,6 +62,7 @@ export default function CreateExpensePage() {
 										prefix="R$"
 										error={errors.totalValue?.message}
 										disabled={isSplit}
+										tabIndex={CREATE_EXPENSE_TAB_ORDER.totalValue}
 										{...register('totalValue')}
 									/>
 								</InputLabel>
@@ -63,6 +73,7 @@ export default function CreateExpensePage() {
 									<ValueInput
 										error={errors.parcelQuantity?.message}
 										disabled={isSplit}
+										tabIndex={CREATE_EXPENSE_TAB_ORDER.parcelQuantity}
 										{...register('parcelQuantity', {
 											valueAsNumber: true,
 										})}
@@ -72,14 +83,16 @@ export default function CreateExpensePage() {
 							<div>
 								<InputLabel>
 									Valor por parcela:
-									<ValueInput prefix="R$" disabled {...register('parcelValue')} />
+									<ValueInput prefix="R$" disabled tabIndex={-1} {...register('parcelValue')} />
 								</InputLabel>
 							</div>
 							<Flex flexDirection="column" gap="0.5rem" whiteSpace="nowrap">
 								<InputLabel>Despesa fixa:</InputLabel>
 								<Controller
 									name="isRecurring"
-									render={({ field: { value, ...field } }) => <Switch checked={value} {...field} />}
+									render={({ field: { value, ...field } }) => (
+										<Switch checked={value} tabIndex={CREATE_EXPENSE_TAB_ORDER.isRecurring} {...field} />
+									)}
 								/>
 							</Flex>
 							<Flex flexDirection="column" gap="0.5rem" whiteSpace="nowrap">
@@ -87,7 +100,13 @@ export default function CreateExpensePage() {
 								<Controller
 									name="isSplit"
 									render={({ field: { value, ...field } }) => (
-										<Switch id="isSplit" isDisabled={isExpenseAmountNonFilled} checked={value} {...field} />
+										<Switch
+											id="isSplit"
+											isDisabled={isExpenseAmountNonFilled}
+											checked={value}
+											tabIndex={CREATE_EXPENSE_TAB_ORDER.isSplit}
+											{...field}
+										/>
 									)}
 								/>
 							</Flex>
@@ -98,13 +117,16 @@ export default function CreateExpensePage() {
 				<LayoutBox.Footer>
 					<LayoutBox.FooterRightSide>
 						<ActionButtons>
-							<ActionButtons.Cancel onClick={() => reset()} />
+							<ActionButtons.Cancel tabIndex={CREATE_EXPENSE_TAB_ORDER.cancel} onClick={() => reset()} />
 							<ActionButtons.Submit
-								onClick={handleSubmit(createExpenseSubmit)}
+								form={CREATE_EXPENSE_FORM_ID}
 								isLoading={isCreatingExpense}
+								tabIndex={CREATE_EXPENSE_TAB_ORDER.submit}
+								aria-keyshortcuts="Control+Enter Meta+Enter"
+								title={`Atalho: ${submitShortcutLabel}`}
 								spinnerConfig={{ mode: 'light', size: 'sm' }}
 							>
-								Criar despesa
+								Criar despesa ({submitShortcutLabel})
 							</ActionButtons.Submit>
 						</ActionButtons>
 					</LayoutBox.FooterRightSide>

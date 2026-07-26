@@ -1,10 +1,11 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { getMonth, getYear } from 'date-fns';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 import { FormExpenseFieldsType, createFormExpenseFormSchema } from '../constants/formSchema';
+import { getSubmitShortcutLabel, isSubmitShortcut } from '../helpers/isSubmitShortcut';
 import { useCreateExpenseApi } from '@/hooks/api/expenses/useCreateExpense.api';
 
 export function useCreateExpense() {
@@ -18,6 +19,8 @@ export function useCreateExpense() {
 		},
 	});
 	const { mutate, isLoading: isCreating } = useCreateExpenseApi();
+	const { handleSubmit, resetField, setFocus, setValue, watch } = formSchema;
+	const [submitShortcutLabel, setSubmitShortcutLabel] = useState('Ctrl+Enter');
 
 	const calculateParcelValue = useCallback((value: number, parcels: number) => {
 		if (!value || !parcels) return 0;
@@ -25,51 +28,81 @@ export function useCreateExpense() {
 		return Number((value / parcels).toFixed(2));
 	}, []);
 
-	async function createExpenseSubmit(data: FormExpenseFieldsType): Promise<void> {
-		mutate(
-			{
-				name: data.name,
-				amount: data.totalValue!,
-				cardId: data.paymentMethod.value,
-				parcel: data.parcelQuantity,
-				isRecurring: data.isRecurring,
-				purchaseDate: data.purchaseDate,
-				manualExpenseDate: data.manualExpenseDate!,
-				sharePeopleExpense: data.sharePeopleExpense,
-			},
-			{
-				onSuccess: () => {
-					toast.success('Despesa criada com sucesso!');
-					formSchema.resetField('name');
-					formSchema.resetField('category');
-					formSchema.resetField('totalValue');
-					formSchema.resetField('isRecurring');
-					formSchema.resetField('parcelQuantity');
-					formSchema.resetField('parcelValue');
-					formSchema.resetField('isSplit', { defaultValue: false });
-					formSchema.resetField('sharePeopleExpense');
-					formSchema.setFocus('name');
+	const createExpenseSubmit = useCallback(
+		async (data: FormExpenseFieldsType): Promise<void> => {
+			mutate(
+				{
+					name: data.name,
+					amount: data.totalValue!,
+					cardId: data.paymentMethod.value,
+					parcel: data.parcelQuantity,
+					isRecurring: data.isRecurring,
+					purchaseDate: data.purchaseDate,
+					manualExpenseDate: data.manualExpenseDate!,
+					sharePeopleExpense: data.sharePeopleExpense,
 				},
-			},
-		);
-	}
+				{
+					onSuccess: () => {
+						toast.success('Despesa criada com sucesso!');
+						resetField('name');
+						resetField('category');
+						resetField('totalValue');
+						resetField('isRecurring');
+						resetField('parcelQuantity');
+						resetField('parcelValue');
+						resetField('isSplit', { defaultValue: false });
+						resetField('sharePeopleExpense');
+						setFocus('name');
+					},
+				},
+			);
+		},
+		[mutate, resetField, setFocus],
+	);
 
-	const totalValue = formSchema.watch('totalValue');
+	const onSubmitCreateExpense = useCallback(() => {
+		if (isCreating) return;
+
+		void handleSubmit(createExpenseSubmit)();
+	}, [createExpenseSubmit, handleSubmit, isCreating]);
+
+	useEffect(() => {
+		setSubmitShortcutLabel(getSubmitShortcutLabel());
+	}, []);
+
+	useEffect(() => {
+		function handleKeyDown(event: KeyboardEvent) {
+			if (!isSubmitShortcut(event)) return;
+
+			event.preventDefault();
+			onSubmitCreateExpense();
+		}
+
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [onSubmitCreateExpense]);
+
+	const totalValue = watch('totalValue');
 	const parcelValue =
 		calculateParcelValue(
 			Number(totalValue) || Number(String(totalValue)?.replace(',', '.')),
-			formSchema.watch('parcelQuantity'),
+			watch('parcelQuantity'),
 		) ?? 0;
 
 	useEffect(() => {
 		if (parcelValue) {
-			formSchema.setValue('parcelValue', parcelValue);
+			setValue('parcelValue', parcelValue);
 		}
-	}, [parcelValue]);
+	}, [parcelValue, setValue]);
 
 	return {
 		createExpenseSubmit,
+		onSubmitCreateExpense,
 		isCreatingExpense: isCreating,
 		formSchema,
+		submitShortcutLabel,
 	};
 }
