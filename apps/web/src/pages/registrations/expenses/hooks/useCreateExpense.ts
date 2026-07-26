@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { getMonth, getYear } from 'date-fns';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,7 +20,6 @@ export function useCreateExpense() {
 	});
 	const { mutate, isLoading: isCreating } = useCreateExpenseApi();
 	const { handleSubmit, resetField, setFocus, setValue, watch } = formSchema;
-	const [submitShortcutLabel, setSubmitShortcutLabel] = useState('Ctrl+Enter');
 
 	const calculateParcelValue = useCallback((value: number, parcels: number) => {
 		if (!value || !parcels) return 0;
@@ -60,22 +59,16 @@ export function useCreateExpense() {
 		[mutate, resetField, setFocus],
 	);
 
-	const onSubmitCreateExpense = useCallback(() => {
-		if (isCreating) return;
-
-		void handleSubmit(createExpenseSubmit)();
-	}, [createExpenseSubmit, handleSubmit, isCreating]);
-
-	useEffect(() => {
-		setSubmitShortcutLabel(getSubmitShortcutLabel());
-	}, []);
-
+	/**
+	 * Registra o atalho Ctrl/Cmd+Enter para submeter o formulário sem clicar no botão.
+	 * Ignora o atalho enquanto uma requisição de criação já estiver em andamento.
+	 */
 	useEffect(() => {
 		function handleKeyDown(event: KeyboardEvent) {
-			if (!isSubmitShortcut(event)) return;
+			if (!isSubmitShortcut(event) || isCreating) return;
 
 			event.preventDefault();
-			onSubmitCreateExpense();
+			void handleSubmit(createExpenseSubmit)();
 		}
 
 		document.addEventListener('keydown', handleKeyDown);
@@ -83,7 +76,7 @@ export function useCreateExpense() {
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown);
 		};
-	}, [onSubmitCreateExpense]);
+	}, [createExpenseSubmit, handleSubmit, isCreating]);
 
 	const totalValue = watch('totalValue');
 	const parcelValue =
@@ -92,6 +85,9 @@ export function useCreateExpense() {
 			watch('parcelQuantity'),
 		) ?? 0;
 
+	/**
+	 * Mantém o valor por parcela sincronizado quando o valor total ou a quantidade de parcelas mudam.
+	 */
 	useEffect(() => {
 		if (parcelValue) {
 			setValue('parcelValue', parcelValue);
@@ -100,9 +96,8 @@ export function useCreateExpense() {
 
 	return {
 		createExpenseSubmit,
-		onSubmitCreateExpense,
 		isCreatingExpense: isCreating,
 		formSchema,
-		submitShortcutLabel,
+		submitShortcutLabel: getSubmitShortcutLabel(),
 	};
 }

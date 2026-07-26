@@ -8,15 +8,16 @@ import { PaymentMethodSelectionSection } from './components/PaymentMethodSelecti
 import { ShareExpenseSection } from './components/ShareExpenseSection';
 import { CREATE_EXPENSE_TAB_ORDER } from './constants/tabOrder';
 import { useCreateExpense } from './hooks/useCreateExpense';
-import { RegisterExpenseForm, ValueInput } from './ExpenseForm.styles';
+import { RegisterExpenseForm, SubmitShortcutHint, ValueInput } from './ExpenseForm.styles';
 
 const CREATE_EXPENSE_FORM_ID = 'create-expense-form';
 
 export default function CreateExpensePage() {
-	const { onSubmitCreateExpense, isCreatingExpense, formSchema, submitShortcutLabel } = useCreateExpense();
+	const { createExpenseSubmit, isCreatingExpense, formSchema, submitShortcutLabel } = useCreateExpense();
 
 	const {
 		register,
+		handleSubmit,
 		formState: { errors },
 		reset,
 		watch,
@@ -33,13 +34,7 @@ export default function CreateExpensePage() {
 					<LayoutBox.HeaderTitle>Adicionar despesa</LayoutBox.HeaderTitle>
 				</LayoutBox.Header>
 				<LayoutBox.Content>
-					<RegisterExpenseForm
-						id={CREATE_EXPENSE_FORM_ID}
-						onSubmit={event => {
-							event.preventDefault();
-							onSubmitCreateExpense();
-						}}
-					>
+					<RegisterExpenseForm id={CREATE_EXPENSE_FORM_ID} onSubmit={handleSubmit(createExpenseSubmit)}>
 						<Flex>
 							<InputLabel>
 								Nome:
@@ -126,7 +121,7 @@ export default function CreateExpensePage() {
 								title={`Atalho: ${submitShortcutLabel}`}
 								spinnerConfig={{ mode: 'light', size: 'sm' }}
 							>
-								Criar despesa ({submitShortcutLabel})
+								Criar despesa <SubmitShortcutHint>({submitShortcutLabel})</SubmitShortcutHint>
 							</ActionButtons.Submit>
 						</ActionButtons>
 					</LayoutBox.FooterRightSide>
