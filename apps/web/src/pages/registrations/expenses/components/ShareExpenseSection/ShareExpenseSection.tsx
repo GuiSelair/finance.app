@@ -6,6 +6,7 @@ import { ArrowSquareOut as ArrowSquareOutIcon, Trash as TrashIcon } from 'phosph
 
 import { Flex, Grid, InputLabel, Select, Divider, TextInput, Button, Currency, Text } from '@/components';
 import { FormExpenseFieldsType } from '../../constants/formSchema';
+import { CREATE_EXPENSE_TAB_ORDER } from '../../constants/tabOrder';
 import { FieldDescription } from '../PaymentMethodSelection/PaymentMethodSelection.styles';
 import { sharePeopleExpenseSchema, type ShareExpenseFormFields } from './constants/formSchema';
 import { useFetchSharePeopleApi } from '@/hooks/api/sharePeople/useFetchSharePeople.api';
@@ -94,6 +95,7 @@ export function ShareExpenseSection() {
 											options={sharePeopleOptions || []}
 											isLoading={isLoadingSharePeople}
 											{...field}
+											tabIndex={CREATE_EXPENSE_TAB_ORDER.sharePerson}
 										/>
 									)}
 								/>
@@ -116,6 +118,7 @@ export function ShareExpenseSection() {
 									type="number"
 									step="0.01"
 									error={errors.amount?.message}
+									tabIndex={CREATE_EXPENSE_TAB_ORDER.shareAmount}
 									{...register('amount')}
 								/>
 								<FieldDescription>
@@ -131,6 +134,7 @@ export function ShareExpenseSection() {
 						variant="outline"
 						onClick={handleSubmit(handleAddSharePerson)}
 						isDisabled={!isValid}
+						tabIndex={CREATE_EXPENSE_TAB_ORDER.shareAdd}
 					>
 						Adicionar
 					</Button>

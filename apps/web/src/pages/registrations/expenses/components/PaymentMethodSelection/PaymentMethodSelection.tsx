@@ -9,6 +9,7 @@ import { FieldDescription } from './PaymentMethodSelection.styles';
 import { useListCardsApi } from '@/hooks/api/cards/useListCards.api';
 
 import { FormExpenseFieldsType } from '../../constants/formSchema';
+import { CREATE_EXPENSE_TAB_ORDER } from '../../constants/tabOrder';
 
 interface PaymentMethodSelectionSectionProps {
 	isEditMode?: boolean;
@@ -33,12 +34,23 @@ export default function PaymentMethodSelectionSection({ isEditMode }: PaymentMet
 		<Grid gridTemplateColumns={isEditMode ? '200px 1fr' : '200px 418px 1fr'} margin="0.5rem 0 0 0" gap="1.5rem">
 			<InputLabel>
 				Data de compra:
-				<TextInput type="date" max={maxDateLimit} {...register('purchaseDate')} disabled={isEditMode} />
+				<TextInput
+					type="date"
+					max={maxDateLimit}
+					tabIndex={isEditMode ? undefined : CREATE_EXPENSE_TAB_ORDER.purchaseDate}
+					{...register('purchaseDate')}
+					disabled={isEditMode}
+				/>
 			</InputLabel>
 			{!isEditMode && (
 				<InputLabel>
 					Data da despesa:
-					<TextInput type="month" {...register('manualExpenseDate')} disabled={isEditMode} />
+					<TextInput
+						type="month"
+						tabIndex={CREATE_EXPENSE_TAB_ORDER.manualExpenseDate}
+						{...register('manualExpenseDate')}
+						disabled={isEditMode}
+					/>
 				</InputLabel>
 			)}
 			<InputLabel>
@@ -54,6 +66,7 @@ export default function PaymentMethodSelectionSection({ isEditMode }: PaymentMet
 								placeholder="Selecione o meio de pagamento"
 								options={paymentMethodsOptions ?? []}
 								{...field}
+								tabIndex={isEditMode ? undefined : CREATE_EXPENSE_TAB_ORDER.paymentMethod}
 							/>
 						)}
 					/>

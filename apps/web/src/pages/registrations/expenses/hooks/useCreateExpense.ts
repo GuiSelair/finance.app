@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 import { FormExpenseFieldsType, createFormExpenseFormSchema } from '../constants/formSchema';
+import { getSubmitShortcutLabel, isSubmitShortcut } from '../helpers/isSubmitShortcut';
 import { useCreateExpenseApi } from '@/hooks/api/expenses/useCreateExpense.api';
 
 export function useCreateExpense() {
@@ -18,6 +19,7 @@ export function useCreateExpense() {
 		},
 	});
 	const { mutate, isLoading: isCreating } = useCreateExpenseApi();
+	const { handleSubmit, resetField, setFocus, setValue, watch } = formSchema;
 
 	const calculateParcelValue = useCallback((value: number, parcels: number) => {
 		if (!value || !parcels) return 0;
@@ -25,51 +27,77 @@ export function useCreateExpense() {
 		return Number((value / parcels).toFixed(2));
 	}, []);
 
-	async function createExpenseSubmit(data: FormExpenseFieldsType): Promise<void> {
-		mutate(
-			{
-				name: data.name,
-				amount: data.totalValue!,
-				cardId: data.paymentMethod.value,
-				parcel: data.parcelQuantity,
-				isRecurring: data.isRecurring,
-				purchaseDate: data.purchaseDate,
-				manualExpenseDate: data.manualExpenseDate!,
-				sharePeopleExpense: data.sharePeopleExpense,
-			},
-			{
-				onSuccess: () => {
-					toast.success('Despesa criada com sucesso!');
-					formSchema.resetField('name');
-					formSchema.resetField('category');
-					formSchema.resetField('totalValue');
-					formSchema.resetField('isRecurring');
-					formSchema.resetField('parcelQuantity');
-					formSchema.resetField('parcelValue');
-					formSchema.resetField('isSplit', { defaultValue: false });
-					formSchema.resetField('sharePeopleExpense');
-					formSchema.setFocus('name');
+	const createExpenseSubmit = useCallback(
+		async (data: FormExpenseFieldsType): Promise<void> => {
+			mutate(
+				{
+					name: data.name,
+					amount: data.totalValue!,
+					cardId: data.paymentMethod.value,
+					parcel: data.parcelQuantity,
+					isRecurring: data.isRecurring,
+					purchaseDate: data.purchaseDate,
+					manualExpenseDate: data.manualExpenseDate!,
+					sharePeopleExpense: data.sharePeopleExpense,
 				},
-			},
-		);
-	}
+				{
+					onSuccess: () => {
+						toast.success('Despesa criada com sucesso!');
+						resetField('name');
+						resetField('category');
+						resetField('totalValue');
+						resetField('isRecurring');
+						resetField('parcelQuantity');
+						resetField('parcelValue');
+						resetField('isSplit', { defaultValue: false });
+						resetField('sharePeopleExpense');
+						setFocus('name');
+					},
+				},
+			);
+		},
+		[mutate, resetField, setFocus],
+	);
 
-	const totalValue = formSchema.watch('totalValue');
+	/**
+	 * Registra o atalho Ctrl/Cmd+Enter para submeter o formulário sem clicar no botão.
+	 * Ignora o atalho enquanto uma requisição de criação já estiver em andamento.
+	 */
+	useEffect(() => {
+		function handleKeyDown(event: KeyboardEvent) {
+			if (!isSubmitShortcut(event) || isCreating) return;
+
+			event.preventDefault();
+			void handleSubmit(createExpenseSubmit)();
+		}
+
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [createExpenseSubmit, handleSubmit, isCreating]);
+
+	const totalValue = watch('totalValue');
 	const parcelValue =
 		calculateParcelValue(
 			Number(totalValue) || Number(String(totalValue)?.replace(',', '.')),
-			formSchema.watch('parcelQuantity'),
+			watch('parcelQuantity'),
 		) ?? 0;
 
+	/**
+	 * Mantém o valor por parcela sincronizado quando o valor total ou a quantidade de parcelas mudam.
+	 */
 	useEffect(() => {
 		if (parcelValue) {
-			formSchema.setValue('parcelValue', parcelValue);
+			setValue('parcelValue', parcelValue);
 		}
-	}, [parcelValue]);
+	}, [parcelValue, setValue]);
 
 	return {
 		createExpenseSubmit,
 		isCreatingExpense: isCreating,
 		formSchema,
+		submitShortcutLabel: getSubmitShortcutLabel(),
 	};
 }
