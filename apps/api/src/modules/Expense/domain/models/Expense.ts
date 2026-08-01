@@ -8,7 +8,10 @@ export class Expense {
     parcel: z.number().positive(),
     card_id: z.string().uuid(),
     user_id: z.string().uuid(),
-    purchase_date: z.coerce.date().max(new Date()),
+    purchase_date: z.coerce.date().refine(
+      (date) => date <= new Date(),
+      { message: 'A data de compra deve ser menor ou igual a hoje' },
+    ),
     is_recurring: z.boolean(),
     due_date: z.coerce.date().optional().nullable(),
     description: z.string().max(120).optional().nullable(),
