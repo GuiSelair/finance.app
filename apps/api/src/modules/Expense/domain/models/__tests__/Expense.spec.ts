@@ -72,4 +72,62 @@ describe('Expense model - Unit test', () => {
       expect(error).toBeInstanceOf(ZodError);
     }
   });
+
+  it('should accept purchase_date up to today even after the process has aged', async () => {
+    jest.resetModules();
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2026-07-26T12:00:00.000Z'));
+
+    const { Expense: ExpenseModel } = await import('../Expense');
+
+    jest.setSystemTime(new Date('2026-08-01T12:00:00.000Z'));
+
+    expect(
+      () =>
+        new ExpenseModel(
+          {
+            name: 'fake-card-name',
+            amount: 100,
+            parcel: 1,
+            card_id: v4(),
+            user_id: v4(),
+            purchase_date: '2026-07-28',
+            is_recurring: false,
+            is_splitted: false,
+          },
+          'create',
+        ),
+    ).not.toThrow();
+
+    jest.useRealTimers();
+  });
+
+  it('should reject purchase_date greater than today', async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2026-08-01T12:00:00.000Z'));
+
+    try {
+      new Expense(
+        {
+          name: 'fake-card-name',
+          amount: 100,
+          parcel: 1,
+          card_id: v4(),
+          user_id: v4(),
+          purchase_date: '2026-08-02',
+          is_recurring: false,
+          is_splitted: false,
+        },
+        'create',
+      );
+      fail('Expected ZodError to be thrown');
+    } catch (error) {
+      expect(error).toBeInstanceOf(ZodError);
+      expect((error as ZodError).issues[0].message).toBe(
+        'A data de compra deve ser menor ou igual a hoje',
+      );
+    } finally {
+      jest.useRealTimers();
+    }
+  });
 });
